@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://drl6yemojvrts" path="res://addons/moving_platforms_designer/moving_platform.gd" id="1"]
+
+[sub_resource type="Curve2D" id="Route"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="Shape"]
+resource_local_to_scene = true
+size = Vector2(96, 20)
+
+[sub_resource type="GradientTexture2D" id="Texture"]
+width = 96
+height = 20
+fill_from = Vector2(0, 0)
+fill_to = Vector2(0, 1)
+
+[node name="MovingPlatform" type="Node2D"]
+script = ExtResource("1")
+texture = SubResource("Texture")
+
+[node name="MovementPath" type="Path2D" parent="."]
+curve = SubResource("Route")
+
+[node name="Body" type="AnimatableBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Body"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+shape = SubResource("Shape")

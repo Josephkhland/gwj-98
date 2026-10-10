@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://b307t6afkxtmk"]
 
 [ext_resource type="Texture2D" uid="uid://c53ylmxj44x7d" path="res://icon.svg" id="1_x68yp"]
-[ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/PlatformerCharacter/PlatformerCharacter.tscn" id="2_oksox"]
+[ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_oksox"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="3_oksox"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s1ctw"]
@@ -38,14 +38,14 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_s1ctw")
 
-[sub_resource type="Curve2D" id="Curve2D_s1ctw"]
+[sub_resource type="Curve2D" id="Curve2D_oksox"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 212, 88, 0, 0, 0, 0, 450, 69, 0, 0, 0, 0, 621, -69)
 }
 point_count = 4
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2va2y"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s1ctw"]
 resource_local_to_scene = true
 size = Vector2(129, 128)
 
@@ -66,13 +66,13 @@ position = Vector2(-144, -272)
 texture = ExtResource("1_x68yp")
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
-curve = SubResource("Curve2D_s1ctw")
+curve = SubResource("Curve2D_oksox")
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
 texture = ExtResource("1_x68yp")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
 position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_2va2y")
+shape = SubResource("RectangleShape2D_s1ctw")
 
 [editable path="MovingPlatform"]

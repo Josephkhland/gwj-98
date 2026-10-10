@@ -3,14 +3,17 @@ extends CharacterBody2D
 signal state_changed(previous: State, current: State)
 signal health_changed(current: int, maximum: int)
 signal died
-enum State { IDLE, WALKING, CHARGING, JUMPING, IN_AIR, ON_WALL, ATTACKING, GETTING_HIT }
-const Settings = preload("res://components/modules/PlatformerCharacter/character_settings.gd")
+signal squeezed
+enum State { IDLE, WALKING, CHARGING, JUMPING, IN_AIR, ON_WALL, ATTACKING, GETTING_HIT, SQUEEZED }
+const Settings = preload("res://components/modules/platformer_character/character_settings.gd")
 const ANIMATIONS: Array[StringName] = [
 	&"idle", &"walking", &"charging", &"jumping", &"in_air",
-	&"on_wall", &"attacking", &"getting_hit"
+	&"on_wall", &"attacking", &"getting_hit", &"squeezed"
 ]
 @export var settings: Settings = Settings.new()
 @export var player_controlled: bool = true
+## Legacy sound override; prefer Settings.squeeze_sound for new configurations.
+@export var splatter_sound: AudioStream
 @export_group("Input Map actions (empty or missing disables input)")
 @export var move_left_action: StringName = &""
 @export var move_right_action: StringName = &""
@@ -22,12 +25,16 @@ const ANIMATIONS: Array[StringName] = [
 @onready var preview: Line2D = $JumpPreview
 @onready var state_machine = $StateMachine
 @onready var surface_anchor = $SurfaceAnchor
+@onready var physics_safety = $PhysicsSafety
+@onready var splatter_audio: AudioStreamPlayer2D = $SplatterAudio
 var state: State:
 	get:
 		return state_machine.current.state_id if is_instance_valid(state_machine) and state_machine.current != null else State.IN_AIR
 var health: int
+var _death_emitted: bool = false
+var _last_squeeze_audio: AudioStreamPlayer2D
 var facing: float = 1.0
-# StateMachine owns the active-state clock.
+# Compatibility accessor; StateMachine owns the active-state clock.
 var _state_time: float:
 	get:
 		return state_machine.elapsed
@@ -47,6 +54,7 @@ var _was_attack: bool = false
 
 func _ready() -> void:
 	health = settings.maximum_health
+	physics_safety.initialize(self)
 	surface_anchor.initialize(self)
 	state_machine.initialize(self, State.IN_AIR)
 	health_changed.emit(health, settings.maximum_health)
@@ -72,14 +80,20 @@ func _physics_process(delta: float) -> void:
 	var attack_started := _attack_held and not _was_attack
 	_was_charge = _charge_held
 	_was_attack = _attack_held
-	if not state_machine.should_move():
+	physics_safety.begin_tick()
+	if not state_machine.should_move() and not physics_safety.movement_locked():
 		surface_anchor.follow()
+		if not state_machine.should_move():
+			physics_safety.recover_held(delta)
 	state_machine.physics_update(delta, charge_started, attack_started)
+	if health <= 0:
+		return
 	visual.facing = facing
-	if state_machine.should_move():
+	if state_machine.should_move() and not physics_safety.movement_locked():
 		var incoming_velocity := velocity
 		move_and_slide()
 		state_machine.after_move(incoming_velocity)
+	physics_safety.finish_tick(delta)
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y = minf(velocity.y + settings.gravity * delta, settings.terminal_speed)
@@ -112,6 +126,8 @@ func get_launch_velocity() -> Vector2:
 	return _surface_normal.rotated(_aim_angle) * launch_speed
 
 func _launch() -> void:
+	if physics_safety.is_trapped():
+		return
 	velocity = get_launch_velocity()
 	_detach()
 	_change_state(State.JUMPING)
@@ -125,11 +141,10 @@ func _detach() -> void:
 func _begin_attack() -> void:
 	_change_state(State.ATTACKING)
 
-## Impulse is a velocity change in world pixels/second
+## Impulse is a velocity change in world pixels/second; damage cannot heal.
 func receive_hit(damage: int, impulse: Vector2 = Vector2.ZERO, _source: Node = null) -> void:
 	if health <= 0 or _invulnerability > 0.0:
 		return
-	# Ensuring Damage cannot heal and that health doesn't go below zero.
 	health = maxi(0, health - maxi(0, damage))
 	_invulnerability = settings.invulnerability_time
 	var force := impulse.length()
@@ -141,14 +156,30 @@ func receive_hit(damage: int, impulse: Vector2 = Vector2.ZERO, _source: Node = n
 		# A qualifying follow-up hit also restarts existing hit stun.
 		_state_time = 0.0
 	if health == 0:
-		# Lethal damage always ends actions, including damage-only hits.
-		_detach()
-		_change_state(State.GETTING_HIT)
-		hitbox.end_swing()
-		set_physics_process(false)
-	health_changed.emit(health, settings.maximum_health)
-	if health == 0:
-		died.emit()
+		_die()
+	else:
+		health_changed.emit(health, settings.maximum_health)
 
+func _play_squeeze_sound() -> void:
+	var sound: AudioStream = settings.squeeze_sound if settings.squeeze_sound != null else splatter_sound
+	_last_squeeze_audio = splatter_audio.play_independent(sound)
+
+## One death path for damage and squeezing; SQUEEZED owns its optional sound.
+func _die() -> void:
+	if _death_emitted:
+		return
+	_death_emitted = true
+	health = 0
+	_detach()
+	_change_state(State.GETTING_HIT)
+	hitbox.end_swing()
+	preview.visible = false
+	set_physics_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	get_node("CollisionShape2D").set_deferred("disabled", true)
+	get_node("Hurtbox").set_deferred("monitorable", false)
+	health_changed.emit(health, settings.maximum_health)
+	died.emit()
 func _change_state(next: State) -> void:
 	state_machine.transition(next)

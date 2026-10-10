@@ -11,7 +11,7 @@ extends Resource
 @export_range(1.0, 3000.0) var maximum_jump_speed: float = 700.0
 @export_range(0.0, 2.0) var minimum_jump_duration: float = 0.18
 @export_range(0.01, 3.0) var wall_hold_duration: float = 0.65
-@export_range(0.0, 0.5) var reattach_delay: float = 0.0
+@export_range(0.0, 0.5) var reattach_delay: float = 0.12
 @export_range(0.0, 85.0) var maximum_aim_angle_degrees: float = 75.0
 @export_range(1.0, 360.0) var aim_speed_degrees: float = 120.0
 @export_group("Combat")
@@ -34,6 +34,27 @@ extends Resource
 @export_range(0.0, 4000.0) var on_wall_hit_threshold: float = 220.0
 @export_range(0.0, 4000.0) var attacking_hit_threshold: float = 160.0
 @export_range(0.0, 4000.0) var getting_hit_hit_threshold: float = 100.0
+@export_range(0.0, 4000.0) var squeezed_hit_threshold: float = 100.0
+
+@export_group("Crushing")
+## Continuous opposing platform pressure time before entering SQUEEZED.
+@export_range(0.05, 3.0) var crush_grace_time: float = 0.35
+## Ignore contact slop smaller than this many pixels.
+@export_range(0.05, 4.0) var crush_overlap_tolerance: float = 0.5
+## Preserve the previous lethal behavior by default; disable for recovery.
+@export var die_when_squeezed: bool = true
+## Optional sound for both outcomes; null means silence.
+@export var squeeze_sound: AudioStream
+@export_range(0.05, 3.0) var squeeze_recovery_time: float = 0.45
+@export_range(0.0, 3.0) var squeeze_cooldown: float = 0.5
+## Non-lethal visual phases; collision geometry stays unchanged.
+@export_range(0.0, 1.0) var squeeze_flatten_time: float = 0.12
+@export_range(0.0, 1.0) var squeeze_flat_hold_time: float = 0.08
+@export_range(0.0, 3.0) var squeeze_reappear_blink_time: float = 1.0
+@export_range(0.02, 0.5) var squeeze_blink_interval: float = 0.1
+## Zero searches only the saved position. Search checks full-size geometry.
+@export_range(0.0, 256.0) var squeeze_recovery_search_radius: float = 64.0
+@export_range(1.0, 32.0) var squeeze_recovery_search_step: float = 8.0
 
 func get_hit_threshold(state_name: StringName) -> float:
 	match state_name:
@@ -45,4 +66,5 @@ func get_hit_threshold(state_name: StringName) -> float:
 		&"on_wall": return on_wall_hit_threshold
 		&"attacking": return attacking_hit_threshold
 		&"getting_hit": return getting_hit_hit_threshold
+		&"squeezed": return squeezed_hit_threshold
 	return idle_hit_threshold

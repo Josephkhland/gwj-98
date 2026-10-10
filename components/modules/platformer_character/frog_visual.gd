@@ -7,7 +7,7 @@ const COLORS := {
 	&"idle": Color("#7acb70"), &"walking": Color("#8ddd80"),
 	&"charging": Color("#f4d56b"), &"jumping": Color("#55ddab"),
 	&"in_air": Color("#71bceb"), &"on_wall": Color("#c59aef"),
-	&"attacking": Color("#ffad65"), &"getting_hit": Color("#f27080")
+	&"attacking": Color("#ffad65"), &"getting_hit": Color("#f27080"), &"squeezed": Color("#e5aa91")
 }
 func play(next_animation: StringName) -> void:
 	if animation != next_animation:

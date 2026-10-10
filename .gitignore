@@ -4,7 +4,6 @@
 
 # Export settings can contain signing credentials or other secrets.
 /export.cfg
-/export_presets.cfg
 
 # Generated translation files
 *.translation

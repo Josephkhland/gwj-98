@@ -1,7 +1,11 @@
 [gd_scene format=4 uid="uid://b307t6afkxtmk"]
 
+[ext_resource type="PackedScene" path="res://components/modules/network/core/NetworkGraph.tscn" id="1_2h3rs"]
+[ext_resource type="Script" uid="uid://btav4yq20vpvp" path="res://levels/sandbox/sandbox.gd" id="1_powch"]
 [ext_resource type="Texture2D" uid="uid://c53ylmxj44x7d" path="res://icon.svg" id="1_x68yp"]
 [ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_oksox"]
+[ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_powch"]
+[ext_resource type="PackedScene" path="res://components/modules/network/objects/Router.tscn" id="3_0psug"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="3_oksox"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s1ctw"]
@@ -38,24 +42,40 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_s1ctw")
 
-[sub_resource type="Curve2D" id="Curve2D_oksox"]
+[sub_resource type="Curve2D" id="Curve2D_powch"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 212, 88, 0, 0, 0, 0, 450, 69, 0, 0, 0, 0, 621, -69)
 }
 point_count = 4
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_s1ctw"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0psug"]
 resource_local_to_scene = true
 size = Vector2(129, 128)
 
 [node name="Sandbox" type="Node2D" unique_id=569843922]
+script = ExtResource("1_powch")
+
+[node name="NetworkGraph" parent="." unique_id=745340320 instance=ExtResource("1_2h3rs")]
+
+[node name="House" parent="NetworkGraph" unique_id=1947974293 instance=ExtResource("2_powch")]
+position = Vector2(708, -325)
+key_identifier = &"HouseA"
+
+[node name="House2" parent="NetworkGraph" unique_id=553409503 instance=ExtResource("2_powch")]
+position = Vector2(-274, -24)
+key_identifier = &"HouseB"
+
+[node name="Router" parent="NetworkGraph" unique_id=1062251922 instance=ExtResource("3_0psug")]
+position = Vector2(191, -312)
+key_identifier = &"RouterA"
+connections = Array[NodePath]([NodePath("../House"), NodePath("../House2")])
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1985246876]
 tile_map_data = PackedByteArray("AAAEAPf/AAABAAAAAAAFAPf/AAABAAAAAAAGAPf/AAABAAAAAAAHAPf/AAABAAAAAAAIAPf/AAABAAAAAAAJAPf/AAABAAAAAAAKAPf/AAABAAAAAAALAPf/AAABAAAAAAAMAPf/AAABAAAAAAANAPf/AAABAAAAAAAOAPf/AAABAAAAAAAPAPf/AAABAAAAAAAQAPf/AAABAAAAAAARAPf/AAABAAAAAAASAPf/AAABAAAAAAATAPf/AAABAAAAAAAUAPf/AAABAAAAAAADAPf/AAAAAAAAAAAVAPf/AAAHAAAAAAAVAPj/AAAHAAEAAAAUAO//AAAHAAAAAAAUAPD/AAAHAAEAAAALAPD/AAAAAAYAAAALAPH/AAAAAAcAAAAZAPX/AAAAAAYAAAAZAPb/AAAAAAcAAAADAPj/AAAAAAYAAAADAPn/AAAAAAcAAAAEAPn/AAAGAAcAAAAFAPn/AAAGAAcAAAAGAPn/AAAGAAcAAAAHAPn/AAAGAAcAAAAIAPn/AAAGAAcAAAAJAPn/AAAGAAcAAAAKAPn/AAAGAAcAAAAKAPj/AAAAAAYAAAALAPj/AAAAAAYAAAAMAPn/AAAGAAcAAAANAPn/AAAGAAcAAAAOAPn/AAAGAAcAAAAPAPn/AAAGAAcAAAAQAPn/AAAGAAcAAAARAPn/AAAGAAcAAAASAPn/AAAGAAcAAAATAPn/AAAGAAcAAAAUAPn/AAAGAAcAAAALAPn/AAAGAAcAAAAVAPn/AAAHAAcAAAAEAPj/AAAAAAYAAAAFAPj/AAAAAAYAAAAGAPj/AAAAAAYAAAAHAPj/AAAAAAYAAAAIAPj/AAAAAAYAAAAJAPj/AAAAAAYAAAAMAPj/AAAAAAYAAAANAPj/AAAAAAYAAAAOAPj/AAAAAAYAAAAPAPj/AAAAAAYAAAAQAPj/AAAAAAYAAAARAPj/AAAAAAYAAAASAPj/AAAAAAYAAAATAPj/AAAAAAYAAAAUAPj/AAAAAAYAAAAZAPT/AAAAAAYAAAAZAPP/AAAAAAYAAAAZAPL/AAAAAAYAAAAZAPH/AAAAAAYAAAAZAPD/AAAAAAYAAAALAO//AAAAAAYAAAAMAO7/AAAHAAAAAAAMAO//AAAHAAEAAAALAO7/AAAAAAAAAAAMAPH/AAAHAAcAAAAMAPD/AAAHAAEAAAATAPD/AAAAAAYAAAATAPH/AAAAAAcAAAAUAPH/AAAHAAcAAAATAO//AAAAAAAAAAAZAO//AAAAAAAAAAAaAPb/AAAHAAcAAAAaAO//AAAHAAAAAAAaAPD/AAAHAAEAAAAaAPH/AAAHAAEAAAAaAPL/AAAHAAEAAAAaAPP/AAAHAAEAAAAaAPT/AAAHAAEAAAAaAPX/AAAHAAEAAAAZAOr/AAAGAAcAAAAaAOr/AAAHAAcAAAAYAOr/AAAGAAcAAAAXAOr/AAAGAAcAAAAWAOr/AAAGAAcAAAAVAOr/AAAGAAcAAAAUAOr/AAAGAAcAAAATAOr/AAAGAAcAAAASAOr/AAAGAAcAAAARAOr/AAAGAAcAAAAQAOr/AAAGAAcAAAAPAOr/AAAGAAcAAAAOAOr/AAAGAAcAAAANAOr/AAAGAAcAAAAMAOr/AAAGAAcAAAALAOr/AAAGAAcAAAAKAOr/AAAGAAcAAAAJAOr/AAAGAAcAAAAIAOr/AAAGAAcAAAAHAOr/AAAGAAcAAAAGAOr/AAAGAAcAAAAFAOr/AAAGAAcAAAAEAOr/AAAGAAcAAAADAOr/AAAGAAcAAAACAOn/AAAAAAYAAAACAOr/AAAAAAcAAAACAOj/AAAAAAYAAAAaAOj/AAAHAAEAAAAaAOn/AAAHAAEAAAADAOn/AAAAAAYAAAAEAOn/AAAAAAYAAAAFAOn/AAAAAAYAAAAGAOn/AAAAAAYAAAAHAOn/AAAAAAYAAAAIAOn/AAAAAAYAAAAJAOn/AAAAAAYAAAAKAOn/AAAAAAYAAAALAOn/AAAAAAYAAAAMAOn/AAAAAAYAAAANAOn/AAAAAAYAAAAOAOn/AAAAAAYAAAAPAOn/AAAAAAYAAAAQAOn/AAAAAAYAAAARAOn/AAAAAAYAAAASAOn/AAAAAAYAAAATAOn/AAAAAAYAAAAUAOn/AAAAAAYAAAAVAOn/AAAAAAYAAAAWAOn/AAAAAAYAAAAXAOn/AAAAAAYAAAAYAOn/AAAAAAYAAAAZAOn/AAAAAAYAAAADAOj/AAAHAAEAAAAEAOj/AAAHAAEAAAAFAOj/AAAHAAEAAAAGAOj/AAAHAAEAAAAHAOj/AAAHAAEAAAAIAOj/AAAHAAEAAAAJAOj/AAAHAAEAAAAKAOj/AAAHAAEAAAALAOj/AAAHAAEAAAAMAOj/AAAHAAEAAAANAOj/AAAHAAEAAAAOAOj/AAAHAAEAAAAPAOj/AAAHAAEAAAAQAOj/AAAHAAEAAAARAOj/AAAHAAEAAAASAOj/AAAHAAEAAAATAOj/AAAHAAEAAAAUAOj/AAAHAAEAAAAVAOj/AAAHAAEAAAAWAOj/AAAHAAEAAAAXAOj/AAAHAAEAAAAYAOj/AAAHAAEAAAAZAOj/AAAHAAEAAAA=")
 tile_set = SubResource("TileSet_vgud1")
 
-[node name="PlatformerCharacter" parent="." unique_id=661001980 instance=ExtResource("2_oksox")]
+[node name="PlatformerCharacter" parent="." unique_id=661001980 groups=["players"] instance=ExtResource("2_oksox")]
 position = Vector2(91, -219)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=682802507]
@@ -66,13 +86,15 @@ position = Vector2(-144, -272)
 texture = ExtResource("1_x68yp")
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
-curve = SubResource("Curve2D_oksox")
+curve = SubResource("Curve2D_powch")
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
 texture = ExtResource("1_x68yp")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
 position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_s1ctw")
+shape = SubResource("RectangleShape2D_0psug")
+
+[connection signal="connectivity_changed" from="NetworkGraph" to="." method="_on_network_graph_connectivity_changed"]
 
 [editable path="MovingPlatform"]

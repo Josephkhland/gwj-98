@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://n84pl5rty4gf" path="res://components/modules/platformer_character/platformer_character.gd" id="1"]
 [ext_resource type="Script" uid="uid://c4g4c4035lles" path="res://components/modules/platformer_character/frog_visual.gd" id="2"]
+[ext_resource type="Resource" uid="uid://b2w5yyd5q4nst" path="res://resources/player_settings.tres" id="2_aoi2g"]
 [ext_resource type="Script" uid="uid://btpnr1nsugvs7" path="res://components/modules/platformer_character/hitbox.gd" id="3"]
 [ext_resource type="Script" uid="uid://bpinlefymim0p" path="res://components/modules/platformer_character/hurtbox.gd" id="4"]
 [ext_resource type="Script" uid="uid://g1myc3fgyddb" path="res://components/modules/platformer_character/jump_preview.gd" id="5"]
-[ext_resource type="Script" uid="uid://cyo1tffjkxm82" path="res://components/modules/platformer_character/character_settings.gd" id="6"]
 [ext_resource type="Script" uid="uid://38mxekhf0vlf" path="res://components/modules/platformer_character/state_machine.gd" id="7"]
 [ext_resource type="Script" uid="uid://b44mnjn7wa1us" path="res://components/modules/platformer_character/states/idle.gd" id="8"]
 [ext_resource type="Script" uid="uid://bc5wjvvgm8u20" path="res://components/modules/platformer_character/states/walking.gd" id="9"]
@@ -19,18 +19,9 @@
 [ext_resource type="Script" uid="uid://ik5y3slnyms" path="res://components/modules/platformer_character/surface_anchor.gd" id="16_omva8"]
 [ext_resource type="Script" uid="uid://h5704jt43g4f" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
 [ext_resource type="Script" uid="uid://dwmdsgu6riue5" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
-
-[ext_resource type="Script" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
-[ext_resource type="Script" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
-[ext_resource type="Script" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
-
-[sub_resource type="Resource" id="Settings"]
-script = ExtResource("6")
-wall_hold_duration = 1.5
-reattach_delay = 0.0
-aim_speed_degrees = 150.0
-crush_overlap_tolerance = 0.256
-die_when_squeezed = false
+[ext_resource type="Script" uid="uid://71ipttwojfw8" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
+[ext_resource type="Script" uid="uid://dx1oi3rjum21h" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
+[ext_resource type="Script" uid="uid://xxpr0ek5byss" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
@@ -46,7 +37,7 @@ process_physics_priority = 100
 collision_layer = 2
 floor_snap_length = 4.0
 script = ExtResource("1")
-settings = SubResource("Settings")
+settings = ExtResource("2_aoi2g")
 move_left_action = &"move_left"
 move_right_action = &"move_right"
 charge_action = &"jump"

@@ -180,15 +180,11 @@ extends Resource
 ## Fraction of horizontal velocity kept once on entering airborne spit charging. 0 removes horizontal travel;
 ## 1 keeps it. Not multiplied again each tick. Does not alter the recoil applied when the shot fires.
 @export_range(0.0, 1.0) var spit_charge_air_speed_multiplier: float = 0.6
-## Fraction of current downward velocity kept once on entering airborne spit charging. Only slows falling, not
-## upward travel. 0 removes current falling speed and 1 keeps it; gravity then resumes at its charging
-## multiplier.
-@export_range(0.0, 1.0) var spit_charge_fall_speed_multiplier: float = 0.35
-## Fraction of normal gravity applied while charging spit in the air. Lower values provide more hang time; 0
-## suspends downward acceleration during the hold. Normal ground gravity is unchanged.
-@export_range(0.0, 1.0) var spit_charge_gravity_multiplier: float = 0.25
-## Maximum downward speed in pixels/second during airborne spit charging. Separate from terminal_speed and the
-## one-time fall slowdown. Upward velocity is not capped by this value.
+## Fraction of normal downward speed used each tick while charging spit airborne. 0 suspends falling throughout the hold; 1 keeps normal falling. Normal gravity advances the underlying speed, then this multiplier scales the resulting movement. On release, the current movement speed is retained.
+@export_range(0.0, 1.0) var spit_charge_downward_speed_multiplier: float = 0.1
+## Fraction of normal upward speed used each tick while charging spit airborne. 0 stops ascent; 1 keeps normal ascent. Normal gravity still advances the underlying jump, so slowing ascent does not delay its apex. On release, the current movement speed is retained.
+@export_range(0.0, 1.0) var spit_charge_upward_speed_multiplier: float = 1.0
+## Maximum resulting downward speed in pixels/second during airborne spit charging, after the downward multiplier. Upward velocity is not capped by this value.
 @export_range(1.0, 4000.0) var spit_charge_fall_speed_limit: float = 250.0
 @export_group("Spit recharge by state")
 ## Allow ammo cooldown progress during IDLE (standing or landing slide). False pauses accumulated progress

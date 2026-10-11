@@ -12,6 +12,8 @@ func physics_update(delta: float) -> void:
 	if character._attached:
 		character.velocity = Vector2.ZERO
 	else:
+		if character.is_on_floor() and character._landing_sliding:
+			character._apply_ground_horizontal(delta, 0.0)
 		character._apply_gravity(delta)
 	var active_end: float = character.settings.attack_windup + character.settings.attack_active_time
 	if machine.elapsed >= character.settings.attack_windup and machine.elapsed < active_end:

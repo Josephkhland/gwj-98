@@ -137,6 +137,10 @@ func recover_held(delta: float) -> void:
 			# Resolve the push while retaining the original support and jump frame.
 			# Never capture an incoming side platform as a charging surface.
 			return
+		if carrier_normal.dot(Vector2.UP) < cos(character.floor_max_angle) and not character.surface_has_sticky_layer(carrier):
+			character._detach()
+			character._change_state(character.State.IN_AIR)
+			return
 		character.surface_anchor.capture(carrier, carrier_normal)
 		character._surface_normal = carrier_normal
 		character._attached = true

@@ -58,6 +58,9 @@ func _ready() -> void:
 	surface_anchor.initialize(self)
 	state_machine.initialize(self, State.IN_AIR)
 	health_changed.emit(health, settings.maximum_health)
+	if player_controlled:
+		# To let interractibles detect it among other potential uses
+		add_to_group("players") 
 
 ## Call each physics tick with player_controlled=false to drive AI or custom input.
 func set_controls(move_axis: float, charge_held: bool, attack_held: bool) -> void:

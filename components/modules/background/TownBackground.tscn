@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bmblyhx6bgdgu"]
+
+[ext_resource type="Script" uid="uid://ckyv0aqosrru1" path="res://components/modules/background/town_background.gd" id="1_3mo28"]
+[ext_resource type="Texture2D" uid="uid://bxu1e8xgdjvxn" path="res://assets/shuzuu/level_concept_art.png" id="1_8xf3k"]
+
+[node name="TownBackground" type="Node2D" unique_id=1201888540]
+script = ExtResource("1_3mo28")
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=794509319]
+scroll_scale = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1400904076]
+position = Vector2(576.00006, 324)
+scale = Vector2(1.1786448, 1.3319756)
+texture = ExtResource("1_8xf3k")

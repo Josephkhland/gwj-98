@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DayCycleSchedule" format=3 uid="uid://cctpv8asj73ii"]
+
+[ext_resource type="Script" uid="uid://d300b16yeddsq" path="res://components/modules/day_cycle/day_cycle_notification.gd" id="1_dem5u"]
+[ext_resource type="Script" uid="uid://c3ndjtbdkat6f" path="res://components/modules/day_cycle/day_cycle_schedule.gd" id="2_g1sds"]
+
+[sub_resource type="Resource" id="Resource_3b0ai"]
+script = ExtResource("1_dem5u")
+keyword = &"sunrise"
+hour = 8
+minute = 1
+metadata/_custom_type_script = "uid://d300b16yeddsq"
+
+[resource]
+script = ExtResource("2_g1sds")
+notifications = Array[ExtResource("1_dem5u")]([SubResource("Resource_3b0ai")])
+metadata/_custom_type_script = "uid://c3ndjtbdkat6f"

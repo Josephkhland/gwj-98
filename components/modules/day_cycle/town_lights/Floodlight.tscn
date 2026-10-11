@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://c5eqkf1lr28xa"]
+
+[ext_resource type="Script" uid="uid://dxi20kudhvt75" path="res://components/modules/day_cycle/town_lights/town_light_2d.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cr6fj6drvq2p7" path="res://assets/josephkhland/town_lights_prototype/floodlight.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://c4834s5ygoawb" path="res://assets/josephkhland/town_lights_prototype/floodlight_bulb.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://bp76o0mepbv6p" path="res://assets/josephkhland/town_lights_prototype/light_beam.png" id="4"]
+
+[node name="Floodlight" type="Node2D" unique_id=1307856037]
+script = ExtResource("1")
+energy = 1.4
+warmth = 1.0
+light_radius = 350.0
+beam_angle_degrees = 150.0
+fixture = 2
+fixture_texture = ExtResource("2")
+bulb_texture = ExtResource("3")
+
+[node name="FixtureArt" type="Node2D" parent="." unique_id=235109107]
+position = Vector2(-20, -28)
+
+[node name="Body" type="Sprite2D" parent="FixtureArt" unique_id=1680208813]
+texture = ExtResource("2")
+centered = false
+
+[node name="Bulb" type="Sprite2D" parent="FixtureArt" unique_id=219867077]
+texture = ExtResource("3")
+centered = false
+
+[node name="Light" type="PointLight2D" parent="." unique_id=629482273]
+enabled = false
+color = Color(0.86, 0.92, 1, 1)
+energy = 1.4
+texture = ExtResource("4")
+offset = Vector2(0, 175)
+texture_scale = 1.3671875

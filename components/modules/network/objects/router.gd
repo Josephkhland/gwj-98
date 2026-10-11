@@ -18,6 +18,8 @@ signal repair_finished(success: bool)
 @export_range(1.0, 1000.0) var interaction_radius: float = 80.0
 @export var player_group: StringName = &"players"
 @export var interact_action: StringName = &"interact"
+## Optional interaction hint. Defaults to a direct child named HintLabel.
+@export_node_path("CanvasItem") var hint_label: NodePath = ^"HintLabel"
 ## Nodes may be Sprite2D, AnimatedSprite2D, or any other CanvasItem.
 @export_node_path("CanvasItem") var ok_visual: NodePath:
 	set(value):
@@ -35,6 +37,10 @@ var _player: Node2D
 func _ready() -> void:
 	_refresh_visuals()
 	set_process_unhandled_input(not Engine.is_editor_hint())
+	set_process(not Engine.is_editor_hint())
+
+func _process(_delta: float) -> void:
+	_refresh_hint()
 
 func is_available() -> bool:
 	return state == State.OK
@@ -106,7 +112,22 @@ func _refresh_visuals() -> void:
 			var visual := get_node_or_null(path) as CanvasItem
 			if visual != null:
 				visual.visible = (path == ok_visual and state == State.OK) or (path == broken_visual and state == State.BROKEN)
+	_refresh_hint()
 	queue_redraw()
+
+func _refresh_hint() -> void:
+	if not is_inside_tree() or hint_label.is_empty():
+		return
+	var hint := get_node_or_null(hint_label) as CanvasItem
+	if hint == null:
+		return
+	var show_hint := false
+	if not Engine.is_editor_hint() and state == State.BROKEN:
+		for candidate in get_tree().get_nodes_in_group(player_group):
+			if candidate is Node2D and global_position.distance_squared_to(candidate.global_position) <= interaction_radius * interaction_radius:
+				show_hint = true
+				break
+	hint.visible = show_hint
 
 func _draw() -> void:
 	if ok_visual.is_empty() and broken_visual.is_empty():

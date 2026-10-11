@@ -140,13 +140,14 @@ func _physics_process(delta: float) -> void:
 		_place()
 
 func _begin_wrap() -> void:
-	_wrapping = true
-	_hidden_time = disappear_duration
-	_hidden_ticks = 0
-	body.hide()
-	# Removing the carrier from physics prevents sweeping across the level.
-	PhysicsServer2D.body_set_space(body.get_rid(), RID())
-	disappeared.emit()
+	if disappear_duration > 0.0:
+		_wrapping = true
+		_hidden_time = disappear_duration
+		_hidden_ticks = 0
+		body.hide()
+		# Removing the carrier from physics prevents sweeping across the level.
+		PhysicsServer2D.body_set_space(body.get_rid(), RID())
+		disappeared.emit()
 	_place()
 
 func reverse_direction() -> void:

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://bgxcjqblp8x5r" path="res://components/modules/day_cycle/day_cycle_manager.gd" id="1"]
+
+[node name="DayCycleManager" type="Node"]
+script = ExtResource("1")

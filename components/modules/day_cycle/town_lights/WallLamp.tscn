@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dxi20kudhvt75" path="res://components/modules/day_cycle/town_lights/town_light_2d.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://ltht66uwpxfg" path="res://assets/josephkhland/town_lights_prototype/wall_lamp.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dr5rs5irpt6cn" path="res://assets/josephkhland/town_lights_prototype/wall_lamp_bulb.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://c8kt33tdnvncf" path="res://assets/josephkhland/town_lights_prototype/light_radial.png" id="4"]
+
+[node name="WallLamp" type="Node2D"]
+script = ExtResource("1")
+fixture_texture = ExtResource("2")
+bulb_texture = ExtResource("3")
+fixture = 1
+light_radius = 130.0
+warmth = 0.9
+energy = 1
+
+[node name="FixtureArt" type="Node2D" parent="."]
+position = Vector2(-20, -28)
+
+[node name="Body" type="Sprite2D" parent="FixtureArt"]
+texture = ExtResource("2")
+centered = false
+
+[node name="Bulb" type="Sprite2D" parent="FixtureArt"]
+texture = ExtResource("3")
+centered = false
+
+[node name="Light" type="PointLight2D" parent="."]
+enabled = false
+color = Color(1, 0.64, 0.4, 1)
+energy = 1.0
+texture = ExtResource("4")
+texture_scale = 1.015625

@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dawp1u828hte7"]
+
+[ext_resource type="Script" uid="uid://dxi20kudhvt75" path="res://components/modules/day_cycle/town_lights/town_light_2d.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bs4mj57uspycf" path="res://assets/josephkhland/town_lights_prototype/lamp_post.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://b4vcfu385f6vm" path="res://assets/josephkhland/town_lights_prototype/lamp_post_bulb.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://c8kt33tdnvncf" path="res://assets/josephkhland/town_lights_prototype/light_radial.png" id="4"]
+
+[node name="LampPost" type="Node2D" unique_id=1864723137]
+script = ExtResource("1")
+energy = 1.15
+fixture_texture = ExtResource("2")
+bulb_texture = ExtResource("3")
+
+[node name="FixtureArt" type="Node2D" parent="." unique_id=587249953]
+position = Vector2(-20, -28)
+
+[node name="Body" type="Sprite2D" parent="FixtureArt" unique_id=566561743]
+texture = ExtResource("2")
+centered = false
+
+[node name="Bulb" type="Sprite2D" parent="FixtureArt" unique_id=565146889]
+texture = ExtResource("3")
+centered = false
+
+[node name="Light" type="PointLight2D" parent="." unique_id=1154324007]
+enabled = false
+color = Color(1, 0.685, 0.475, 1)
+energy = 1.15
+texture = ExtResource("4")
+texture_scale = 1.40625

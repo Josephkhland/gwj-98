@@ -7,7 +7,9 @@ const COLORS := {
 	&"idle": Color("#7acb70"), &"walking": Color("#8ddd80"),
 	&"charging": Color("#f4d56b"), &"jumping": Color("#55ddab"),
 	&"in_air": Color("#71bceb"), &"on_wall": Color("#c59aef"),
-	&"attacking": Color("#ffad65"), &"getting_hit": Color("#f27080"), &"squeezed": Color("#e5aa91")
+	&"attacking": Color("#ffad65"), &"getting_hit": Color("#f27080"), &"squeezed": Color("#e5aa91"),
+	&"slamming": Color("#ee9ad3"), &"rolling_back": Color("#e8a06e"),
+	&"charging_spit": Color("#a0e6cc")
 }
 func play(next_animation: StringName) -> void:
 	if animation != next_animation:
@@ -29,6 +31,9 @@ func _draw() -> void:
 		&"on_wall": squash = Vector2(1.12, 0.85)
 		&"attacking": squash = Vector2(1.15, 0.9)
 		&"getting_hit": squash = Vector2(0.9, 1.05)
+		&"slamming": squash = Vector2(0.72, 1.28)
+		&"rolling_back": squash = Vector2(1.12, 0.85)
+		&"charging_spit": squash = Vector2(1.08 + sin(_time * 24.0) * 0.05, 0.9)
 	draw_set_transform(Vector2.ZERO, 0.0, squash)
 	draw_circle(Vector2.ZERO, 14.0, COLORS.get(animation, Color.WHITE))
 	draw_circle(Vector2(-6, -10), 6.0, Color("#b2eb91"))
@@ -38,3 +43,5 @@ func _draw() -> void:
 	draw_line(Vector2(-11, 13), Vector2(11, 13), Color("#244f37"), 4.0)
 	if animation == &"attacking":
 		draw_line(Vector2(facing * 10, 0), Vector2(facing * 34, 0), Color("#ffddaa"), 4.0)
+	if animation == &"charging_spit":
+		draw_circle(Vector2(facing * 11, -1), 5.0 + sin(_time * 12.0), Color("#d6f4b5"))

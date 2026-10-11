@@ -19,12 +19,18 @@
 [ext_resource type="Script" uid="uid://ik5y3slnyms" path="res://components/modules/platformer_character/surface_anchor.gd" id="16_omva8"]
 [ext_resource type="Script" uid="uid://h5704jt43g4f" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
 [ext_resource type="Script" uid="uid://dwmdsgu6riue5" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
+[ext_resource type="Script" uid="uid://71ipttwojfw8" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
+[ext_resource type="Script" uid="uid://xxpr0ek5byss" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
+[ext_resource type="Script" uid="uid://dx1oi3rjum21h" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
 
 [sub_resource type="RectangleShape2D" id="Attack"]
 size = Vector2(30, 24)
+
+[sub_resource type="CircleShape2D" id="Slam"]
+radius = 40.0
 
 [node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980]
 process_physics_priority = 100
@@ -36,6 +42,10 @@ move_left_action = &"move_left"
 move_right_action = &"move_right"
 charge_action = &"jump"
 attack_action = &"attack"
+heighten_action = &"heighten"
+spit_action = &"spit"
+slam_action = &"slam"
+
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1778574518]
 shape = SubResource("Body")
@@ -75,11 +85,15 @@ script = ExtResource("7")
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1421722652]
 script = ExtResource("8")
+allows_spit = true
+
 
 [node name="Walking" type="Node" parent="StateMachine" unique_id=677046392]
 script = ExtResource("9")
 state_id = 1
 animation = &"walking"
+allows_spit = true
+
 
 [node name="Charging" type="Node" parent="StateMachine" unique_id=1257628739]
 script = ExtResource("10")
@@ -92,11 +106,17 @@ allows_attack = false
 script = ExtResource("11")
 state_id = 3
 animation = &"jumping"
+allows_spit = true
+allows_slam = true
+
 
 [node name="InAir" type="Node" parent="StateMachine" unique_id=1800566894]
 script = ExtResource("12")
 state_id = 4
 animation = &"in_air"
+allows_spit = true
+allows_slam = true
+
 
 [node name="OnWall" type="Node" parent="StateMachine" unique_id=1341950986]
 script = ExtResource("13")
@@ -132,3 +152,35 @@ script = ExtResource("17_jxjjd")
 
 [node name="SplatterAudio" type="AudioStreamPlayer2D" parent="." unique_id=343580456]
 script = ExtResource("18_aoi2g")
+
+[node name="SlamHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlamHitbox"]
+shape = SubResource("Slam")
+
+[node name="Slamming" type="Node" parent="StateMachine"]
+script = ExtResource("migration_20")
+state_id = 9
+animation = &"slamming"
+allows_charge = false
+allows_attack = false
+
+[node name="RollingBack" type="Node" parent="StateMachine"]
+script = ExtResource("migration_21")
+state_id = 10
+animation = &"rolling_back"
+allows_charge = false
+allows_attack = false
+
+[node name="ChargingSpit" type="Node" parent="StateMachine"]
+script = ExtResource("migration_22")
+state_id = 11
+animation = &"charging_spit"
+allows_charge = false
+allows_attack = false
+allows_spit = true
+allows_slam = true

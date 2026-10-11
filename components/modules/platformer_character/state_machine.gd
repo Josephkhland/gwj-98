@@ -1,5 +1,6 @@
 extends Node
 ## Character calls initialize/update; child nodes never process independently.
+const CharacterState = preload("res://components/modules/platformer_character/states/character_state.gd")
 var current: CharacterState
 var elapsed: float = 0.0
 var character
@@ -24,15 +25,18 @@ func transition(next: int, restart: bool = false) -> void:
 	var previous: int = current.state_id
 	current.exit()
 	current = _states[next]
+	if not current.allows_spit:
+		character._cancel_spit_charge()
 	elapsed = 0.0
 	character.visual.play(current.animation)
 	current.enter()
 	if previous != next:
 		character.state_changed.emit(previous, next)
 
-func physics_update(delta: float, charge_started: bool, attack_started: bool) -> void:
+func physics_update(delta: float, charge_started: bool, attack_started: bool,
+		spit_started: bool = false, slam_started: bool = false) -> void:
 	elapsed += delta
-	current.handle_actions(charge_started, attack_started)
+	current.handle_actions(charge_started, attack_started, spit_started, slam_started)
 	# Input can transition; update the new active state in this same tick.
 	current.physics_update(delta)
 

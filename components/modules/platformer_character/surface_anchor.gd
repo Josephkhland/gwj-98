@@ -63,6 +63,9 @@ func follow() -> void:
 		_release()
 		return
 	var normal := surface.global_transform.basis_xform(_local_normal).normalized()
+	if character._attached and surface is CollisionObject2D and normal.dot(Vector2.UP) < cos(character.floor_max_angle) and not character.physics_safety._pressure_active and not character.surface_has_sticky_layer(surface):
+		_release()
+		return
 	var target := surface.to_global(_local_position)
 	var motion := target - character.global_position
 	# Ignore only our carrier during the sweep; other solids still block us.

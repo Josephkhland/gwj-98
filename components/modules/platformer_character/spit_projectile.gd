@@ -14,17 +14,19 @@ var _first_sweep: bool = true
 var _spawn_origin := Vector2.ZERO
 var _cast: ShapeCast2D
 
-func configure(actor: CharacterBody2D, settings: Resource, direction: Vector2, charge_ratio: float) -> void:
+func configure(actor: CharacterBody2D, settings: Resource, direction: Vector2, charge_ratio: float, power_ratio: float = -1.0) -> void:
+	if power_ratio < 0.0:
+		power_ratio = actor.get_spit_power_ratio(charge_ratio) if actor.has_method("get_spit_power_ratio") else clampf(charge_ratio, 0.0, 1.0)
 	_source = weakref(actor)
 	_spawn_origin = actor.global_position
 	_exclude = [actor.get_rid(), actor.get_node("Hurtbox").get_rid()]
 	_collision_mask = settings.spit_collision_mask
 	_gravity = settings.spit_gravity
-	radius = settings.spit_visual_radius * lerpf(1.0, settings.spit_charged_size_multiplier, charge_ratio)
+	radius = settings.spit_visual_radius * lerpf(1.0, settings.spit_charged_size_multiplier, power_ratio)
 	var angle: float = deg_to_rad(settings.spit_launch_angle_degrees)
 	var launch_direction := Vector2(direction.x * cos(angle), -sin(angle))
-	velocity = launch_direction * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, charge_ratio)
-	damage = roundi(settings.spit_damage * lerpf(1.0, settings.spit_charged_damage_multiplier, charge_ratio))
+	velocity = launch_direction * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, power_ratio)
+	damage = roundi(settings.spit_damage * lerpf(1.0, settings.spit_charged_damage_multiplier, power_ratio))
 	hit_impulse = direction * settings.spit_hit_knockback
 
 func _ready() -> void:

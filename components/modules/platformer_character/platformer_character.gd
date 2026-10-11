@@ -281,15 +281,26 @@ func get_spit_charge_cost(charge_ratio: float = -1.0) -> int:
 	var maximum := _maximum_spit_cost()
 	return mini(spit_charges, mini(maximum, 1 + floori(ratio * maximum)))
 
+## Shared shot/preview power, based on actual spent ammo when tier mode is enabled.
+func get_spit_power_ratio(charge_ratio: float = -1.0) -> float:
+	var ratio := get_spit_charge_ratio() if charge_ratio < 0.0 else clampf(charge_ratio, 0.0, 1.0)
+	if not settings.spit_power_uses_ammo_tiers:
+		return minf(ratio, float(spit_charges) / float(_maximum_spit_cost()))
+	var maximum := _maximum_spit_cost()
+	if maximum <= 1:
+		return 0.0
+	return clampf(float(get_spit_charge_cost(ratio) - 1) / float(maximum - 1), 0.0, 1.0)
+
 func _fire_spit(charge_ratio: float) -> void:
 	if not _can_spit() or spit_charges <= 0:
 		return
 	charge_ratio = clampf(charge_ratio, 0.0, minf(1.0, float(spit_charges) / float(_maximum_spit_cost())))
 	var cost := get_spit_charge_cost(charge_ratio)
+	var power_ratio := get_spit_power_ratio(charge_ratio)
 	var grounded := is_grounded()
 	var direction := Vector2(facing, 0.0)
 	var projectile := SpitProjectile.new()
-	projectile.configure(self, settings, direction, charge_ratio)
+	projectile.configure(self, settings, direction, charge_ratio, power_ratio)
 	projectile.velocity = get_spit_launch_velocity(charge_ratio)
 	projectile.charges_spent = cost
 	projectile.top_level = true
@@ -299,7 +310,7 @@ func _fire_spit(charge_ratio: float) -> void:
 	_spit_recharge_progress = 0.0
 	_spit_recharge_ready = grounded
 	if not grounded:
-		var recoil := settings.spit_recoil * lerpf(1.0, settings.spit_charged_recoil_multiplier, charge_ratio)
+		var recoil := settings.spit_recoil * lerpf(1.0, settings.spit_charged_recoil_multiplier, power_ratio)
 		if settings.spit_recoil_sets_backward_speed:
 			velocity.x = -facing * recoil
 		else:
@@ -328,7 +339,7 @@ func get_launch_velocity() -> Vector2:
 func get_spit_launch_velocity(charge_ratio: float = -1.0) -> Vector2:
 	var ratio := get_spit_charge_ratio() if charge_ratio < 0.0 else charge_ratio
 	var angle := _spit_aim_angle if _spit_charging else deg_to_rad(settings.spit_launch_angle_degrees)
-	return Vector2(facing * cos(angle), -sin(angle)) * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, clampf(ratio, 0.0, 1.0))
+	return Vector2(facing * cos(angle), -sin(angle)) * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, get_spit_power_ratio(ratio))
 
 func _launch() -> void:
 	if physics_safety.is_trapped():

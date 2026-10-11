@@ -37,7 +37,7 @@ func physics_update(delta: float) -> void:
 
 func _update_preview() -> void:
 	var origin: Vector2 = character.global_position + Vector2(character.settings.spit_spawn_offset.x * character.facing, character.settings.spit_spawn_offset.y)
-	var radius: float = character.settings.spit_visual_radius * lerpf(1.0, character.settings.spit_charged_size_multiplier, character.get_spit_charge_ratio())
+	var radius: float = character.settings.spit_visual_radius * lerpf(1.0, character.settings.spit_charged_size_multiplier, character.get_spit_power_ratio())
 	character.preview.update_spit_arc(origin, character.get_spit_launch_velocity(), radius)
 
 func after_move(incoming: Vector2) -> void:

@@ -57,6 +57,7 @@ size = Vector2(24, 144)
 size = Vector2(446.25, 72.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbtho"]
+resource_local_to_scene = true
 size = Vector2(229.0625, 53.125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_owtu7"]
@@ -99,7 +100,7 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_lwxes"]
+[sub_resource type="Curve2D" id="Curve2D_drths"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
@@ -246,6 +247,7 @@ connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Wall" type="StaticBody2D" parent="." unique_id=44437407]
 position = Vector2(-1904, 765)
+collision_layer = 9
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Wall" unique_id=1850583976]
 position = Vector2(920.5625, -937.125)
@@ -486,7 +488,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_lwxes")
+curve = SubResource("Curve2D_drths")
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
 visible = false

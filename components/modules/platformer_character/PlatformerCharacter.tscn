@@ -20,8 +20,8 @@
 [ext_resource type="Script" uid="uid://h5704jt43g4f" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
 [ext_resource type="Script" uid="uid://dwmdsgu6riue5" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
 [ext_resource type="Script" uid="uid://71ipttwojfw8" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
-[ext_resource type="Script" uid="uid://xxpr0ek5byss" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
-[ext_resource type="Script" uid="uid://dx1oi3rjum21h" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
+[ext_resource type="Script" uid="uid://dx1oi3rjum21h" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
+[ext_resource type="Script" uid="uid://xxpr0ek5byss" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0

@@ -1,0 +1,36 @@
+class_name GameplayUI
+extends CanvasLayer
+## HUD built from optional HudWidgets. The game decides which widgets show; widgets that
+## aren't in the scene are simply skipped by whoever asks for them.
+var _widgets: Dictionary[StringName, HudWidget] = {}
+
+func _ready() -> void:
+	_collect(self)
+
+func get_widget(widget_id: StringName) -> HudWidget:
+	return _widgets.get(widget_id)
+
+func set_widget_visible(widget_id: StringName, shown: bool) -> void:
+	var widget := get_widget(widget_id)
+	if widget != null:
+		widget.visible = shown
+
+## Shows the listed widgets and hides every other one.
+func show_only(widget_ids: Array) -> void:
+	for widget_id in _widgets:
+		_widgets[widget_id].visible = widget_ids.has(widget_id)
+
+func apply_snapshot(snapshot: Dictionary) -> void:
+	for widget in _widgets.values():
+		widget.apply_snapshot(snapshot)
+
+func reset() -> void:
+	for widget in _widgets.values():
+		widget.reset()
+
+func _collect(node: Node) -> void:
+	for child in node.get_children():
+		var widget := child as HudWidget
+		if widget != null and not widget.widget_id.is_empty():
+			_widgets[widget.widget_id] = widget
+		_collect(child)

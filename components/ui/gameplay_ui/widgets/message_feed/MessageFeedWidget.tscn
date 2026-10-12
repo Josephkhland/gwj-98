@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/gameplay_ui/widgets/message_feed/message_feed_widget.gd" id="1"]
+
+[node name="MessageFeedWidget" type="VBoxContainer"]
+mouse_filter = 2
+theme_override_constants/separation = 6
+script = ExtResource("1")
+widget_id = &"message_feed"

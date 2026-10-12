@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/modules/game_orchestrator/game_orchestrator.gd" id="1"]
+[ext_resource type="Script" path="res://components/modules/game_orchestrator/progress_manager.gd" id="2"]
+[ext_resource type="Script" path="res://components/modules/game_orchestrator/level_loader.gd" id="3"]
+[ext_resource type="Script" path="res://components/modules/game_orchestrator/pause_controller.gd" id="4"]
+[ext_resource type="PackedScene" path="res://components/ui/gameplay_ui/GameplayUI.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/ui/pause_menu/PauseMenu.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://components/ui/day_summary/DaySummary.tscn" id="7"]
+[ext_resource type="Script" path="res://definitions/level_definition.gd" id="8"]
+[ext_resource type="Resource" path="res://resources/levels/sandbox.tres" id="9"]
+
+[node name="GameOrchestrator" type="Node"]
+process_mode = 3
+script = ExtResource("1")
+
+[node name="ProgressManager" type="Node" parent="."]
+script = ExtResource("2")
+level_sequence = Array[ExtResource("8")]([ExtResource("9")])
+
+[node name="PauseController" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="LevelContainer" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="LevelLoader" type="Node" parent="." node_paths=PackedStringArray("container")]
+script = ExtResource("3")
+container = NodePath("../LevelContainer")
+
+[node name="GameplayUI" parent="." instance=ExtResource("5")]
+
+[node name="MinigameLayer" type="Node" parent="."]
+
+[node name="PauseMenu" parent="." instance=ExtResource("6")]
+
+[node name="DaySummary" parent="." instance=ExtResource("7")]
+
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+layer = 110
+
+[node name="Fade" type="ColorRect" parent="TransitionLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

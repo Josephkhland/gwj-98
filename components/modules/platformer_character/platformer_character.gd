@@ -275,6 +275,23 @@ func _maximum_spit_cost() -> int:
 func get_spit_charge_ratio() -> float:
 	return clampf(_spit_charge_time / maxf(settings.spit_max_charge_time, 0.001), 0.0, 1.0)
 
+func get_spit_maximum_charges() -> int:
+	return settings.spit_maximum_charges
+
+## Ammo as a 0..1 level: whole charges plus recharge progress toward the next one.
+func get_spit_fill_ratio() -> float:
+	var maximum := settings.spit_maximum_charges
+	if maximum <= 0:
+		return 0.0
+	var partial := 0.0
+	if spit_charges < maximum:
+		partial = clampf(_spit_recharge_progress / maxf(settings.spit_recharge_time, 0.001), 0.0, 1.0)
+	return clampf((spit_charges + partial) / float(maximum), 0.0, 1.0)
+
+## Charges a charged spit would spend if released now; 0 while not charging one.
+func get_pending_spit_cost() -> int:
+	return get_spit_charge_cost() if _spit_charging else 0
+
 ## Cost rises at evenly spaced charge tiers; ammo is spent only when firing.
 func get_spit_charge_cost(charge_ratio: float = -1.0) -> int:
 	var ratio := get_spit_charge_ratio() if charge_ratio < 0.0 else clampf(charge_ratio, 0.0, 1.0)

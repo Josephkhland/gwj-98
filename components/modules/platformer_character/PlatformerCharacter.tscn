@@ -46,7 +46,6 @@ heighten_action = &"heighten"
 spit_action = &"spit"
 slam_action = &"slam"
 
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1778574518]
 shape = SubResource("Body")
 
@@ -87,13 +86,11 @@ script = ExtResource("7")
 script = ExtResource("8")
 allows_spit = true
 
-
 [node name="Walking" type="Node" parent="StateMachine" unique_id=677046392]
 script = ExtResource("9")
 state_id = 1
 animation = &"walking"
 allows_spit = true
-
 
 [node name="Charging" type="Node" parent="StateMachine" unique_id=1257628739]
 script = ExtResource("10")
@@ -109,14 +106,12 @@ animation = &"jumping"
 allows_spit = true
 allows_slam = true
 
-
 [node name="InAir" type="Node" parent="StateMachine" unique_id=1800566894]
 script = ExtResource("12")
 state_id = 4
 animation = &"in_air"
 allows_spit = true
 allows_slam = true
-
 
 [node name="OnWall" type="Node" parent="StateMachine" unique_id=1341950986]
 script = ExtResource("13")
@@ -144,6 +139,29 @@ animation = &"squeezed"
 allows_charge = false
 allows_attack = false
 
+[node name="Slamming" type="Node" parent="StateMachine" unique_id=523603040]
+script = ExtResource("migration_20")
+state_id = 9
+animation = &"slamming"
+allows_charge = false
+allows_attack = false
+
+[node name="RollingBack" type="Node" parent="StateMachine" unique_id=1815242387]
+script = ExtResource("migration_21")
+state_id = 10
+animation = &"rolling_back"
+allows_charge = false
+allows_attack = false
+
+[node name="ChargingSpit" type="Node" parent="StateMachine" unique_id=603288619]
+script = ExtResource("migration_22")
+state_id = 11
+animation = &"charging_spit"
+allows_charge = false
+allows_attack = false
+allows_spit = true
+allows_slam = true
+
 [node name="SurfaceAnchor" type="Node" parent="." unique_id=2143830410]
 script = ExtResource("16_omva8")
 
@@ -153,34 +171,11 @@ script = ExtResource("17_jxjjd")
 [node name="SplatterAudio" type="AudioStreamPlayer2D" parent="." unique_id=343580456]
 script = ExtResource("18_aoi2g")
 
-[node name="SlamHitbox" type="Area2D" parent="."]
+[node name="SlamHitbox" type="Area2D" parent="." unique_id=730897105]
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SlamHitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlamHitbox" unique_id=483115487]
 shape = SubResource("Slam")
-
-[node name="Slamming" type="Node" parent="StateMachine"]
-script = ExtResource("migration_20")
-state_id = 9
-animation = &"slamming"
-allows_charge = false
-allows_attack = false
-
-[node name="RollingBack" type="Node" parent="StateMachine"]
-script = ExtResource("migration_21")
-state_id = 10
-animation = &"rolling_back"
-allows_charge = false
-allows_attack = false
-
-[node name="ChargingSpit" type="Node" parent="StateMachine"]
-script = ExtResource("migration_22")
-state_id = 11
-animation = &"charging_spit"
-allows_charge = false
-allows_attack = false
-allows_spit = true
-allows_slam = true

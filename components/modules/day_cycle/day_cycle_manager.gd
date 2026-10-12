@@ -150,7 +150,7 @@ func _advance(amount: float, skipped: bool) -> void:
 				if at < _start_seconds() or at > _end_seconds() or not is_finite(at):
 					continue
 				if (at > previous or (include_start and at == previous)) and at <= target:
-					entries.append({"at": at, "keyword": entry.keyword, "values": entry.values.duplicate(true), "fire": entry.fire_on_skip, "order": entries.size()})
+					entries.append({"at": at, "keyword": entry.keyword, "values": entry.get_payload(), "fire": entry.fire_on_skip, "order": entries.size()})
 		entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 			if a.at == b.at:
 				return a.order < b.order
@@ -189,6 +189,14 @@ func _advance(amount: float, skipped: bool) -> void:
 func get_game_seconds_per_day() -> float:
 	var span := fposmod(_parse_clock(day_end_time) - _start_seconds(), GAME_DAY_SECONDS)
 	return GAME_DAY_SECONDS if span == 0.0 else span
+
+## Clock time (seconds after midnight) at which the measured day begins.
+func get_day_start_seconds() -> float:
+	return _start_seconds()
+
+## Game seconds elapsed since the measured day began; never wraps within a day.
+func get_elapsed_game_seconds() -> float:
+	return _time - _start_seconds()
 
 func _start_seconds() -> float:
 	return _parse_clock(day_start_time)

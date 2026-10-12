@@ -11,6 +11,10 @@ enum TimeBasis { GAME_CLOCK, REAL_SECONDS }
 @export_range(0.0, 86400.0, 0.1, "or_greater") var real_seconds: float = 180.0
 @export var fire_on_skip: bool = false
 
+## Values sent with the notification. Subclasses may override to send typed data.
+func get_payload() -> Dictionary:
+	return values.duplicate(true)
+
 func get_game_seconds(day_duration: float, start_seconds: float = 0.0, span_seconds: float = 86400.0) -> float:
 	if time_basis == TimeBasis.REAL_SECONDS:
 		return start_seconds + real_seconds * span_seconds / day_duration

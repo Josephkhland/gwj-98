@@ -1,100 +1,397 @@
-[gd_scene format=4 uid="uid://b307t6afkxtmk"]
+[gd_scene format=3 uid="uid://b307t6afkxtmk"]
 
 [ext_resource type="PackedScene" path="res://components/modules/network/core/NetworkGraph.tscn" id="1_2h3rs"]
 [ext_resource type="Script" uid="uid://btav4yq20vpvp" path="res://levels/sandbox/sandbox.gd" id="1_powch"]
-[ext_resource type="Texture2D" uid="uid://c53ylmxj44x7d" path="res://icon.svg" id="1_x68yp"]
 [ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_oksox"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_powch"]
-[ext_resource type="PackedScene" path="res://components/modules/network/objects/Router.tscn" id="3_0psug"]
+[ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="3_0psug"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="3_oksox"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/Bed.tscn" id="4_bed"]
+[ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="4_bg"]
+[ext_resource type="Script" uid="uid://cy11kv75wsgq4" path="res://components/modules/messaging/message_board.gd" id="4_board"]
+[ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="4_cams"]
+[ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="4_clock"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/ClockInPoint.tscn" id="4_clockin"]
+[ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="4_follow"]
+[ext_resource type="PackedScene" uid="uid://dawp1u828hte7" path="res://components/modules/day_cycle/town_lights/LampPost.tscn" id="4_lamp"]
+[ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="4_light"]
+[ext_resource type="Resource" path="res://resources/day_cycle_schedules/sandbox_schedule.tres" id="4_sched"]
+[ext_resource type="Script" uid="uid://cbgxf6w5xqlm7" path="res://components/modules/level_geometry/solid_shape_2d.gd" id="4_solid"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s1ctw"]
-texture = ExtResource("1_x68yp")
-0:0/0 = 0
-0:0/0/terrain_set = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -0.5395756, -5.935337, -5.935338, 0.35971832, -8, 8, 8, 8)
-1:0/0 = 0
-1:0/0/terrain_set = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:0/0 = 0
-7:0/0/terrain_set = 0
-7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 1.6187286, -4.856185, 5.75548, 0.5395775, 8, 8, -8, 8)
-7:1/0 = 0
-7:1/0/terrain_set = 0
-7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-0:6/0 = 0
-0:6/0/terrain_set = 0
-0:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-0:7/0 = 0
-0:7/0/terrain_set = 0
-0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 8, 8, -8, -8, -8, -5.036044, 1.4388714, 1.2590103, 6.2950554)
-6:7/0 = 0
-6:7/0/terrain_set = 0
-6:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:7/0 = 0
-7:7/0/terrain_set = 0
-7:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 5.3957615, 1.2590122, -0.5395756, 5.935339, -8, 8)
+[sub_resource type="Gradient" id="Gradient_plain"]
+colors = PackedColorArray(0.62, 0.67, 0.76, 1, 0.3, 0.33, 0.4, 1)
 
-[sub_resource type="TileSet" id="TileSet_vgud1"]
-physics_layer_0/collision_layer = 1
-terrain_set_0/mode = 0
-terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_s1ctw")
+[sub_resource type="GradientTexture2D" id="Texture_deck"]
+gradient = SubResource("Gradient_plain")
+width = 220
+height = 24
+fill_to = Vector2(0, 1)
 
-[sub_resource type="Curve2D" id="Curve2D_powch"]
+[sub_resource type="Curve2D" id="Curve2D_j0yby"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 212, 88, 0, 0, 0, 0, 450, 69, 0, 0, 0, 0, 621, -69)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
 }
-point_count = 4
+point_count = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0psug"]
+[sub_resource type="RectangleShape2D" id="Shape_deck"]
+size = Vector2(220, 24)
+
+[sub_resource type="Curve2D" id="Curve_ferry"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300, 0)
+}
+point_count = 2
+
+[sub_resource type="GradientTexture2D" id="Texture"]
+width = 96
+height = 20
+fill_to = Vector2(0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_saigg"]
 resource_local_to_scene = true
-size = Vector2(129, 128)
+size = Vector2(96, 20)
+
+[sub_resource type="Gradient" id="Gradient_sticky"]
+colors = PackedColorArray(0.55, 0.95, 0.6, 1, 0.18, 0.48, 0.26, 1)
+
+[sub_resource type="GradientTexture2D" id="Texture_sticky_ledge"]
+gradient = SubResource("Gradient_sticky")
+width = 160
+height = 24
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Curve2D" id="Curve2D_ia0wb"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="Shape_sticky_ledge"]
+size = Vector2(160, 24)
+
+[sub_resource type="Curve2D" id="Curve_elevator"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -480)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tx1dy"]
+resource_local_to_scene = true
+size = Vector2(96, 20)
+
+[sub_resource type="Curve2D" id="Curve_shuttle"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300, 0)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="Shape_sticky_shuttle"]
+size = Vector2(160, 24)
 
 [node name="Sandbox" type="Node2D" unique_id=569843922]
 script = ExtResource("1_powch")
+level_title = "Sandbox Day"
+
+[node name="TownBackground" parent="." unique_id=1970908440 instance=ExtResource("4_bg")]
+visible = false
+
+[node name="DayCycleLighting2D" parent="." unique_id=1319160934 instance=ExtResource("4_light")]
+
+[node name="LampPostHome" parent="DayCycleLighting2D" unique_id=762233697 instance=ExtResource("4_lamp")]
+position = Vector2(520, 0)
+
+[node name="LampPostMarket" parent="DayCycleLighting2D" unique_id=764782496 instance=ExtResource("4_lamp")]
+position = Vector2(1650, 0)
+
+[node name="LampPostNewt" parent="DayCycleLighting2D" unique_id=6232932 instance=ExtResource("4_lamp")]
+position = Vector2(2950, 0)
+
+[node name="DayCycleManager" parent="." unique_id=689625507 instance=ExtResource("4_clock")]
+day_start_time = "08:00"
+day_end_time = "12:00"
+real_minutes_per_day = 4.0
+schedule = ExtResource("4_sched")
+repeat_days = false
+
+[node name="MessageBoard" type="Node" parent="." unique_id=1612423781]
+script = ExtResource("4_board")
+
+[node name="Geometry" type="Node2D" parent="." unique_id=626059320]
+
+[node name="Ground" type="StaticBody2D" parent="Geometry" unique_id=1895231250]
+script = ExtResource("4_solid")
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/Ground" unique_id=1790522238]
+polygon = PackedVector2Array(-200, 0, 1100, 0, 1180, -100, 1420, -100, 1500, 0, 3400, 0, 3400, 240, -200, 240)
+
+[node name="LeftWall" type="StaticBody2D" parent="Geometry" unique_id=1686957676]
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/LeftWall" unique_id=230942715]
+polygon = PackedVector2Array(-200, -1100, -120, -1100, -120, 0, -200, 0)
+
+[node name="RightWall" type="StaticBody2D" parent="Geometry" unique_id=323565444]
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/RightWall" unique_id=828747290]
+polygon = PackedVector2Array(3320, -1100, 3400, -1100, 3400, 0, 3320, 0)
+
+[node name="HomeShell" type="StaticBody2D" parent="Geometry" unique_id=126468844]
+script = ExtResource("4_solid")
+fill_color = Color(0.45, 0.3, 0.25, 1)
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/HomeShell" unique_id=594777362]
+polygon = PackedVector2Array(40, -250, 470, -250, 470, -120, 440, -120, 440, -220, 40, -220)
+
+[node name="Tower" type="StaticBody2D" parent="Geometry" unique_id=2088418367]
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/Tower" unique_id=829135280]
+polygon = PackedVector2Array(1950, -620, 2150, -620, 2150, 0, 1950, 0)
+
+[node name="OwlCliff" type="StaticBody2D" parent="Geometry" unique_id=501782448]
+script = ExtResource("4_solid")
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/OwlCliff" unique_id=1708846418]
+polygon = PackedVector2Array(2250, -720, 2560, -720, 2560, -660, 2250, -660)
+
+[node name="Canopy" type="StaticBody2D" parent="Geometry" unique_id=1382060582]
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/Canopy" unique_id=1437199661]
+polygon = PackedVector2Array(2450, -980, 2980, -980, 2980, -940, 2450, -940)
+
+[node name="NewtWall" type="StaticBody2D" parent="Geometry" unique_id=950979729]
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/NewtWall" unique_id=1900660073]
+polygon = PackedVector2Array(2700, -520, 2760, -520, 2760, -140, 2700, -140)
+
+[node name="SolidShape2D" type="StaticBody2D" parent="Geometry" unique_id=592433336]
+position = Vector2(2358, -113)
+script = ExtResource("4_solid")
+metadata/_custom_type_script = "uid://cbgxf6w5xqlm7"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Geometry/SolidShape2D" unique_id=1460587208]
+polygon = PackedVector2Array(-121, -26, -6, -26, -4, -85, 61, -85, 61, -46, 24, -46, 24, 35)
+one_way_collision = true
+
+[node name="SolidShape2D2" type="StaticBody2D" parent="Geometry" unique_id=1806443361]
+position = Vector2(1457, -93)
+collision_layer = 9
+script = ExtResource("4_solid")
+sticky = true
+metadata/_custom_type_script = "uid://cbgxf6w5xqlm7"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Geometry/SolidShape2D2" unique_id=936957123]
+polygon = PackedVector2Array(3, -176, 326, -178, 314, -114, -4, -124)
+one_way_collision = true
+one_way_collision_direction = Vector2(0, -1)
+
+[node name="SolidShape2D3" type="StaticBody2D" parent="Geometry" unique_id=884264104]
+position = Vector2(2373, -99)
+script = ExtResource("4_solid")
+metadata/_custom_type_script = "uid://cbgxf6w5xqlm7"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Geometry/SolidShape2D3" unique_id=242220583]
+polygon = PackedVector2Array(114, -162, 287, -162, 287, -127, 114, -127)
+one_way_collision = true
+one_way_collision_direction = Vector2(0, -1)
+
+[node name="SolidShape2D4" type="StaticBody2D" parent="Geometry" unique_id=131485262]
+position = Vector2(2124, -210)
+script = ExtResource("4_solid")
+metadata/_custom_type_script = "uid://cbgxf6w5xqlm7"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Geometry/SolidShape2D4" unique_id=1793047163]
+polygon = PackedVector2Array(114, -162, 287, -162, 287, -127, 114, -127)
+one_way_collision = true
+one_way_collision_direction = Vector2(0, -1)
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1472075655]
+
+[node name="Step" parent="Platforms" unique_id=416576636 instance=ExtResource("3_oksox")]
+position = Vector2(850, -210)
+running = false
+
+[node name="Deck" parent="Platforms" unique_id=297495341 instance=ExtResource("3_oksox")]
+position = Vector2(1050, -440)
+texture = SubResource("Texture_deck")
+running = false
+
+[node name="MovementPath" parent="Platforms/Deck" index="0"]
+curve = SubResource("Curve2D_j0yby")
+
+[node name="Sprite2D" parent="Platforms/Deck/Body" index="0"]
+texture = SubResource("Texture_deck")
+
+[node name="CollisionShape2D" parent="Platforms/Deck/Body" index="1"]
+shape = SubResource("Shape_deck")
+
+[node name="Ferry" parent="Platforms" unique_id=1838611240 instance=ExtResource("3_oksox")]
+position = Vector2(1200, -330)
+speed = 90.0
+
+[node name="MovementPath" parent="Platforms/Ferry" index="0"]
+curve = SubResource("Curve_ferry")
+
+[node name="Sprite2D" parent="Platforms/Ferry/Body" index="0"]
+texture = SubResource("Texture")
+
+[node name="CollisionShape2D" parent="Platforms/Ferry/Body" index="1"]
+shape = SubResource("RectangleShape2D_saigg")
+
+[node name="StickyLedge" parent="Platforms" unique_id=1552343367 instance=ExtResource("3_oksox")]
+position = Vector2(1620, -500)
+texture = SubResource("Texture_sticky_ledge")
+running = false
+
+[node name="MovementPath" parent="Platforms/StickyLedge" index="0"]
+curve = SubResource("Curve2D_ia0wb")
+
+[node name="Body" parent="Platforms/StickyLedge" index="1"]
+collision_layer = 9
+
+[node name="Sprite2D" parent="Platforms/StickyLedge/Body" index="0"]
+texture = SubResource("Texture_sticky_ledge")
+
+[node name="CollisionShape2D" parent="Platforms/StickyLedge/Body" index="1"]
+shape = SubResource("Shape_sticky_ledge")
+
+[node name="Elevator" parent="Platforms" unique_id=1448736523 instance=ExtResource("3_oksox")]
+position = Vector2(1850, -60)
+speed = 110.0
+
+[node name="MovementPath" parent="Platforms/Elevator" index="0"]
+curve = SubResource("Curve_elevator")
+
+[node name="Sprite2D" parent="Platforms/Elevator/Body" index="0"]
+texture = SubResource("Texture")
+
+[node name="CollisionShape2D" parent="Platforms/Elevator/Body" index="1"]
+shape = SubResource("RectangleShape2D_tx1dy")
+
+[node name="StickyShuttle" parent="Platforms" unique_id=811788918 instance=ExtResource("3_oksox")]
+position = Vector2(2780, -600)
+texture = SubResource("Texture_sticky_ledge")
+speed = 80.0
+
+[node name="MovementPath" parent="Platforms/StickyShuttle" index="0"]
+curve = SubResource("Curve_shuttle")
+
+[node name="Body" parent="Platforms/StickyShuttle" index="1"]
+collision_layer = 9
+
+[node name="Sprite2D" parent="Platforms/StickyShuttle/Body" index="0"]
+texture = SubResource("Texture_sticky_ledge")
+
+[node name="CollisionShape2D" parent="Platforms/StickyShuttle/Body" index="1"]
+shape = SubResource("Shape_sticky_shuttle")
 
 [node name="NetworkGraph" parent="." unique_id=745340320 instance=ExtResource("1_2h3rs")]
 
-[node name="House" parent="NetworkGraph" unique_id=1947974293 instance=ExtResource("2_powch")]
-position = Vector2(708, -325)
-key_identifier = &"HouseA"
+[node name="FrogHouse" parent="NetworkGraph" unique_id=629017972 instance=ExtResource("2_powch")]
+position = Vector2(300, -140)
+key_identifier = &"frog_house"
+display_name = "Frog House"
+connections = Array[NodePath]([NodePath("../R1")])
 
-[node name="House2" parent="NetworkGraph" unique_id=553409503 instance=ExtResource("2_powch")]
-position = Vector2(-274, -24)
-key_identifier = &"HouseB"
+[node name="CrocHouse" parent="NetworkGraph" unique_id=618759947 instance=ExtResource("2_powch")]
+position = Vector2(1300, -170)
+key_identifier = &"croc_house"
+display_name = "Croc House"
 
-[node name="Router" parent="NetworkGraph" unique_id=1062251922 instance=ExtResource("3_0psug")]
-position = Vector2(191, -312)
-key_identifier = &"RouterA"
-connections = Array[NodePath]([NodePath("../House"), NodePath("../House2")])
+[node name="OwlHouse" parent="NetworkGraph" unique_id=993310879 instance=ExtResource("2_powch")]
+position = Vector2(2400, -790)
+key_identifier = &"owl_house"
+display_name = "Owl House"
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1985246876]
-tile_map_data = PackedByteArray("AAAEAPf/AAABAAAAAAAFAPf/AAABAAAAAAAGAPf/AAABAAAAAAAHAPf/AAABAAAAAAAIAPf/AAABAAAAAAAJAPf/AAABAAAAAAAKAPf/AAABAAAAAAALAPf/AAABAAAAAAAMAPf/AAABAAAAAAANAPf/AAABAAAAAAAOAPf/AAABAAAAAAAPAPf/AAABAAAAAAAQAPf/AAABAAAAAAARAPf/AAABAAAAAAASAPf/AAABAAAAAAATAPf/AAABAAAAAAAUAPf/AAABAAAAAAADAPf/AAAAAAAAAAAVAPf/AAAHAAAAAAAVAPj/AAAHAAEAAAAUAO//AAAHAAAAAAAUAPD/AAAHAAEAAAALAPD/AAAAAAYAAAALAPH/AAAAAAcAAAAZAPX/AAAAAAYAAAAZAPb/AAAAAAcAAAADAPj/AAAAAAYAAAADAPn/AAAAAAcAAAAEAPn/AAAGAAcAAAAFAPn/AAAGAAcAAAAGAPn/AAAGAAcAAAAHAPn/AAAGAAcAAAAIAPn/AAAGAAcAAAAJAPn/AAAGAAcAAAAKAPn/AAAGAAcAAAAKAPj/AAAAAAYAAAALAPj/AAAAAAYAAAAMAPn/AAAGAAcAAAANAPn/AAAGAAcAAAAOAPn/AAAGAAcAAAAPAPn/AAAGAAcAAAAQAPn/AAAGAAcAAAARAPn/AAAGAAcAAAASAPn/AAAGAAcAAAATAPn/AAAGAAcAAAAUAPn/AAAGAAcAAAALAPn/AAAGAAcAAAAVAPn/AAAHAAcAAAAEAPj/AAAAAAYAAAAFAPj/AAAAAAYAAAAGAPj/AAAAAAYAAAAHAPj/AAAAAAYAAAAIAPj/AAAAAAYAAAAJAPj/AAAAAAYAAAAMAPj/AAAAAAYAAAANAPj/AAAAAAYAAAAOAPj/AAAAAAYAAAAPAPj/AAAAAAYAAAAQAPj/AAAAAAYAAAARAPj/AAAAAAYAAAASAPj/AAAAAAYAAAATAPj/AAAAAAYAAAAUAPj/AAAAAAYAAAAZAPT/AAAAAAYAAAAZAPP/AAAAAAYAAAAZAPL/AAAAAAYAAAAZAPH/AAAAAAYAAAAZAPD/AAAAAAYAAAALAO//AAAAAAYAAAAMAO7/AAAHAAAAAAAMAO//AAAHAAEAAAALAO7/AAAAAAAAAAAMAPH/AAAHAAcAAAAMAPD/AAAHAAEAAAATAPD/AAAAAAYAAAATAPH/AAAAAAcAAAAUAPH/AAAHAAcAAAATAO//AAAAAAAAAAAZAO//AAAAAAAAAAAaAPb/AAAHAAcAAAAaAO//AAAHAAAAAAAaAPD/AAAHAAEAAAAaAPH/AAAHAAEAAAAaAPL/AAAHAAEAAAAaAPP/AAAHAAEAAAAaAPT/AAAHAAEAAAAaAPX/AAAHAAEAAAAZAOr/AAAGAAcAAAAaAOr/AAAHAAcAAAAYAOr/AAAGAAcAAAAXAOr/AAAGAAcAAAAWAOr/AAAGAAcAAAAVAOr/AAAGAAcAAAAUAOr/AAAGAAcAAAATAOr/AAAGAAcAAAASAOr/AAAGAAcAAAARAOr/AAAGAAcAAAAQAOr/AAAGAAcAAAAPAOr/AAAGAAcAAAAOAOr/AAAGAAcAAAANAOr/AAAGAAcAAAAMAOr/AAAGAAcAAAALAOr/AAAGAAcAAAAKAOr/AAAGAAcAAAAJAOr/AAAGAAcAAAAIAOr/AAAGAAcAAAAHAOr/AAAGAAcAAAAGAOr/AAAGAAcAAAAFAOr/AAAGAAcAAAAEAOr/AAAGAAcAAAADAOr/AAAGAAcAAAACAOn/AAAAAAYAAAACAOr/AAAAAAcAAAACAOj/AAAAAAYAAAAaAOj/AAAHAAEAAAAaAOn/AAAHAAEAAAADAOn/AAAAAAYAAAAEAOn/AAAAAAYAAAAFAOn/AAAAAAYAAAAGAOn/AAAAAAYAAAAHAOn/AAAAAAYAAAAIAOn/AAAAAAYAAAAJAOn/AAAAAAYAAAAKAOn/AAAAAAYAAAALAOn/AAAAAAYAAAAMAOn/AAAAAAYAAAANAOn/AAAAAAYAAAAOAOn/AAAAAAYAAAAPAOn/AAAAAAYAAAAQAOn/AAAAAAYAAAARAOn/AAAAAAYAAAASAOn/AAAAAAYAAAATAOn/AAAAAAYAAAAUAOn/AAAAAAYAAAAVAOn/AAAAAAYAAAAWAOn/AAAAAAYAAAAXAOn/AAAAAAYAAAAYAOn/AAAAAAYAAAAZAOn/AAAAAAYAAAADAOj/AAAHAAEAAAAEAOj/AAAHAAEAAAAFAOj/AAAHAAEAAAAGAOj/AAAHAAEAAAAHAOj/AAAHAAEAAAAIAOj/AAAHAAEAAAAJAOj/AAAHAAEAAAAKAOj/AAAHAAEAAAALAOj/AAAHAAEAAAAMAOj/AAAHAAEAAAANAOj/AAAHAAEAAAAOAOj/AAAHAAEAAAAPAOj/AAAHAAEAAAAQAOj/AAAHAAEAAAARAOj/AAAHAAEAAAASAOj/AAAHAAEAAAATAOj/AAAHAAEAAAAUAOj/AAAHAAEAAAAVAOj/AAAHAAEAAAAWAOj/AAAHAAEAAAAXAOj/AAAHAAEAAAAYAOj/AAAHAAEAAAAZAOj/AAAHAAEAAAA=")
-tile_set = SubResource("TileSet_vgud1")
+[node name="NewtHouse" parent="NetworkGraph" unique_id=1534767988 instance=ExtResource("2_powch")]
+position = Vector2(3100, -70)
+key_identifier = &"newt_house"
+display_name = "Newt House"
+
+[node name="R1" parent="NetworkGraph" unique_id=405496854 instance=ExtResource("3_0psug")]
+position = Vector2(620, -60)
+state = 0
+hint_label = NodePath("HintLabel")
+key_identifier = &"r1"
+display_name = "R1 (Home Street)"
+connections = Array[NodePath]([NodePath("../R2"), NodePath("../R3")])
+
+[node name="R2" parent="NetworkGraph" unique_id=1080899573 instance=ExtResource("3_0psug")]
+position = Vector2(1050, -490)
+state = 0
+hint_label = NodePath("HintLabel")
+key_identifier = &"r2"
+display_name = "R2 (Floating Deck)"
+connections = Array[NodePath]([NodePath("../R4"), NodePath("../CrocHouse")])
+
+[node name="R3" parent="NetworkGraph" unique_id=1724238398 instance=ExtResource("3_0psug")]
+position = Vector2(1750, -60)
+hint_label = NodePath("HintLabel")
+key_identifier = &"r3"
+display_name = "R3 (Market Street)"
+connections = Array[NodePath]([NodePath("../CrocHouse"), NodePath("../R4")])
+
+[node name="R4" parent="NetworkGraph" unique_id=2059237176 instance=ExtResource("3_0psug")]
+position = Vector2(2050, -670)
+state = 0
+hint_label = NodePath("HintLabel")
+key_identifier = &"r4"
+display_name = "R4 (Tower Top)"
+connections = Array[NodePath]([NodePath("../OwlHouse"), NodePath("../R5")])
+
+[node name="R5" parent="NetworkGraph" unique_id=661981124 instance=ExtResource("3_0psug")]
+position = Vector2(2670, -300)
+hint_label = NodePath("HintLabel")
+key_identifier = &"r5"
+display_name = "R5 (Newt Wall)"
+connections = Array[NodePath]([NodePath("../NewtHouse"), NodePath("../R6")])
+
+[node name="R6" parent="NetworkGraph" unique_id=696046102 instance=ExtResource("3_0psug")]
+position = Vector2(2760, -910)
+hint_label = NodePath("HintLabel")
+key_identifier = &"r6"
+display_name = "R6 (Under the Canopy)"
+connections = Array[NodePath]([NodePath("../OwlHouse")])
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1487968263]
+position = Vector2(220, -24)
+
+[node name="Bed" parent="." unique_id=1243127382 instance=ExtResource("4_bed")]
+position = Vector2(150, -28)
+
+[node name="ClockInPoint" parent="." unique_id=370750067 instance=ExtResource("4_clockin")]
+position = Vector2(760, -36)
 
 [node name="PlatformerCharacter" parent="." unique_id=661001980 groups=["players"] instance=ExtResource("2_oksox")]
-position = Vector2(91, -219)
+z_index = 1
+position = Vector2(220, -24)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=682802507]
-position = Vector2(268, -59)
+[node name="CameraManager2D" parent="." unique_id=49561628 instance=ExtResource("4_cams")]
+initial_camera = &"player"
 
-[node name="MovingPlatform" parent="." unique_id=1985374861 instance=ExtResource("3_oksox")]
-position = Vector2(-144, -272)
-texture = ExtResource("1_x68yp")
+[node name="FollowCamera2D" type="Camera2D" parent="CameraManager2D" unique_id=1296830661 node_paths=PackedStringArray("follow_target")]
+script = ExtResource("4_follow")
+follow_target = NodePath("../../PlatformerCharacter")
+follow_offset = Vector2(0, -64)
+camera_name = &"player"
 
-[node name="MovementPath" parent="MovingPlatform" index="0"]
-curve = SubResource("Curve2D_powch")
-
-[node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
-texture = ExtResource("1_x68yp")
-
-[node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_0psug")
-
-[connection signal="connectivity_changed" from="NetworkGraph" to="." method="_on_network_graph_connectivity_changed"]
-
-[editable path="MovingPlatform"]
+[editable path="Platforms/Deck"]
+[editable path="Platforms/Ferry"]
+[editable path="Platforms/StickyLedge"]
+[editable path="Platforms/Elevator"]
+[editable path="Platforms/StickyShuttle"]

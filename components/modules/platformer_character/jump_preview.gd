@@ -51,8 +51,7 @@ func update_arc(origin: Vector2, launch_velocity: Vector2, gravity: float, mask:
 			var normal := _sweep.get_collision_normal(0)
 			if not actor is CharacterBody2D:
 				break
-			var sticky: bool = actor.surface_has_sticky_layer(_sweep.get_collider(0) as Node2D, _sweep.get_collider_rid(0))
-			if normal.dot(Vector2.UP) >= cos(actor.floor_max_angle) or (sticky and (index + 1) * step >= actor.settings.reattach_delay):
+			if normal.dot(Vector2.UP) >= cos(actor.floor_max_angle):
 				break
 			if bounces >= actor.settings.jump_preview_max_bounces:
 				break

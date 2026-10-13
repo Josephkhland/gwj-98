@@ -26,7 +26,7 @@ func handle_actions(charge_started: bool, attack_started: bool,
 		character._update_facing()
 	if allows_slam and slam_started and character.settings.slam_enabled and not character.is_grounded() and not character._attached:
 		machine.transition(character.State.SLAMMING)
-	elif allows_charge and charge_started and (character.is_grounded() or character._attached):
+	elif allows_charge and (charge_started or (character._charge_held and character.is_grounded())) and (character.is_grounded() or character._attached or (character._coyote_remaining > 0.0)):
 		machine.transition(character.State.CHARGING)
 	elif allows_attack and attack_started:
 		machine.transition(character.State.ATTACKING)

@@ -1,4 +1,14 @@
 extends Resource
+@export_group("Sliding friction")
+@export_range(0.0, 20.0) var slide_friction: float = 1.5
+@export_range(0.0, 0.1) var landing_boost_coefficient: float = 0.01
+@export_range(0.0, 20.0) var friction_boost_decay: float = 4.0
+@export_group("Jump assistance")
+@export_range(0.0, 0.5) var coyote_time: float = 0.15
+@export_range(0.0, 15.0, 0.1) var minimum_wall_jump_angle_degrees: float = 2.0
+@export_group("Wall attachment")
+@export_range(0.0, 16.0, 0.5) var wall_attachment_snap_distance: float = 6.0
+@export_range(0.0, 1.0, 0.05) var wall_attachment_gravity_multiplier: float = 0.25
 ## Per-instance movement and combat tuning. Duplicate to customize a character.
 @export_group("Movement")
 ## Ground walking speed in pixels/second. Landing friction eases retained landing momentum toward this speed
@@ -10,10 +20,6 @@ extends Resource
 ## Maximum downward speed in pixels/second during ordinary airborne movement. Does not limit the initial slam
 ## dive or spit projectile speed.
 @export_range(1.0, 4000.0) var terminal_speed: float = 1200.0
-## How quickly landing momentum approaches the requested walking speed, in pixels/second squared. Higher
-## values stop sliding sooner; zero preserves momentum. A floor's landing_slide_friction metadata or method
-## can override this value.
-@export_range(0.0, 10000.0) var landing_slide_friction: float = 2000.0
 @export_group("Surface contacts")
 ## Collision layers that tag walls/ceilings as attachable. A solid must also match the character's world
 ## collision mask. Floors work without this tag; untagged side/ceiling contacts use Stop/Bounce. For example,

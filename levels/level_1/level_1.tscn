@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://clioepnuaxcfk" path="res://levels/level_1/level_1.gd" id="1_qbdb0"]
 [ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="2_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_8jbay"]
-[ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_epb64"]
+[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_epb64"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="2_qbdb0"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="3_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="3_iey7c"]

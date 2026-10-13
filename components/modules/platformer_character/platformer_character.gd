@@ -10,6 +10,7 @@ signal slam_impacted(collider: Node, point: Vector2, normal: Vector2)
 enum State { IDLE, WALKING, CHARGING, JUMPING, IN_AIR, ON_WALL, ATTACKING, GETTING_HIT, SQUEEZED, SLAMMING, ROLLING_BACK, CHARGING_SPIT }
 const Settings = preload("res://components/modules/platformer_character/character_settings.gd")
 const SpitProjectile = preload("res://components/modules/platformer_character/spit_projectile.gd")
+const FrictionModel = preload("res://components/modules/platformer_character/friction_model.gd")
 const ANIMATIONS: Array[StringName] = [
 	&"idle", &"walking", &"charging", &"jumping", &"in_air",
 	&"on_wall", &"attacking", &"getting_hit", &"squeezed", &"slamming",
@@ -73,7 +74,29 @@ var _spit_aim_angle: float = 0.0
 var _spit_recharge_progress: float = 0.0
 var _spit_recharge_ready: bool = false
 var _landing_sliding: bool = false
-var _floor_slide_collider: WeakRef
+var friction_model := FrictionModel.new()
+var _coyote_remaining: float = 0.0
+var _slide_normal := Vector2.ZERO
+var _slide_surface_velocity := Vector2.ZERO
+var _mouse_direction := Vector2.RIGHT
+var _restore_platform_on_leave: int = -1
+var _restore_platform_floor_layers: int = -1
+
+func uses_mouse_aim() -> bool:
+	return player_controlled
+
+func set_aim_direction(direction: Vector2) -> void:
+	if direction.is_zero_approx():
+		return
+	_mouse_direction = direction.normalized()
+	if not is_zero_approx(_mouse_direction.x):
+		facing = signf(_mouse_direction.x)
+
+func get_spit_origin() -> Vector2:
+	return global_position + _mouse_direction * settings.spit_spawn_offset.length()
+
+func _apply_surface_friction(delta: float, normal: Vector2, surface_velocity: Vector2 = Vector2.ZERO) -> void:
+	velocity = friction_model.apply(velocity, normal, surface_velocity, delta, settings.slide_friction)
 
 func _ready() -> void:
 	health = settings.maximum_health
@@ -110,6 +133,17 @@ func _physics_process(delta: float) -> void:
 			_pressed(charge_action), _pressed(attack_action),
 			_pressed(heighten_action), _pressed(spit_action), _pressed(slam_action))
 	_reattach_time = maxf(0.0, _reattach_time - delta)
+	friction_model.decay(delta, settings.friction_boost_decay)
+	_coyote_remaining = maxf(0.0, _coyote_remaining - delta)
+	if is_grounded():
+		_coyote_remaining = settings.coyote_time
+		_surface_normal = get_floor_normal()
+	if uses_mouse_aim():
+		var offset := get_global_mouse_position() - global_position
+		if not offset.is_zero_approx():
+			_mouse_direction = offset.normalized()
+			if not is_zero_approx(_mouse_direction.x):
+				facing = signf(_mouse_direction.x)
 	_invulnerability = maxf(0.0, _invulnerability - delta)
 	var charge_started := _charge_held and not _was_charge
 	var attack_started := _attack_held and not _was_attack
@@ -132,8 +166,15 @@ func _physics_process(delta: float) -> void:
 		var incoming_velocity := velocity
 		var previously_grounded := is_on_floor()
 		move_and_slide()
+		_update_surface_slide(incoming_velocity)
 		_update_landing_slide(previously_grounded)
 		state_machine.after_move(incoming_velocity)
+	if _restore_platform_on_leave >= 0:
+		platform_on_leave = _restore_platform_on_leave
+		_restore_platform_on_leave = -1
+	if _restore_platform_floor_layers >= 0:
+		platform_floor_layers = _restore_platform_floor_layers
+		_restore_platform_floor_layers = -1
 	if is_grounded():
 		_spit_recharge_ready = true
 	_update_spit_recharge(delta)
@@ -141,6 +182,32 @@ func _physics_process(delta: float) -> void:
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y = minf(velocity.y + settings.gravity * delta, settings.terminal_speed)
+	if not _slide_normal.is_zero_approx():
+		_apply_surface_friction(delta, _slide_normal, _slide_surface_velocity)
+
+func _update_surface_slide(incoming: Vector2) -> void:
+	var previous := _slide_normal
+	_slide_normal = Vector2.ZERO
+	for contact in _get_surface_contacts(previous):
+		var normal := contact.get_normal()
+		if _slide_normal.is_zero_approx() or normal.dot(Vector2.UP) > _slide_normal.dot(Vector2.UP):
+			_slide_normal = normal
+			_slide_surface_velocity = contact.get_collider_velocity()
+		if previous.dot(normal) < 0.99:
+			friction_model.register_impact(incoming, normal, contact.get_collider_velocity(), settings.landing_boost_coefficient)
+
+func _get_surface_contacts(probe_normal: Vector2 = Vector2.ZERO) -> Array[KinematicCollision2D]:
+	var contacts: Array[KinematicCollision2D] = []
+	for index in get_slide_collision_count():
+		contacts.append(get_slide_collision(index))
+	if not probe_normal.is_zero_approx():
+		var probe := KinematicCollision2D.new()
+		var distance := safe_margin + 1.0
+		if _charge_held and _reattach_time <= 0.0:
+			distance = maxf(distance, settings.wall_attachment_snap_distance)
+		if test_move(global_transform, -probe_normal * distance, probe) and (distance <= safe_margin + 1.0 or surface_has_sticky_layer(probe.get_collider() as Node2D, probe.get_collider_rid())):
+			contacts.append(probe)
+	return contacts
 
 ## Shared surface collision service used by airborne state nodes.
 func _resolve_air_contacts(incoming: Vector2, settle_floor: bool = true) -> void:
@@ -151,19 +218,17 @@ func _resolve_air_contacts(incoming: Vector2, settle_floor: bool = true) -> void
 		return
 	var bounced := incoming
 	var did_bounce := false
-	for index in get_slide_collision_count():
-		var contact := get_slide_collision(index)
+	for contact in _get_surface_contacts(_slide_normal):
 		var normal := contact.get_normal()
 		var surface_velocity := contact.get_collider_velocity()
-		if normal.dot(Vector2.UP) >= cos(floor_max_angle) or (bounced - surface_velocity).dot(normal) >= -1.0:
+		if normal.dot(Vector2.UP) >= cos(floor_max_angle):
 			continue
-		if _reattach_time <= 0.0 and surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
+		if _reattach_time <= 0.0 and _charge_held and surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
 			surface_anchor.capture(contact.get_collider() as Node2D, normal)
 			_surface_normal = normal
 			_attached = true
-			velocity = Vector2.ZERO
 			visual.rotation = Vector2.UP.angle_to(normal)
-			_change_state(State.ON_WALL)
+			_change_state(State.CHARGING)
 			return
 		bounced = bounce_velocity(bounced, normal, surface_velocity)
 		did_bounce = true
@@ -187,43 +252,28 @@ func bounce_velocity(incoming: Vector2, normal: Vector2, surface_velocity: Vecto
 	return incoming - (1.0 + retention) * normal_speed * normal
 
 func _update_landing_slide(previously_grounded: bool) -> void:
-	_floor_slide_collider = null
 	if not is_on_floor():
 		_landing_sliding = false
 		return
-	for index in get_slide_collision_count():
-		var contact := get_slide_collision(index)
-		if contact.get_normal().dot(Vector2.UP) >= cos(floor_max_angle):
-			_floor_slide_collider = weakref(contact.get_collider())
-			break
 	if not previously_grounded:
 		_landing_sliding = not is_zero_approx(velocity.x)
 
-## Optional environment hook: get_landing_slide_friction(character), or metadata.
-func get_landing_slide_friction() -> float:
-	var surface = _floor_slide_collider.get_ref() if _floor_slide_collider != null else null
-	if is_instance_valid(surface):
-		var value = surface.call("get_landing_slide_friction", self) if surface.has_method("get_landing_slide_friction") else surface.get_meta("landing_slide_friction", settings.landing_slide_friction)
-		if (value is float or value is int) and is_finite(float(value)) and float(value) >= 0.0:
-			return float(value)
-	return settings.landing_slide_friction
-
 func _apply_ground_horizontal(delta: float, speed_multiplier: float = 1.0) -> void:
 	var target := _move_axis * settings.walk_speed * speed_multiplier
-	if _landing_sliding:
-		velocity.x = move_toward(velocity.x, target, get_landing_slide_friction() * delta)
-		_landing_sliding = not is_equal_approx(velocity.x, target)
-	else:
-		velocity.x = target
+	_apply_surface_friction(delta, get_floor_normal())
+	if not is_zero_approx(_move_axis) and absf(velocity.x) < absf(target):
+		velocity.x = move_toward(velocity.x, target, settings.walk_speed * 8.0 * delta)
+	return
 
 func _begin_charge() -> void:
-	_landing_sliding = false
 	state_machine.transition(State.CHARGING, true)
 ## Ceiling-facing normals invert the tilt to retain screen-left/right launches.
 func _aim_control_sign() -> float:
 	return -1.0 if _surface_normal.y > 0.0 else 1.0
 
 func _update_facing() -> void:
+	if uses_mouse_aim():
+		return
 	if not is_zero_approx(_move_axis):
 		facing = signf(_move_axis)
 
@@ -315,13 +365,13 @@ func _fire_spit(charge_ratio: float) -> void:
 	var cost := get_spit_charge_cost(charge_ratio)
 	var power_ratio := get_spit_power_ratio(charge_ratio)
 	var grounded := is_grounded()
-	var direction := Vector2(facing, 0.0)
+	var direction := _mouse_direction
 	var projectile := SpitProjectile.new()
 	projectile.configure(self, settings, direction, charge_ratio, power_ratio)
 	projectile.velocity = get_spit_launch_velocity(charge_ratio)
 	projectile.charges_spent = cost
 	projectile.top_level = true
-	projectile.position = global_position + Vector2(settings.spit_spawn_offset.x * facing, settings.spit_spawn_offset.y)
+	projectile.position = get_spit_origin()
 	get_parent().add_child(projectile)
 	spit_charges -= cost
 	_spit_recharge_progress = 0.0
@@ -329,9 +379,9 @@ func _fire_spit(charge_ratio: float) -> void:
 	if not grounded:
 		var recoil := settings.spit_recoil * lerpf(1.0, settings.spit_charged_recoil_multiplier, power_ratio)
 		if settings.spit_recoil_sets_backward_speed:
-			velocity.x = -facing * recoil
+			velocity = velocity.slide(direction) - direction * recoil
 		else:
-			velocity.x -= facing * recoil
+			velocity -= direction * recoil
 	spit_charges_changed.emit(spit_charges, settings.spit_maximum_charges)
 	spit_fired.emit(projectile, charge_ratio)
 
@@ -351,23 +401,49 @@ func _update_spit_recharge(delta: float) -> void:
 
 func get_launch_velocity() -> Vector2:
 	var launch_speed := minf(settings.minimum_jump_speed + _charge_time * settings.jump_charge_rate, settings.maximum_jump_speed)
-	return _surface_normal.rotated(_aim_angle) * launch_speed
+	var carrier_velocity := Vector2.ZERO
+	if state == State.CHARGING and state_machine.current.supported:
+		carrier_velocity = state_machine.current.support_velocity
+		if carrier_velocity.dot(_surface_normal) < 0.0:
+			carrier_velocity = carrier_velocity.slide(_surface_normal)
+	return get_jump_direction() * launch_speed + carrier_velocity
+
+func get_jump_direction() -> Vector2:
+	var direction := _mouse_direction
+	if not _attached or absf(_surface_normal.dot(Vector2.UP)) >= cos(floor_max_angle):
+		return direction
+	var minimum_angle := deg_to_rad(settings.minimum_wall_jump_angle_degrees)
+	if minimum_angle <= 0.0 or direction.dot(_surface_normal) >= sin(minimum_angle):
+		return direction
+	var tangent := direction.slide(_surface_normal)
+	if tangent.is_zero_approx():
+		tangent = Vector2.UP.slide(_surface_normal)
+	return tangent.normalized() * cos(minimum_angle) + _surface_normal * sin(minimum_angle)
 
 func get_spit_launch_velocity(charge_ratio: float = -1.0) -> Vector2:
 	var ratio := get_spit_charge_ratio() if charge_ratio < 0.0 else charge_ratio
-	var angle := _spit_aim_angle if _spit_charging else deg_to_rad(settings.spit_launch_angle_degrees)
-	return Vector2(facing * cos(angle), -sin(angle)) * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, get_spit_power_ratio(ratio))
+	return _mouse_direction * settings.spit_speed * lerpf(1.0, settings.spit_charged_speed_multiplier, get_spit_power_ratio(ratio))
 
 func _launch() -> void:
 	if physics_safety.is_trapped():
 		return
+	if state == State.CHARGING and state_machine.current.supported:
+		_suspend_platform_carry()
 	velocity = get_launch_velocity()
+	_coyote_remaining = 0.0
+	_slide_normal = Vector2.ZERO
 	_detach()
 	_change_state(State.JUMPING)
 
+func _suspend_platform_carry() -> void:
+	if _restore_platform_on_leave < 0:
+		_restore_platform_on_leave = platform_on_leave
+		_restore_platform_floor_layers = platform_floor_layers
+	platform_on_leave = PLATFORM_ON_LEAVE_DO_NOTHING
+	platform_floor_layers = 0
+
 func _detach() -> void:
 	_landing_sliding = false
-	_floor_slide_collider = null
 	surface_anchor.clear()
 	_attached = false
 	_reattach_time = settings.reattach_delay

@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="7_dbkl1"]
 [ext_resource type="Resource" uid="uid://cctpv8asj73ii" path="res://resources/day_cycle_schedules/level_1_schedule.tres" id="8_pltdk"]
 [ext_resource type="Texture2D" uid="uid://cpxvbthr6ekoi" path="res://assets/josephkhland/blockout_tileset.png" id="9_wr1ne"]
-[ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="10_t45ib"]
+[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="10_t45ib"]
 [ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="11_52gi8"]
 [ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="12_cebim"]
 [ext_resource type="PackedScene" path="res://components/modules/network/core/NetworkGraph.tscn" id="13_u1aqx"]

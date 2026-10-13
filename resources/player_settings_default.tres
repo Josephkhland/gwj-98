@@ -1,6 +1,6 @@
-[gd_resource type="Resource" format=3 uid="uid://coo0ss1fys3q5"]
+[gd_resource type="Resource" format=3]
 
-[ext_resource type="Script" uid="uid://cyo1tffjkxm82" path="res://components/modules/platformer_character/character_settings.gd" id="1_sdi6r"]
+[ext_resource type="Script" path="res://components/modules/platformer_character/character_settings.gd" id="1_sdi6r"]
 
 [resource]
 script = ExtResource("1_sdi6r")

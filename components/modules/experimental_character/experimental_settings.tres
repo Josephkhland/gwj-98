@@ -1,0 +1,18 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://components/modules/experimental_character/character_settings.gd" id="1_tvsrg"]
+
+[resource]
+script = ExtResource("1_tvsrg")
+walk_speed = 200.0
+gravity = 1200.0
+terminal_speed = 4000.0
+max_charge_time = 3.0
+jump_charge_rate = 900.0
+minimum_jump_speed = 400.0
+maximum_jump_speed = 800.0
+wall_hold_duration = 0.4
+reattach_delay = 0.0
+aim_speed_degrees = 150.0
+crush_overlap_tolerance = 0.256
+die_when_squeezed = false

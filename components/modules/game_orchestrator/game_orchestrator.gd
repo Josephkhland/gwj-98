@@ -102,11 +102,21 @@ func _wire_level(level: GameLevel) -> void:
 	_connect_widget(level.clock_changed, &"shift_clock", &"set_clock")
 	_connect_widget(level.score_changed, &"score", &"set_score")
 	_connect_widget(level.message_changed, &"message_feed", &"update_message")
-	var player := level.get_player()
+	if level.has_signal(&"player_changed"):
+		level.connect(&"player_changed", _on_player_changed)
+	_wire_player(level.get_player())
+
+func _wire_player(player: CharacterBody2D) -> void:
 	if player.has_signal(&"spit_charges_changed"):
 		_connect_widget(Signal(player, &"spit_charges_changed"), &"spit_gauge", &"set_charges")
 	# Health stays unwired while the player can't die; HealthWidget.set_health
 	# matches the player's health_changed signal when it's needed.
+
+func _on_player_changed(player: CharacterBody2D) -> void:
+	_wire_player(player)
+	var gauge := gameplay_ui.get_widget(&"spit_gauge")
+	if gauge != null:
+		gauge.apply_snapshot({"player": player})
 
 func _connect_widget(source: Signal, widget_id: StringName, method: StringName) -> void:
 	var widget := gameplay_ui.get_widget(widget_id)

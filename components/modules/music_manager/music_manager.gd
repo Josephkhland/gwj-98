@@ -48,6 +48,7 @@ func _start(id: StringName, stream: AudioStream, loop: bool) -> void:
 		return
 	var player: AudioStreamPlayer = _players[id]
 	var local := stream.duplicate() as AudioStream
+	local.resource_name = stream.resource_path.get_file() if not stream.resource_path.is_empty() else stream.resource_name
 	if local is AudioStreamWAV:
 		local.loop_mode = AudioStreamWAV.LOOP_FORWARD if loop else AudioStreamWAV.LOOP_DISABLED
 		if loop and local.loop_end <= local.loop_begin:

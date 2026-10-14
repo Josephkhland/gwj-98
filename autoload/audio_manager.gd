@@ -17,6 +17,8 @@ func _ready() -> void:
 			AudioServer.add_bus()
 			AudioServer.set_bus_name(AudioServer.bus_count - 1, bus)
 		set_volume(bus, float(settings.get_value("volume", bus, 1.0)), false)
+	if OS.is_debug_build():
+		add_child(preload("res://components/ui/audio_debug/AudioDebugPanel.tscn").instantiate())
 
 func get_volume(bus: StringName) -> float:
 	return float(_volumes.get(bus, 1.0))

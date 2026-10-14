@@ -80,6 +80,7 @@ func get_clip(index: int) -> AudioStreamWAV:
 		var first_frame := int(round((offset + index * segment_length) * stream.mix_rate))
 		var end_frame := int(round((offset + (index + 1) * segment_length - correction_trim) * stream.mix_rate))
 		var clip := AudioStreamWAV.new()
+		clip.resource_name = "%s • segment %d/%d" % [self.stream.resource_path.get_file(), index + 1, get_segment_count()]
 		clip.format = stream.format
 		clip.mix_rate = stream.mix_rate
 		clip.stereo = stream.stereo

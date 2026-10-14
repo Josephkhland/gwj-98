@@ -14,11 +14,12 @@ const VOLUMES_DB := {
 	&"splatter": 0.0,
 	&"morning": 0.0,
 	&"main": 0.0,
-	&"base": -6.0,
-	&"birds_1": -6.0,
-	&"birds_2": -6.0,
-	&"evening": -6.0,
+	&"base": 6.0,
+	&"birds_1": 3.0,
+	&"birds_2": 3.0,
+	&"evening": 12.0,
 }
+
 
 static func volume_db(sound_id: StringName) -> float:
 	return float(VOLUMES_DB.get(sound_id, 0.0))

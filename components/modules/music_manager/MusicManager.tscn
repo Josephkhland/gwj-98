@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/modules/music_manager/music_manager.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/cabalcrow/morining-base.ogg" id="base"]
+[ext_resource type="AudioStream" path="res://assets/cabalcrow/morining-birds-1.ogg" id="birds_1"]
+[ext_resource type="AudioStream" path="res://assets/cabalcrow/morining-birds-2.ogg" id="birds_2"]
+[ext_resource type="AudioStream" path="res://assets/cabalcrow/evening-ambience.ogg" id="evening"]
+
+[node name="MusicManager" type="Node"]
+script = ExtResource("1")
+base = ExtResource("base")
+birds_1 = ExtResource("birds_1")
+birds_2 = ExtResource("birds_2")
+evening = ExtResource("evening")
+base_fade_seconds = 10.0

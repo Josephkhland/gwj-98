@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://components/ui/main_menu/main_menu.gd" id="1"]
+[ext_resource type="Script" path="res://components/ui/audio_options/audio_options.gd" id="audio_options"]
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1")
@@ -56,3 +57,7 @@ value = 1.0
 unique_name_in_owner = true
 layout_mode = 2
 text = "Quit"
+
+[node name="AudioOptions" type="VBoxContainer" parent="Center/Column"]
+layout_mode = 2
+script = ExtResource("audio_options")

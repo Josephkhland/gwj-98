@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cqcbfig2g6ppb" path="res://components/modules/platformer_character/platformer_character.gd" id="1"]
 [ext_resource type="Script" uid="uid://drvnu0ey63faw" path="res://components/modules/platformer_character/frog_visual.gd" id="2"]
-[ext_resource type="Resource" path="res://resources/player_settings.tres" id="2_aoi2g"]
+[ext_resource type="Resource" uid="uid://37i3iiwoneba" path="res://resources/player_settings.tres" id="2_aoi2g"]
 [ext_resource type="Script" uid="uid://cq11cugu71wek" path="res://components/modules/platformer_character/hitbox.gd" id="3"]
 [ext_resource type="Script" uid="uid://bmmjp686nutoh" path="res://components/modules/platformer_character/hurtbox.gd" id="4"]
 [ext_resource type="Script" uid="uid://ca4wmo5f7gdtw" path="res://components/modules/platformer_character/jump_preview.gd" id="5"]
@@ -19,6 +19,11 @@
 [ext_resource type="Script" uid="uid://48nhofhqw5mk" path="res://components/modules/platformer_character/surface_anchor.gd" id="16_omva8"]
 [ext_resource type="Script" uid="uid://dg45rjxul01rp" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
 [ext_resource type="Script" uid="uid://2iydqunpt3xl" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
+[ext_resource type="Script" uid="uid://dbd1g5jjmkysc" path="res://components/modules/sound_banks/footstep_audio.gd" id="audio_footsteps"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_bank.tres" id="bank_left"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_slide_bank.tres" id="bank_left_slide"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_bank.tres" id="bank_right"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_slide_bank.tres" id="bank_right_slide"]
 [ext_resource type="Script" uid="uid://cj4h6kd211s6n" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
 [ext_resource type="Script" uid="uid://dtpl7h0q74b7a" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
 [ext_resource type="Script" uid="uid://boeg4u8c7pbif" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
@@ -32,7 +37,7 @@ size = Vector2(30, 24)
 [sub_resource type="CircleShape2D" id="Slam"]
 radius = 40.0
 
-[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980]
+[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980 groups=["pause_during_repairs"]]
 process_physics_priority = 100
 collision_layer = 2
 floor_snap_length = 4.0
@@ -51,6 +56,15 @@ shape = SubResource("Body")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1533543262]
 script = ExtResource("2")
+
+[node name="FootstepAudio" type="Node2D" parent="." unique_id=1465092904 node_paths=PackedStringArray("character", "visual")]
+script = ExtResource("audio_footsteps")
+character = NodePath("..")
+visual = NodePath("../Visual")
+left_bank = ExtResource("bank_left")
+right_bank = ExtResource("bank_right")
+left_slide_bank = ExtResource("bank_left_slide")
+right_slide_bank = ExtResource("bank_right_slide")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=935485385]
 collision_layer = 4

@@ -37,6 +37,7 @@ signal repair_requested(player: Node2D)
 var _minigame: Node
 var _player: Node2D
 var _awaiting_external_repair: bool = false
+var _repair_suspension: RepairSuspension
 
 func _ready() -> void:
 	_refresh_visuals()
@@ -101,6 +102,8 @@ func open_local_minigame(player: Node2D) -> bool:
 	instance.add_to_group(&"signal_network_repair_session")
 	instance.connect("completed", _complete_repair, CONNECT_ONE_SHOT)
 	instance.tree_exiting.connect(_minigame_closed, CONNECT_ONE_SHOT)
+	_repair_suspension = RepairSuspension.new()
+	instance.add_child(_repair_suspension)
 	get_tree().root.add_child(instance)
 	if is_instance_valid(_minigame):
 		repair_started.emit(player)
@@ -111,6 +114,7 @@ func _complete_repair(success: bool) -> void:
 		return
 	var instance := _minigame
 	_minigame = null
+	_release_suspension()
 	var repaired := success and is_instance_valid(_player) and state == State.BROKEN
 	if repaired:
 		state = State.OK
@@ -119,15 +123,22 @@ func _complete_repair(success: bool) -> void:
 	repair_finished.emit(repaired)
 
 func _minigame_closed() -> void:
+	_release_suspension()
 	if is_instance_valid(_minigame):
 		_minigame = null
 		_player = null
 		repair_finished.emit(false)
 
 func _exit_tree() -> void:
+	_release_suspension()
 	if is_instance_valid(_minigame):
 		_minigame.queue_free()
 		_minigame = null
+
+func _release_suspension() -> void:
+	if is_instance_valid(_repair_suspension):
+		_repair_suspension.release()
+	_repair_suspension = null
 
 func _refresh_visuals() -> void:
 	if not is_inside_tree():

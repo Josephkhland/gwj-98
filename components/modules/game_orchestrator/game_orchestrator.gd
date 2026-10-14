@@ -6,7 +6,6 @@ signal exit_requested
 
 const PAUSE_LOADING := &"loading"
 const PAUSE_MENU := &"menu"
-const PAUSE_MINIGAME := &"minigame"
 const PAUSE_SUMMARY := &"summary"
 ## HUD widgets shown per level phase; every other widget is hidden.
 const PHASE_WIDGETS := {
@@ -38,6 +37,7 @@ const PHASE_MAP_MARKERS := {
 var _level: GameLevel
 var _minigame: Node
 var _minigame_router: SignalNetworkRouter
+var _repair_suspension: RepairSuspension
 
 func _ready() -> void:
 	gameplay_ui.hide()
@@ -134,9 +134,9 @@ func _open_minigame(router: SignalNetworkRouter) -> void:
 	instance.add_to_group(&"signal_network_repair_session")
 	instance.connect(&"completed", _finish_minigame, CONNECT_ONE_SHOT)
 	instance.tree_exiting.connect(_finish_minigame.bind(false), CONNECT_ONE_SHOT)
-	pause.push(PAUSE_MINIGAME)
-	if is_instance_valid(_level):
-		_level.set_clock_runs_while_paused(not gameplay_settings.freeze_clock_during_repairs)
+	_repair_suspension = RepairSuspension.new()
+	_repair_suspension.group = gameplay_settings.repair_pause_group
+	instance.add_child(_repair_suspension)
 	gameplay_ui.hide()
 	minigame_layer.add_child(instance)
 
@@ -146,9 +146,9 @@ func _finish_minigame(success: bool) -> void:
 	var router := _minigame_router
 	_minigame = null
 	_minigame_router = null
-	if is_instance_valid(_level):
-		_level.set_clock_runs_while_paused(false)
-	pause.pop(PAUSE_MINIGAME)
+	if is_instance_valid(_repair_suspension):
+		_repair_suspension.release()
+	_repair_suspension = null
 	gameplay_ui.show()
 	if is_instance_valid(router):
 		router.resolve_repair(success)
@@ -171,6 +171,10 @@ func _close_pause_menu() -> void:
 	pause.pop(PAUSE_MENU)
 
 func _quit() -> void:
+	if is_instance_valid(_minigame):
+		var instance := _minigame
+		_finish_minigame(false)
+		instance.queue_free()
 	pause.clear()
 	exit_requested.emit()
 

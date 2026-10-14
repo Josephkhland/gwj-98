@@ -19,6 +19,8 @@ func _ready() -> void:
 	_refresh_hint()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if get_tree().has_group(&"signal_network_repair_session"):
+		return
 	if not enabled or _players.is_empty() or not InputMap.has_action(interact_action):
 		return
 	if not event.is_action_pressed(interact_action) or event.is_echo():

@@ -15,8 +15,11 @@
 [ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="4_follow"]
 [ext_resource type="PackedScene" uid="uid://dawp1u828hte7" path="res://components/modules/day_cycle/town_lights/LampPost.tscn" id="4_lamp"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="4_light"]
-[ext_resource type="Resource" path="res://resources/day_cycle_schedules/sandbox_schedule.tres" id="4_sched"]
+[ext_resource type="Resource" uid="uid://yjx8enet7k6s" path="res://resources/day_cycle_schedules/sandbox_schedule.tres" id="4_sched"]
 [ext_resource type="Script" uid="uid://cbgxf6w5xqlm7" path="res://components/modules/level_geometry/solid_shape_2d.gd" id="4_solid"]
+[ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="19_ia0wb"]
+[ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="20_tx1dy"]
+[ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="audio_music"]
 
 [sub_resource type="Gradient" id="Gradient_plain"]
 colors = PackedColorArray(0.62, 0.67, 0.76, 1, 0.3, 0.33, 0.4, 1)
@@ -27,7 +30,7 @@ width = 220
 height = 24
 fill_to = Vector2(0, 1)
 
-[sub_resource type="Curve2D" id="Curve2D_j0yby"]
+[sub_resource type="Curve2D" id="Curve2D_tx1dy"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
@@ -48,7 +51,7 @@ width = 96
 height = 20
 fill_to = Vector2(0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_saigg"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1wtp"]
 resource_local_to_scene = true
 size = Vector2(96, 20)
 
@@ -61,7 +64,7 @@ width = 160
 height = 24
 fill_to = Vector2(0, 1)
 
-[sub_resource type="Curve2D" id="Curve2D_ia0wb"]
+[sub_resource type="Curve2D" id="Curve2D_hwij6"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
@@ -77,7 +80,7 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tx1dy"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kamv1"]
 resource_local_to_scene = true
 size = Vector2(96, 20)
 
@@ -232,7 +235,7 @@ texture = SubResource("Texture_deck")
 running = false
 
 [node name="MovementPath" parent="Platforms/Deck" index="0"]
-curve = SubResource("Curve2D_j0yby")
+curve = SubResource("Curve2D_tx1dy")
 
 [node name="Sprite2D" parent="Platforms/Deck/Body" index="0"]
 texture = SubResource("Texture_deck")
@@ -251,7 +254,7 @@ curve = SubResource("Curve_ferry")
 texture = SubResource("Texture")
 
 [node name="CollisionShape2D" parent="Platforms/Ferry/Body" index="1"]
-shape = SubResource("RectangleShape2D_saigg")
+shape = SubResource("RectangleShape2D_p1wtp")
 
 [node name="StickyLedge" parent="Platforms" unique_id=1552343367 instance=ExtResource("3_oksox")]
 position = Vector2(1620, -500)
@@ -259,7 +262,7 @@ texture = SubResource("Texture_sticky_ledge")
 running = false
 
 [node name="MovementPath" parent="Platforms/StickyLedge" index="0"]
-curve = SubResource("Curve2D_ia0wb")
+curve = SubResource("Curve2D_hwij6")
 
 [node name="Body" parent="Platforms/StickyLedge" index="1"]
 collision_layer = 9
@@ -281,7 +284,7 @@ curve = SubResource("Curve_elevator")
 texture = SubResource("Texture")
 
 [node name="CollisionShape2D" parent="Platforms/Elevator/Body" index="1"]
-shape = SubResource("RectangleShape2D_tx1dy")
+shape = SubResource("RectangleShape2D_kamv1")
 
 [node name="StickyShuttle" parent="Platforms" unique_id=811788918 instance=ExtResource("3_oksox")]
 position = Vector2(2780, -600)
@@ -389,6 +392,10 @@ script = ExtResource("4_follow")
 follow_target = NodePath("../../PlatformerCharacter")
 follow_offset = Vector2(0, -64)
 camera_name = &"player"
+
+[node name="MusicManager" parent="." unique_id=1906354351 instance=ExtResource("audio_music")]
+morning = ExtResource("19_ia0wb")
+main = ExtResource("20_tx1dy")
 
 [editable path="Platforms/Deck"]
 [editable path="Platforms/Ferry"]

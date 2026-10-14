@@ -32,6 +32,7 @@ const MARKER_CLOCK_IN := &"clock_in"
 @export var player_spawn: Marker2D
 @export var bed: InteractionZone
 @export var clock_in_point: InteractionZone
+@export var music_manager: MusicManager
 
 var phase: Phase = Phase.WAKING
 var routers_repaired: int = 0
@@ -41,6 +42,12 @@ var _clock_text: String = ""
 var _minimap_feed: MinimapFeed
 
 func _ready() -> void:
+	if music_manager == null:
+		music_manager = get_node_or_null(^"MusicManager") as MusicManager
+	if music_manager == null:
+		music_manager = MusicManager.new()
+		music_manager.name = "MusicManager"
+		add_child(music_manager)
 	if not _resolve_nodes():
 		return
 	register_handler(&"sunrise", _on_sunrise)
@@ -78,9 +85,11 @@ func begin() -> void:
 func register_handler(keyword: StringName, handler: Callable) -> void:
 	_handlers[keyword] = handler
 
-## Lets the clock keep running while the tree is paused (e.g. during repairs).
+## Optional clock/music override for full-tree pauses; repairs leave the tree running.
 func set_clock_runs_while_paused(runs: bool) -> void:
 	day_cycle.process_mode = Node.PROCESS_MODE_ALWAYS if runs else Node.PROCESS_MODE_INHERIT
+	if music_manager != null:
+		music_manager.process_mode = day_cycle.process_mode
 
 func get_player() -> CharacterBody2D:
 	return player

@@ -18,6 +18,8 @@
 [ext_resource type="Resource" path="res://resources/day_cycle_schedules/sandbox_schedule.tres" id="4_sched"]
 [ext_resource type="Script" uid="uid://cbgxf6w5xqlm7" path="res://components/modules/level_geometry/solid_shape_2d.gd" id="4_solid"]
 
+[ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="audio_music"]
+
 [sub_resource type="Gradient" id="Gradient_plain"]
 colors = PackedColorArray(0.62, 0.67, 0.76, 1, 0.3, 0.33, 0.4, 1)
 
@@ -389,6 +391,8 @@ script = ExtResource("4_follow")
 follow_target = NodePath("../../PlatformerCharacter")
 follow_offset = Vector2(0, -64)
 camera_name = &"player"
+
+[node name="MusicManager" parent="." instance=ExtResource("audio_music")]
 
 [editable path="Platforms/Deck"]
 [editable path="Platforms/Ferry"]

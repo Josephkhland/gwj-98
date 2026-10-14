@@ -23,6 +23,13 @@
 [ext_resource type="Script" uid="uid://dtpl7h0q74b7a" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
 [ext_resource type="Script" uid="uid://boeg4u8c7pbif" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
+[ext_resource type="Script" path="res://components/modules/sound_banks/footstep_audio.gd" id="audio_footsteps"]
+
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_bank.tres" id="bank_left"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_bank.tres" id="bank_right"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_slide_bank.tres" id="bank_left_slide"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_slide_bank.tres" id="bank_right_slide"]
+
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
 
@@ -32,7 +39,7 @@ size = Vector2(30, 24)
 [sub_resource type="CircleShape2D" id="Slam"]
 radius = 40.0
 
-[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980]
+[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980 groups=["pause_during_repairs"]]
 process_physics_priority = 100
 collision_layer = 2
 floor_snap_length = 4.0
@@ -51,6 +58,13 @@ shape = SubResource("Body")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1533543262]
 script = ExtResource("2")
+
+[node name="FootstepAudio" type="Node2D" parent="."]
+script = ExtResource("audio_footsteps")
+left_bank = ExtResource("bank_left")
+right_bank = ExtResource("bank_right")
+left_slide_bank = ExtResource("bank_left_slide")
+right_slide_bank = ExtResource("bank_right_slide")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=935485385]
 collision_layer = 4
@@ -170,6 +184,7 @@ script = ExtResource("17_jxjjd")
 
 [node name="SplatterAudio" type="AudioStreamPlayer2D" parent="." unique_id=343580456]
 script = ExtResource("18_aoi2g")
+bus = &"SFX"
 
 [node name="SlamHitbox" type="Area2D" parent="." unique_id=730897105]
 collision_layer = 0

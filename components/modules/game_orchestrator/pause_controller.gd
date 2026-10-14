@@ -1,7 +1,7 @@
 class_name PauseController
 extends Node
 ## Keeps the tree paused while any reason is held, so overlapping pauses
-## (pause menu, minigame, summary, loading) can't unpause each other.
+## (pause menu, summary, loading) can't unpause each other.
 signal paused_changed(paused: bool)
 var _reasons: Dictionary[StringName, bool] = {}
 

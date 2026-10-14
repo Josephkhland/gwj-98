@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://components/modules/network/core/NetworkGraph.tscn" id="1_2h3rs"]
 [ext_resource type="Script" uid="uid://btav4yq20vpvp" path="res://levels/sandbox/sandbox.gd" id="1_powch"]
-[ext_resource type="PackedScene" uid="uid://c6408alotyl7t" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_oksox"]
+[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_oksox"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_powch"]
 [ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="3_0psug"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="3_oksox"]

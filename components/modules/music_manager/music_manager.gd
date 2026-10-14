@@ -11,6 +11,9 @@ extends Node
 @export_range(0.0, 120.0, 0.1) var birds_fade_in_seconds: float = 40.0
 @export_range(0.0, 120.0, 0.1) var transition_seconds: float = 5.0
 @export_range(0.0, 10.0, 0.1) var morning_crossfade_seconds: float = 0.5
+@export_range(0.0, 120.0, 0.1) var morning_ambience_delay_seconds: float = 25.0
+@export_range(0.0, 120.0, 0.1) var evening_lead_seconds: float = 5.0
+@export_range(0.0, 120.0, 0.1) var evening_fade_seconds: float = 30.0
 
 var _players: Dictionary = {}
 var _level: GameLevel
@@ -22,6 +25,8 @@ var _birds_at_clock_in: float = 0.0
 var _last_music_position: float = 0.0
 var _main_finished: bool = false
 var _evening_started: bool = false
+var _morning_ambience_started: bool = false
+var _evening_elapsed: float = 0.0
 
 
 func _ready() -> void:
@@ -62,15 +67,16 @@ func _on_phase_changed(phase: GameLevel.Phase) -> void:
 				return
 			_begun = true
 			_start(&"morning", morning, false)
-			await get_tree().create_timer(25).timeout
-			_start(&"base", base, true)
-			_start(&"birds_1", birds_1, true)
-			_start(&"birds_2", birds_2, true)
+			if morning_ambience_delay_seconds <= 0.0:
+				_start_morning_ambience()
 		GameLevel.Phase.ON_SHIFT:
 			if _on_shift:
 				return
 			_on_shift = true
-			_birds_at_clock_in = _fade(_elapsed, birds_fade_in_seconds)
+			_birds_at_clock_in = (
+				_fade(maxf(0.0, _elapsed - morning_ambience_delay_seconds), birds_fade_in_seconds)
+				if _morning_ambience_started else 0.0
+			)
 			_start(&"main", main, false)
 		GameLevel.Phase.COMPLETED:
 			_begun = false
@@ -82,8 +88,11 @@ func _process(delta: float) -> void:
 	if not _begun:
 		return
 	_elapsed += delta
-	var birds_gain := _fade(_elapsed, birds_fade_in_seconds)
-	var base_gain := _fade(_elapsed, base_fade_seconds)
+	if not _on_shift and not _morning_ambience_started and _elapsed >= morning_ambience_delay_seconds:
+		_start_morning_ambience()
+	var ambience_elapsed := maxf(0.0, _elapsed - morning_ambience_delay_seconds)
+	var birds_gain := _fade(ambience_elapsed, birds_fade_in_seconds) if _morning_ambience_started else 0.0
+	var base_gain := _fade(ambience_elapsed, base_fade_seconds) if _morning_ambience_started else 0.0
 	var evening_gain := 0.0
 	var morning_gain := 1.0
 	if _on_shift:
@@ -105,11 +114,15 @@ func _process(delta: float) -> void:
 			remaining = maxf(0.0, player.stream.get_length() - music_time)
 		birds_gain = _birds_at_clock_in * (1.0 - _fade(music_time, transition_seconds))
 		base_gain *= _fade(remaining, transition_seconds)
-		evening_gain = 1.0 - _fade(remaining, transition_seconds)
 		morning_gain = 1.0 - _fade(_shift_elapsed, morning_crossfade_seconds)
-		if evening_gain > 0.0 and not _evening_started:
+		if _evening_started:
+			_evening_elapsed += delta
+		elif remaining <= evening_lead_seconds:
 			_evening_started = true
+			_evening_elapsed = minf(delta, maxf(0.0, evening_lead_seconds - remaining))
 			_start(&"evening", evening, true)
+		if _evening_started:
+			evening_gain = _fade(_evening_elapsed, evening_fade_seconds)
 		_gain(&"main", _fade(_shift_elapsed, morning_crossfade_seconds))
 	_gain(&"morning", morning_gain)
 	_gain(&"base", base_gain)
@@ -123,6 +136,13 @@ func _process(delta: float) -> void:
 		_players[&"birds_2"].stop()
 	if _on_shift and base_gain == 0.0:
 		_players[&"base"].stop()
+
+
+func _start_morning_ambience() -> void:
+	_morning_ambience_started = true
+	_start(&"base", base, true)
+	_start(&"birds_1", birds_1, true)
+	_start(&"birds_2", birds_2, true)
 
 
 func _gain(id: StringName, gain: float) -> void:

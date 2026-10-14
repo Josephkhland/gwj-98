@@ -20,7 +20,7 @@ const VOLUMES_DB := {
 	&"evening": 12.0,
 }
 
-const footsteps_db := 0.0
+const footsteps_db := 12.0
 
 
 static func volume_db(sound_id: StringName) -> float:

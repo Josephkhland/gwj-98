@@ -100,7 +100,7 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_drths"]
+[sub_resource type="Curve2D" id="Curve2D_lwxes"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
@@ -488,7 +488,10 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_drths")
+curve = SubResource("Curve2D_lwxes")
+
+[node name="Body" parent="MovingPlatform" index="1"]
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
 visible = false
@@ -510,6 +513,9 @@ disappear_duration = 0.0
 scale = Vector2(0.8, 1)
 curve = SubResource("Curve2D_xywve")
 
+[node name="Body" parent="MovingPlatform3" index="1"]
+collision_layer = 9
+
 [node name="Sprite2D" parent="MovingPlatform3/Body" index="0"]
 visible = false
 texture = SubResource("AtlasTexture_mxc8w")
@@ -529,6 +535,9 @@ disappear_duration = 0.0
 [node name="MovementPath" parent="MovingPlatform2" index="0"]
 scale = Vector2(0.8, 1)
 curve = SubResource("Curve2D_vhlys")
+
+[node name="Body" parent="MovingPlatform2" index="1"]
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform2/Body" index="0"]
 visible = false
@@ -553,6 +562,7 @@ curve = SubResource("Curve2D_xjrjs")
 
 [node name="Body" parent="MovingPlatform4" index="1"]
 position = Vector2(8, 0)
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform4/Body" index="0"]
 visible = false

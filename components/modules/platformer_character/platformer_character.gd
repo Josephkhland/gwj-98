@@ -388,8 +388,13 @@ func _fire_spit(charge_ratio: float) -> void:
 func _update_spit_recharge(delta: float) -> void:
 	if not settings.spit_enabled or spit_charges >= settings.spit_maximum_charges:
 		return
-	if not _spit_recharge_ready or not settings.allows_spit_recharge(state_machine.current.animation):
-		return
+	# if not _spit_recharge_ready or not settings.allows_spit_recharge(state_machine.current.animation):
+	# 	return
+	for contact in _get_surface_contacts(_slide_normal):
+		if surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
+			spit_charges = 1
+			return
+	return
 	_spit_recharge_progress += delta
 	var interval := maxf(settings.spit_recharge_time, 0.001)
 	while _spit_recharge_progress >= interval and spit_charges < settings.spit_maximum_charges:

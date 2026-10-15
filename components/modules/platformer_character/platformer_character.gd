@@ -260,7 +260,8 @@ func _update_landing_slide(previously_grounded: bool) -> void:
 
 func _apply_ground_horizontal(delta: float, speed_multiplier: float = 1.0) -> void:
 	var target := _move_axis * settings.walk_speed * speed_multiplier
-	_apply_surface_friction(delta, get_floor_normal())
+	var spit_friction := 5.
+	_apply_surface_friction(delta * (spit_friction + 1. - speed_multiplier * spit_friction), get_floor_normal())
 	if not is_zero_approx(_move_axis) and absf(velocity.x) < absf(target):
 		velocity.x = move_toward(velocity.x, target, settings.walk_speed * 8.0 * delta)
 	return

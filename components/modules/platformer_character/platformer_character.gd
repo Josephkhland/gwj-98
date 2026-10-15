@@ -323,7 +323,7 @@ func _maximum_spit_cost() -> int:
 	return maxi(1, mini(settings.spit_max_charges_per_shot, settings.spit_maximum_charges))
 
 func get_spit_charge_ratio() -> float:
-	return clampf(_spit_charge_time / maxf(settings.spit_max_charge_time, 0.001), 0.0, 1.0)
+	return clampf(_spit_charge_time * 10. / maxf(settings.spit_max_charge_time, 0.001), 0.0, 1.0)
 
 func get_spit_maximum_charges() -> int:
 	return settings.spit_maximum_charges

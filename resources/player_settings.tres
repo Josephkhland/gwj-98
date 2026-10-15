@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1_tvsrg")
+slide_friction = 0.12
+landing_boost_coefficient = 0.05
 wall_attachment_gravity_multiplier = 0.0
 walk_speed = 200.0
 gravity = 1200.0

@@ -42,8 +42,13 @@ layout_mode = 2
 [node name="HealthWidget" parent="Root/LeftColumn" instance=ExtResource("4")]
 layout_mode = 2
 
-[node name="MessageFeedWidget" parent="Root/LeftColumn" instance=ExtResource("5")]
-layout_mode = 2
+[node name="MessageFeedWidget" parent="Root" instance=ExtResource("5")]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 316.0
+offset_top = 16.0
+offset_right = -272.0
+offset_bottom = 216.0
 
 [node name="MinimapWidget" parent="Root" instance=ExtResource("6")]
 layout_mode = 1

@@ -2,6 +2,13 @@
 class_name SignalNetworkHouse
 extends SignalNetworkVertex
 
+@export var character_profile: CharacterProfile
+## Presentation marker; routing behavior is still owned by the network/message systems.
+@export var internet_gateway: bool = false
+
+func is_internet_gateway() -> bool:
+	return internet_gateway or get_label().strip_edges().to_lower() == "internet" or String(key_identifier).to_lower() == "internet"
+
 func is_house() -> bool:
 	return true
 

@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://components/ui/gameplay_ui/widgets/minimap/minimap_widget.gd" id="1"]
 
 [node name="MinimapWidget" type="Control"]
+texture_filter = 1
 custom_minimum_size = Vector2(240, 180)
 layout_mode = 3
 mouse_filter = 2

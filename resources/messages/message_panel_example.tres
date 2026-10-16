@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://bnf3dxuvkvaqy"]
+
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="1"]
+[ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="2"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/squirrel_portrait.svg" id="4"]
+[ext_resource type="Texture2D" path="res://assets/placeholders/bird_portrait.svg" id="5"]
+
+[sub_resource type="Resource" id="Recipient"]
+script = ExtResource("2")
+character_id = &"burd"
+display_name = "Burd"
+portrait = ExtResource("5")
+
+[sub_resource type="Resource" id="Reply1"]
+script = ExtResource("3")
+text = "Coming right up... Did you know we can fry it with the WIRES they installed in town?"
+
+[sub_resource type="Resource" id="Reply2"]
+script = ExtResource("3")
+speaker = 0
+text = "Sure buddy, fry it with the wires. Just don't put sand in it this time."
+
+[sub_resource type="Resource" id="Sender"]
+script = ExtResource("2")
+character_id = &"pipsqueak"
+display_name = "Mr. Pipsqueak"
+portrait = ExtResource("4")
+
+[resource]
+script = ExtResource("1")
+message_id = &"squirrel_sandwich"
+title = "Sandwich order"
+from_house = &"squirrel"
+to_house = &"burd"
+text = "Can I have a sandwich?"
+sender = SubResource("Sender")
+recipient = SubResource("Recipient")
+replies = Array[ExtResource("3")]([SubResource("Reply1"), SubResource("Reply2")])
+warning_minutes = 1.0
+expire_minutes = 5.0

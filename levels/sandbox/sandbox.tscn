@@ -20,6 +20,12 @@
 [ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="19_ia0wb"]
 [ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="20_tx1dy"]
 [ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="audio_music"]
+[ext_resource type="PackedScene" path="res://components/modules/townfolk/TownfolkCharacter.tscn" id="townfolk_scene"]
+[ext_resource type="Script" path="res://definitions/character_profile.gd" id="townfolk_profile"]
+[ext_resource type="Script" path="res://components/modules/townfolk/dialogue_chain.gd" id="townfolk_chain"]
+[ext_resource type="Script" path="res://components/modules/townfolk/dialogue_line.gd" id="townfolk_line"]
+[ext_resource type="Script" path="res://components/modules/game_level/interaction_zone.gd" id="townfolk_interaction"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="townfolk_portrait"]
 
 [sub_resource type="Gradient" id="Gradient_plain"]
 colors = PackedColorArray(0.62, 0.67, 0.76, 1, 0.3, 0.33, 0.4, 1)
@@ -92,6 +98,51 @@ point_count = 2
 
 [sub_resource type="RectangleShape2D" id="Shape_sticky_shuttle"]
 size = Vector2(160, 24)
+
+[sub_resource type="SpriteFrames" id="TownfolkAvatar"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("townfolk_portrait")}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="Resource" id="TownfolkProfile"]
+script = ExtResource("townfolk_profile")
+character_id = &"sandbox_neighbour"
+display_name = "Sandbox Neighbour"
+portrait = ExtResource("townfolk_portrait")
+full_body_portrait = ExtResource("townfolk_portrait")
+in_game_avatar = SubResource("TownfolkAvatar")
+
+[sub_resource type="Resource" id="TownfolkMorningLine1"]
+script = ExtResource("townfolk_line")
+text = "Good morning, neighbour! I like to watch the town wake up before everyone gets busy. Have you had a chance to look around?"
+
+[sub_resource type="Resource" id="TownfolkMorningLine2"]
+script = ExtResource("townfolk_line")
+text = "I'll be here if you want to talk again. You can clock in just down the road, and come back to hear what I have to say during your shift."
+
+[sub_resource type="Resource" id="TownfolkOffShiftChain"]
+script = ExtResource("townfolk_chain")
+chain_id = &"sandbox_off_shift"
+lines = Array[ExtResource("townfolk_line")]([SubResource("TownfolkMorningLine1"), SubResource("TownfolkMorningLine2")])
+
+[sub_resource type="Resource" id="TownfolkShiftLine1"]
+script = ExtResource("townfolk_line")
+text = "There you are! The wires have been humming all morning. I wonder who is sending all those messages."
+
+[sub_resource type="Resource" id="TownfolkShiftLine2"]
+script = ExtResource("townfolk_line")
+text = "Stay and listen for a moment. It is always nice to have someone around while the town is busy."
+
+[sub_resource type="Resource" id="TownfolkShiftChain"]
+script = ExtResource("townfolk_chain")
+chain_id = &"sandbox_shift"
+lines = Array[ExtResource("townfolk_line")]([SubResource("TownfolkShiftLine1"), SubResource("TownfolkShiftLine2")])
+
+[sub_resource type="RectangleShape2D" id="TownfolkInteractionShape"]
+size = Vector2(120, 88)
 
 [node name="Sandbox" type="Node2D" unique_id=569843922]
 script = ExtResource("1_powch")
@@ -309,6 +360,7 @@ shape = SubResource("Shape_sticky_shuttle")
 position = Vector2(300, -140)
 key_identifier = &"frog_house"
 display_name = "Frog House"
+character_profile = SubResource("TownfolkProfile")
 connections = Array[NodePath]([NodePath("../R1")])
 
 [node name="CrocHouse" parent="NetworkGraph" unique_id=618759947 instance=ExtResource("2_powch")]
@@ -384,6 +436,42 @@ position = Vector2(760, -36)
 z_index = 1
 position = Vector2(220, -24)
 
+[node name="Townfolk" parent="." node_paths=PackedStringArray("listener") instance=ExtResource("townfolk_scene")]
+position = Vector2(560, 0)
+character_profile = SubResource("TownfolkProfile")
+dialogue_chains = Array[ExtResource("townfolk_chain")]([SubResource("TownfolkShiftChain")])
+off_shift_dialogue_chains = Array[ExtResource("townfolk_chain")]([SubResource("TownfolkOffShiftChain")])
+listener = NodePath("../PlatformerCharacter")
+
+[node name="NameLabel" type="Label" parent="Townfolk"]
+mouse_filter = 2
+offset_left = -120.0
+offset_top = -78.0
+offset_right = 120.0
+offset_bottom = -52.0
+theme_override_font_sizes/font_size = 18
+text = "Sandbox Neighbour"
+horizontal_alignment = 1
+
+[node name="InteractionZone" type="Area2D" parent="Townfolk"]
+position = Vector2(0, -28)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("townfolk_interaction")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Townfolk/InteractionZone"]
+shape = SubResource("TownfolkInteractionShape")
+
+[node name="HintLabel" type="Label" parent="Townfolk/InteractionZone"]
+mouse_filter = 2
+offset_left = -160.0
+offset_top = -80.0
+offset_right = 160.0
+offset_bottom = -54.0
+theme_override_font_sizes/font_size = 16
+text = "Press [S] to talk"
+horizontal_alignment = 1
+
 [node name="CameraManager2D" parent="." unique_id=49561628 instance=ExtResource("4_cams")]
 initial_camera = &"player"
 
@@ -396,6 +484,8 @@ camera_name = &"player"
 [node name="MusicManager" parent="." unique_id=1906354351 instance=ExtResource("audio_music")]
 morning = ExtResource("19_ia0wb")
 main = ExtResource("20_tx1dy")
+
+[connection signal="interacted" from="Townfolk/InteractionZone" to="." method="_on_townfolk_interacted"]
 
 [editable path="Platforms/Deck"]
 [editable path="Platforms/Ferry"]

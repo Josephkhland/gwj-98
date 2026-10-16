@@ -7,6 +7,7 @@ extends RefCounted
 # FootstepAudio assigns footstep_left/right and their _slide IDs; splatter_audio.gd uses splatter.
 # IDs identify sounds in code, not asset filenames or node names. Missing IDs default to 0 dB.
 const VOLUMES_DB := {
+	&"townfolk_voice": 0.0,
 	&"footstep_left": footsteps_db,
 	&"footstep_right": footsteps_db,
 	&"footstep_left_slide": footsteps_db,

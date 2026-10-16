@@ -118,6 +118,8 @@ func get_hud_snapshot() -> Dictionary:
 		"phase": phase,
 		"prompt": get_prompt(),
 		"time": get_clock_text(),
+		"game_seconds": day_cycle.get_elapsed_game_seconds(),
+		"day_cycle": day_cycle,
 		"shift_end": get_shift_end_text(),
 		"progress": day_cycle.get_day_progress(),
 		"score": message_board.total_score,

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TownfolkDialogueChain" format=3 uid="uid://d1j53eseunisb"]
+
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="1"]
+[ext_resource type="Script" uid="uid://d2kogc0f3yh7e" path="res://components/modules/townfolk/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line1"]
+script = ExtResource("2")
+text = "Hello, neighbour! It's a lovely day for a walk. Stay a while and listen. I have so many things to tell you about our little town."
+
+[sub_resource type="Resource" id="Line2"]
+script = ExtResource("2")
+text = "Watch the pink letters follow my voice. Tap C as a whole word turns pink to make it glitter like gold. You can walk away and come back; I'll keep talking either way."
+
+[resource]
+script = ExtResource("1")
+chain_id = &"example"
+lines = Array[ExtResource("2")]([SubResource("Line1"), SubResource("Line2")])

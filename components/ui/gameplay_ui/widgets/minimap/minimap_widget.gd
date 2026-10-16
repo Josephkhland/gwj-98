@@ -4,6 +4,11 @@ extends HudWidget
 ## shapes and tile collisions), then either the signal network or the chosen markers.
 ## Markers outside the view stick to the edge so the player knows which way to go.
 @export var world_units_per_pixel: float = 12.0
+@export_group("Icons")
+@export var gateway_icon: Texture2D = preload("res://assets/nicoichu/Software_Planet_Geography_Localization_Global_Language_Translation_1.png")
+@export var router_icon: Texture2D = preload("res://assets/nicoichu/Software_Network_Router_WiFi_Wireless_Internet_Ethernet_Connection.png")
+@export_range(8, 40, 1) var portrait_size: float = 20
+@export_range(8, 32, 1) var network_icon_size: float = 16
 @export_group("Colors")
 @export var background_color: Color = Color(0.05, 0.07, 0.1, 0.8)
 @export var border_color: Color = Color(1, 1, 1, 0.35)
@@ -112,9 +117,26 @@ func _draw_network(to_map: Transform2D) -> void:
 	for vertex in vertices:
 		var point := to_map * vertex.global_position
 		if vertex.is_house():
-			draw_rect(Rect2(point - Vector2(5, 5), Vector2(10, 10)), house_color)
+			var house := vertex as SignalNetworkHouse
+			if house != null and house.is_internet_gateway() and gateway_icon != null:
+				_draw_icon(gateway_icon, point, network_icon_size)
+			elif house != null and house.character_profile != null and house.character_profile.portrait != null:
+				_draw_icon(house.character_profile.portrait, point, portrait_size)
+			else:
+				draw_rect(Rect2(point - Vector2(5, 5), Vector2(10, 10)), house_color)
 		else:
-			draw_circle(point, 5.0, router_ok_color if vertex.is_available() else router_broken_color)
+			var tint := router_ok_color if vertex.is_available() else router_broken_color
+			if router_icon != null:
+				_draw_icon(router_icon, point, network_icon_size, tint)
+			else:
+				draw_circle(point, 5.0, tint)
+
+func _draw_icon(texture: Texture2D, point: Vector2, extent: float, tint: Color = Color.WHITE) -> void:
+	var texture_size := texture.get_size()
+	if texture_size.x <= 0 or texture_size.y <= 0:
+		return
+	var icon_size := texture_size * (extent / maxf(texture_size.x, texture_size.y))
+	draw_texture_rect(texture, Rect2(point - icon_size / 2, icon_size), false, tint)
 
 func _draw_markers(to_map: Transform2D) -> void:
 	var margin := Vector2(8, 8)

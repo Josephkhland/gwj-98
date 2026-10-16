@@ -6,6 +6,17 @@ var _widgets: Dictionary[StringName, HudWidget] = {}
 
 func _ready() -> void:
 	_collect(self)
+	$Root.resized.connect(_layout_message_feed)
+	_layout_message_feed()
+
+func _layout_message_feed() -> void:
+	var feed := get_widget(&"message_feed")
+	if feed == null:
+		return
+	var narrow: bool = $Root.size.x < 1000
+	feed.offset_left = 16 if narrow else 316
+	feed.offset_right = -16 if narrow else -272
+	feed.offset_top = 212 if narrow else 16
 
 func get_widget(widget_id: StringName) -> HudWidget:
 	return _widgets.get(widget_id)

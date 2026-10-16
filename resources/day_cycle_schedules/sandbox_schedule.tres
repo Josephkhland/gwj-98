@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="DayCycleSchedule" format=3 uid="uid://yjx8enet7k6s"]
 
 [ext_resource type="Script" uid="uid://d300b16yeddsq" path="res://components/modules/day_cycle/day_cycle_notification.gd" id="1_note"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="2_aqft5"]
 [ext_resource type="Script" uid="uid://c3ndjtbdkat6f" path="res://components/modules/day_cycle/day_cycle_schedule.gd" id="2_sched"]
 [ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="3_msg"]
 

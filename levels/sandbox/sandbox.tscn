@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://cbgxf6w5xqlm7" path="res://components/modules/level_geometry/solid_shape_2d.gd" id="4_solid"]
 [ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="19_ia0wb"]
 [ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="20_tx1dy"]
+[ext_resource type="PackedScene" uid="uid://b0wms2qdilydf" path="res://components/modules/test_collectable_spawner.tscn" id="21_p1wtp"]
 [ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="audio_music"]
 
 [sub_resource type="Gradient" id="Gradient_plain"]
@@ -30,7 +31,7 @@ width = 220
 height = 24
 fill_to = Vector2(0, 1)
 
-[sub_resource type="Curve2D" id="Curve2D_tx1dy"]
+[sub_resource type="Curve2D" id="Curve2D_kamv1"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
@@ -51,7 +52,7 @@ width = 96
 height = 20
 fill_to = Vector2(0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1wtp"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q0vl7"]
 resource_local_to_scene = true
 size = Vector2(96, 20)
 
@@ -64,7 +65,7 @@ width = 160
 height = 24
 fill_to = Vector2(0, 1)
 
-[sub_resource type="Curve2D" id="Curve2D_hwij6"]
+[sub_resource type="Curve2D" id="Curve2D_2l4r6"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 240, 0)
@@ -80,7 +81,7 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kamv1"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aj57l"]
 resource_local_to_scene = true
 size = Vector2(96, 20)
 
@@ -235,7 +236,7 @@ texture = SubResource("Texture_deck")
 running = false
 
 [node name="MovementPath" parent="Platforms/Deck" index="0"]
-curve = SubResource("Curve2D_tx1dy")
+curve = SubResource("Curve2D_kamv1")
 
 [node name="Sprite2D" parent="Platforms/Deck/Body" index="0"]
 texture = SubResource("Texture_deck")
@@ -254,7 +255,7 @@ curve = SubResource("Curve_ferry")
 texture = SubResource("Texture")
 
 [node name="CollisionShape2D" parent="Platforms/Ferry/Body" index="1"]
-shape = SubResource("RectangleShape2D_p1wtp")
+shape = SubResource("RectangleShape2D_q0vl7")
 
 [node name="StickyLedge" parent="Platforms" unique_id=1552343367 instance=ExtResource("3_oksox")]
 position = Vector2(1620, -500)
@@ -262,7 +263,7 @@ texture = SubResource("Texture_sticky_ledge")
 running = false
 
 [node name="MovementPath" parent="Platforms/StickyLedge" index="0"]
-curve = SubResource("Curve2D_hwij6")
+curve = SubResource("Curve2D_2l4r6")
 
 [node name="Body" parent="Platforms/StickyLedge" index="1"]
 collision_layer = 9
@@ -284,7 +285,7 @@ curve = SubResource("Curve_elevator")
 texture = SubResource("Texture")
 
 [node name="CollisionShape2D" parent="Platforms/Elevator/Body" index="1"]
-shape = SubResource("RectangleShape2D_kamv1")
+shape = SubResource("RectangleShape2D_aj57l")
 
 [node name="StickyShuttle" parent="Platforms" unique_id=811788918 instance=ExtResource("3_oksox")]
 position = Vector2(2780, -600)
@@ -396,6 +397,17 @@ camera_name = &"player"
 [node name="MusicManager" parent="." unique_id=1906354351 instance=ExtResource("audio_music")]
 morning = ExtResource("19_ia0wb")
 main = ExtResource("20_tx1dy")
+
+[node name="TestCollectableSpawner" parent="." unique_id=1058205789 node_paths=PackedStringArray("markerA", "markerB", "camera") instance=ExtResource("21_p1wtp")]
+markerA = NodePath("Marker2D")
+markerB = NodePath("Marker2D2")
+camera = NodePath("../CameraManager2D/FollowCamera2D")
+
+[node name="Marker2D" type="Marker2D" parent="TestCollectableSpawner" unique_id=254754554]
+position = Vector2(688, -534)
+
+[node name="Marker2D2" type="Marker2D" parent="TestCollectableSpawner" unique_id=1881333649]
+position = Vector2(1917, -2)
 
 [editable path="Platforms/Deck"]
 [editable path="Platforms/Ferry"]

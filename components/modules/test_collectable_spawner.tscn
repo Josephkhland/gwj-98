@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bj8nvc6ga0co7" path="res://components/modules/test_collectable_spawner.gd" id="1_y8v6t"]
 [ext_resource type="PackedScene" uid="uid://dm1sjkmpf8vxx" path="res://components/modules/test_collectable.tscn" id="2_jqyx1"]
+[ext_resource type="PackedScene" uid="uid://cp00k0biyl2y6" path="res://components/modules/test_collectable_indicator.tscn" id="3_jqyx1"]
 
 [node name="TestCollectableSpawner" type="Node2D" unique_id=1058205789]
 script = ExtResource("1_y8v6t")
 test_collectable = ExtResource("2_jqyx1")
+indicator = ExtResource("3_jqyx1")

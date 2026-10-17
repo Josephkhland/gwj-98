@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="30" viewBox="0 0 72 30">
+<!-- The hub centre (36,14) sits on the rod's pivot. -->
+<rect x="2" y="14" width="68" height="14" rx="4" fill="#3a3850" stroke="#15141f" stroke-width="2"/>
+<circle cx="36" cy="14" r="12" fill="#3a3850" stroke="#15141f" stroke-width="2"/>
+</svg>

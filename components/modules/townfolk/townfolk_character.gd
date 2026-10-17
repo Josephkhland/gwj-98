@@ -6,7 +6,7 @@ signal dialogue_started(chain: TownfolkDialogueChain)
 signal dialogue_finished(chain: TownfolkDialogueChain)
 signal dialogue_cancelled(chain: TownfolkDialogueChain)
 signal syllable_heard(listener: Node2D, chain: TownfolkDialogueChain, line_index: int, syllable_index: int, syllable: String)
-## Accuracy is 0..1. Points are illustrative UI only; no score is mutated here.
+## Accuracy is 0..1. The enclosing level awards points; this actor displays the result.
 signal reaction_resolved(listener: Node2D, accuracy: float)
 enum ReactionPopupPlacement { ABOVE_BUBBLE, ABOVE_LISTENER }
 const ConversationView = preload("res://components/ui/townfolk_conversation/townfolk_conversation.gd")
@@ -91,7 +91,7 @@ var _active_mode: ProgressManager.DialogueMode
 @onready var conversation: ConversationView = $Conversation
 @onready var world_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _fallback_avatar: SpriteFrames = world_sprite.sprite_frames
-@onready var interaction_hint: Label = $InteractionHint
+@onready var interaction_hint: InputHintLabel = $InteractionHint
 
 func _ready() -> void:
 	_refresh_avatar()
@@ -122,6 +122,7 @@ func _ready() -> void:
 			ancestor = ancestor.get_parent()
 	if phase_source != null:
 		phase_source.phase_changed.connect(_on_phase_changed)
+		phase_source.register_townfolk(self)
 	if autoplay:
 		var next := get_next_dialogue_chain()
 		if next != null:
@@ -209,15 +210,9 @@ func _refresh_interaction_hint(candidate: Node2D) -> void:
 		return
 	var speaker := character_profile.display_name if character_profile != null and not character_profile.display_name.is_empty() else String(name)
 	if get_next_dialogue_chain() == null:
-		interaction_hint.text = "%s is busy" % speaker
+		interaction_hint.set_hint("%s is busy" % speaker)
 		return
-	var binding := "Interact"
-	if InputMap.has_action(interact_action):
-		for event in InputMap.action_get_events(interact_action):
-			if event is InputEventKey:
-				binding = event.as_text_physical_keycode() if event.physical_keycode != 0 else event.as_text_keycode()
-				break
-	interaction_hint.text = "[%s] Talk to %s" % [binding, speaker]
+	interaction_hint.set_hint("[action:%s] Talk to %s" % [interact_action, speaker])
 
 ## Returns false for an invalid, already started, or busy request. No implicit interruption.
 func start_dialogue(chain: TownfolkDialogueChain, allow_replay: bool = false) -> bool:

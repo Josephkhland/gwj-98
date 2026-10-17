@@ -25,9 +25,10 @@
 [ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="20_xywve"]
 [ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="21_vk63l"]
 [ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="22_f313t"]
-[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
-[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
-[ext_resource type="Script" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
+[ext_resource type="Resource" uid="uid://dvrxqp4ktkn2g" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
+[ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
@@ -112,7 +113,7 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_0rvqm"]
+[sub_resource type="Curve2D" id="Curve2D_hmxt8"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
@@ -273,42 +274,42 @@ key_identifier = &"r5"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router6" parent="NetworkGraph" unique_id=1424610390 instance=ExtResource("3_la5aw")]
-position = Vector2(-2674, 1096)
+position = Vector2(-2681, 1084)
 hint_label = NodePath("HintLabel")
 key_identifier = &"r6"
 connections = Array[NodePath]([NodePath("../Router7")])
 
 [node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
 position = Vector2(-2682, 1823)
-hint_label = NodePath("../Router6/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r7"
 
 [node name="Router8" parent="NetworkGraph" unique_id=1678648894 instance=ExtResource("3_la5aw")]
 position = Vector2(-1296, 1476)
-hint_label = NodePath("../Router7/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r8"
 connections = Array[NodePath]([NodePath("../Router9")])
 
 [node name="Router9" parent="NetworkGraph" unique_id=2002947098 instance=ExtResource("3_la5aw")]
 position = Vector2(-960, 1222)
-hint_label = NodePath("../Router7/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r9"
 connections = Array[NodePath]([NodePath("../House2")])
 
 [node name="Router10" parent="NetworkGraph" unique_id=654400491 instance=ExtResource("3_la5aw")]
 position = Vector2(-1211, 692)
-hint_label = NodePath("../Router7/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r10"
 connections = Array[NodePath]([NodePath("../Router9"), NodePath("../Router3"), NodePath("../Router11")])
 
 [node name="Router11" parent="NetworkGraph" unique_id=997192392 instance=ExtResource("3_la5aw")]
 position = Vector2(-563, 448)
-hint_label = NodePath("../Router7/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r11"
 
 [node name="Router12" parent="NetworkGraph" unique_id=87479911 instance=ExtResource("3_la5aw")]
 position = Vector2(-992, 34)
-hint_label = NodePath("../Router5/HintLabel")
+hint_label = NodePath("HintLabel")
 key_identifier = &"r12"
 connections = Array[NodePath]([NodePath("../Router11"), NodePath("../Router5")])
 
@@ -573,7 +574,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_0rvqm")
+curve = SubResource("Curve2D_hmxt8")
 
 [node name="Body" parent="MovingPlatform" index="1"]
 collision_layer = 9
@@ -664,6 +665,9 @@ position = Vector2(-2783, 4)
 
 [node name="ClockInPoint" parent="." unique_id=750564692 instance=ExtResource("18_owtu7")]
 position = Vector2(-990, 1910)
+
+[node name="RouterWorkbench" parent="." unique_id=631205236 instance=ExtResource("router_workbench")]
+position = Vector2(-2571, 1)
 
 [node name="MessageBoard" type="Node" parent="." unique_id=649108590]
 script = ExtResource("19_owtu7")

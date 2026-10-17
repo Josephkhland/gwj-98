@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://components/modules/network/minigame/DirectedRepairMinigame.tscn" id="base"]
+[ext_resource type="Script" path="res://levels/tutorial/tutorial_repair.gd" id="script"]
+
+[node name="TutorialRepair" instance=ExtResource("base")]
+layer = 30
+script = ExtResource("script")

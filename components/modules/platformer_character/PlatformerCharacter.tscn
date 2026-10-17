@@ -159,6 +159,7 @@ state_id = 9
 animation = &"slamming"
 allows_charge = false
 allows_attack = false
+allows_spit = true
 
 [node name="RollingBack" type="Node" parent="StateMachine" unique_id=1815242387]
 script = ExtResource("migration_21")

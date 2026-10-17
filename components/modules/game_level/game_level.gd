@@ -31,6 +31,11 @@ const CollisionSurfaceOverlay = preload("res://components/modules/level_geometry
 @export var waking_prompt: String = "Head outside and clock in."
 @export var on_shift_prompt: String = ""
 @export var after_hours_prompt: String = "Shift's over. Head home to bed."
+@export_group("Evening Practice")
+@export_range(0, 10000, 10) var practice_maximum_bonus: int = 500
+@export_range(0, 10000, 10) var practice_minimum_bonus: int = 50
+## Completing within this time awards the maximum. Slower times scale it down.
+@export_range(1, 300, 1) var practice_full_bonus_seconds: float = 15
 @export_group("Nodes (default to conventional child names)")
 @export var day_cycle: DayCycleManager
 @export var lighting: DayCycleLighting2D
@@ -51,6 +56,9 @@ var _begun: bool = false
 var _clock_text: String = ""
 var _minimap_feed: MinimapFeed
 var _collision_surface_overlay: Node2D
+var _practice_stations: Array[InteractionZone] = []
+var evening_practice_completed: bool = false
+var _practice_result: String = ""
 
 func _ready() -> void:
 	if dialogue_progress == null:
@@ -122,6 +130,10 @@ func get_prompt() -> String:
 		Phase.ON_SHIFT:
 			return on_shift_prompt
 		Phase.AFTER_HOURS:
+			if not _practice_stations.is_empty():
+				if not evening_practice_completed:
+					return "Complete the practice table challenge before going to bed."
+				return _practice_result
 			return after_hours_prompt
 	return ""
 
@@ -204,6 +216,9 @@ func _setup_clock() -> void:
 	day_cycle.day_ended.connect(_on_day_ended)
 
 func _set_phase(value: Phase) -> void:
+	if value == Phase.AFTER_HOURS and phase != Phase.AFTER_HOURS:
+		evening_practice_completed = false
+		_practice_result = ""
 	phase = value
 	_refresh_zones()
 	phase_changed.emit(phase)
@@ -211,7 +226,61 @@ func _set_phase(value: Phase) -> void:
 
 func _refresh_zones() -> void:
 	clock_in_point.enabled = phase == Phase.WAKING
-	bed.enabled = phase == Phase.AFTER_HOURS
+	bed.enabled = phase == Phase.AFTER_HOURS and (_practice_stations.is_empty() or evening_practice_completed)
+
+func register_practice_station(station: InteractionZone) -> void:
+	if _practice_stations.has(station):
+		return
+	_practice_stations.append(station)
+	station.connect(&"attempt_finished", _on_practice_finished)
+
+func register_townfolk(character: Node2D) -> void:
+	var award := _on_chat_reaction.bind(character)
+	if not character.is_connected(&"reaction_resolved", award):
+		character.connect(&"reaction_resolved", award)
+
+func _on_chat_reaction(listener: Node2D, accuracy: float, character: Node2D) -> void:
+	if phase != Phase.ON_SHIFT or listener != player or accuracy <= 0:
+		return
+	message_board.award_bonus(roundi(int(character.get("perfect_popup_points")) * clampf(accuracy, 0, 1)))
+
+func practice_bonus_for_time(elapsed_seconds: float) -> int:
+	var maximum := maxi(0, practice_maximum_bonus)
+	var minimum := clampi(practice_minimum_bonus, 0, maximum)
+	var full_bonus_time := maxf(1, practice_full_bonus_seconds)
+	return clampi(roundi(maximum * full_bonus_time / maxf(full_bonus_time, elapsed_seconds)), minimum, maximum)
+
+func _on_practice_finished(success: bool, elapsed_seconds: float) -> void:
+	if phase != Phase.AFTER_HOURS or not success or evening_practice_completed:
+		return
+	evening_practice_completed = true
+	var bonus := practice_bonus_for_time(elapsed_seconds)
+	_practice_result = "Practice complete. Head home to bed, or practice again for no extra points."
+	message_board.award_bonus(bonus)
+	if bonus > 0:
+		_show_practice_bonus(bonus)
+	_refresh_zones()
+	prompt_changed.emit(get_prompt())
+
+func _show_practice_bonus(points: int) -> void:
+	var popup := Label.new()
+	popup.name = "PracticeBonus"
+	popup.text = "+%d" % points
+	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	popup.z_index = 100
+	popup.add_theme_font_size_override("font_size", 24)
+	popup.add_theme_color_override("font_color", Color("ffcc70"))
+	popup.add_theme_color_override("font_outline_color", Color("201c29"))
+	popup.add_theme_constant_override("outline_size", 6)
+	var unshaded := CanvasItemMaterial.new()
+	unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	popup.material = unshaded
+	player.add_child(popup)
+	popup.position = Vector2(-popup.get_minimum_size().x / 2, -84)
+	var animation := popup.create_tween().set_parallel(true)
+	animation.tween_property(popup, "position:y", popup.position.y - 32, 1.6)
+	animation.tween_property(popup, "modulate:a", 0.0, 0.5).set_delay(1.1)
+	animation.chain().tween_callback(popup.queue_free)
 
 func _get_routers() -> Array[SignalNetworkRouter]:
 	var routers: Array[SignalNetworkRouter] = []
@@ -256,7 +325,7 @@ func _on_day_ended(_day: int) -> void:
 	_set_phase(Phase.AFTER_HOURS)
 
 func _on_bed_used(_player: Node2D) -> void:
-	if phase != Phase.AFTER_HOURS:
+	if phase != Phase.AFTER_HOURS or not bed.enabled:
 		return
 	_set_phase(Phase.COMPLETED)
 	var report := build_report()

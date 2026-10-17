@@ -1,0 +1,456 @@
+[gd_scene format=3 uid="uid://dlnwmcasfj8o3"]
+
+[ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="4_e3xsi"]
+[ext_resource type="Script" uid="uid://d3hpgwwtkhogs" path="res://components/modules/townfolk/gold_glitter.gd" id="13_kva73"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/Bed.tscn" id="bed"]
+[ext_resource type="Script" uid="uid://cy11kv75wsgq4" path="res://components/modules/messaging/message_board.gd" id="board"]
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="chain"]
+[ext_resource type="Resource" uid="uid://cp6hforho4gmd" path="res://levels/tutorial/tutorial_chat.tres" id="chat"]
+[ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="clock"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/ClockInPoint.tscn" id="clock_in"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer_profile"]
+[ext_resource type="Texture2D" uid="uid://c2qdplb8xj0sv" path="res://assets/nicoichu/Software_Planet_Geography_Localization_Global_Language_Translation_1.png" id="globe"]
+[ext_resource type="PackedScene" path="res://components/modules/network/core/NetworkGraph.tscn" id="graph"]
+[ext_resource type="Script" uid="uid://djfcup3d8r2sk" path="res://levels/tutorial/tutorial_guide.gd" id="guide"]
+[ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="house"]
+[ext_resource type="PackedScene" path="res://components/ui/gameplay_ui/GameplayUI.tscn" id="hud"]
+[ext_resource type="Script" uid="uid://v2um07t4pmmb" path="res://levels/tutorial/tutorial.gd" id="level"]
+[ext_resource type="PackedScene" path="res://components/ui/pause_menu/PauseMenu.tscn" id="pause"]
+[ext_resource type="Script" uid="uid://cpd2q3rbxk16o" path="res://levels/tutorial/tutorial_pause_menu.gd" id="pause_script"]
+[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="player"]
+[ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="router"]
+[ext_resource type="Resource" uid="uid://dphcw6xojj00x" path="res://levels/tutorial/tutorial_shift_schedule.tres" id="schedule"]
+[ext_resource type="Resource" uid="uid://lp3twd1qlbyv" path="res://levels/tutorial/tutorial_script.tres" id="script_lines"]
+[ext_resource type="Script" uid="uid://cbgxf6w5xqlm7" path="res://components/modules/level_geometry/solid_shape_2d.gd" id="solid"]
+[ext_resource type="Resource" uid="uid://csnyjngut3mlo" path="res://resources/character_profiles/squirrel_character_profile.tres" id="squirrel_profile"]
+[ext_resource type="PackedScene" path="res://components/ui/day_summary/DaySummary.tscn" id="summary"]
+[ext_resource type="PackedScene" path="res://components/modules/townfolk/TownfolkCharacter.tscn" id="townfolk"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="workbench"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o7vpn"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4gw6b"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e3xsi"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kva73"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lsob2"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RectangleShape2D" id="ButtonShape"]
+size = Vector2(34, 80)
+
+[node name="Tutorial" type="Node2D" unique_id=15172859 node_paths=PackedStringArray("player_spawn")]
+script = ExtResource("level")
+script_lines = ExtResource("script_lines")
+practice_schedule = ExtResource("schedule")
+level_title = "Tutorial"
+player_spawn = NodePath("TutorialMarkers/Checkpoints/Start")
+
+[node name="TutorialMarkers" type="Node2D" parent="." unique_id=1549414239]
+
+[node name="GuideStops" type="Node2D" parent="TutorialMarkers" unique_id=464631337]
+
+[node name="Introduction" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=694642232]
+position = Vector2(380, 630)
+
+[node name="FirstRouter" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=74651739]
+position = Vector2(1090, 630)
+
+[node name="NetworkInspector" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=649946796]
+position = Vector2(1550, 630)
+
+[node name="OffRouter" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=1603938459]
+position = Vector2(2020, 630)
+
+[node name="Bridge" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=1478174038]
+position = Vector2(2300, 630)
+
+[node name="Recoil" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=1533025143]
+position = Vector2(3000, 630)
+
+[node name="LowerPath" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=1031948191]
+position = Vector2(3150, 945)
+
+[node name="NetworkRoom" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=828924178]
+position = Vector2(3450, 1330)
+
+[node name="WorkingShift" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=349956739]
+position = Vector2(3550, 1330)
+
+[node name="EveningPractice" type="Marker2D" parent="TutorialMarkers/GuideStops" unique_id=921544766]
+position = Vector2(3650, 1330)
+
+[node name="Checkpoints" type="Node2D" parent="TutorialMarkers" unique_id=364593641]
+
+[node name="Start" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=446535085]
+position = Vector2(100, 630)
+
+[node name="FirstWall" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=725328749]
+position = Vector2(940, 630)
+
+[node name="Bridge" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=173371083]
+position = Vector2(2300, 630)
+
+[node name="Recoil" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=1309936056]
+position = Vector2(3000, 630)
+
+[node name="LowerPath" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=676132690]
+position = Vector2(3050, 940)
+
+[node name="NetworkRoom" type="Marker2D" parent="TutorialMarkers/Checkpoints" unique_id=1272164106]
+position = Vector2(3300, 1330)
+
+[node name="EndRoom" type="Node2D" parent="TutorialMarkers" unique_id=1489438338]
+
+[node name="ClockIn" type="Marker2D" parent="TutorialMarkers/EndRoom" unique_id=728515540]
+position = Vector2(3761, 1327)
+
+[node name="PracticeTable" type="Marker2D" parent="TutorialMarkers/EndRoom" unique_id=2071846027]
+position = Vector2(4263, 1334)
+
+[node name="Bed" type="Marker2D" parent="TutorialMarkers/EndRoom" unique_id=253599391]
+position = Vector2(4390, 1333)
+
+[node name="WorldTargets" type="Node2D" parent="TutorialMarkers" unique_id=1154404417]
+
+[node name="IntroductionTrigger" type="Marker2D" parent="TutorialMarkers/WorldTargets" unique_id=1340007906]
+position = Vector2(180, 630)
+
+[node name="LowerPathHint" type="Marker2D" parent="TutorialMarkers/WorldTargets" unique_id=1583135636]
+position = Vector2(3050, 960)
+
+[node name="SlamHint" type="Marker2D" parent="TutorialMarkers/WorldTargets" unique_id=1140350964]
+position = Vector2(3100, 980)
+
+[node name="LoweredBridge" type="Marker2D" parent="TutorialMarkers/WorldTargets" unique_id=228585340]
+position = Vector2(2575, 672)
+
+[node name="TownBackground" parent="." unique_id=1201888540 instance=ExtResource("4_e3xsi")]
+visible = false
+
+[node name="DayCycleManager" parent="." unique_id=1239775042 instance=ExtResource("clock")]
+day_start_time = "08:00"
+day_end_time = "20:00"
+real_minutes_per_day = 0.666666666667
+repeat_days = false
+
+[node name="MessageBoard" type="Node" parent="." unique_id=1766302039]
+script = ExtResource("board")
+
+[node name="PlatformerCharacter" parent="." unique_id=1236965410 instance=ExtResource("player")]
+position = Vector2(100, 630)
+
+[node name="Camera2D" type="Camera2D" parent="PlatformerCharacter" unique_id=78219298]
+position = Vector2(170, -180)
+limit_left = -240
+limit_top = -200
+limit_right = 4850
+limit_bottom = 1650
+position_smoothing_enabled = true
+
+[node name="Squirrel" parent="." unique_id=310769594 instance=ExtResource("townfolk")]
+visible = false
+position = Vector2(380, 630)
+script = ExtResource("guide")
+tutorial_syllable_seconds = 0.22
+tutorial_punctuation_pause = 0.25
+tutorial_reading_hold = 1.5
+reveal_action = &"tutorial_reveal"
+character_profile = ExtResource("squirrel_profile")
+dialogue_chains = Array[ExtResource("chain")]([ExtResource("chat")])
+interaction_enabled = false
+interaction_radius = 130.0
+hearing_range = 2000.0
+reactions_enabled = false
+
+[node name="BubbleAnchor" parent="Squirrel" index="2"]
+position = Vector2(90, -120)
+
+[node name="DialogueBubble" parent="Squirrel" index="5"]
+bubble_size = Vector2(520, 180)
+
+[node name="Text" parent="Squirrel/DialogueBubble" index="0"]
+texture_filter = 1
+offset_left = -236.0
+offset_top = -160.0
+offset_right = 236.0
+offset_bottom = -20.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+custom_effects = [SubResource("RichTextEffect_o7vpn"), SubResource("RichTextEffect_4gw6b"), SubResource("RichTextEffect_e3xsi"), SubResource("RichTextEffect_kva73"), SubResource("RichTextEffect_lsob2")]
+
+[node name="Popup" parent="Squirrel/DialogueBubble" index="1"]
+visible = false
+
+[node name="InteractionHint" parent="Squirrel" index="7"]
+texture_filter = 1
+autowrap_mode = 0
+
+[node name="Name" type="Label" parent="Squirrel" unique_id=631438210]
+offset_left = -90.0
+offset_top = 5.0
+offset_right = 100.0
+text = "Mr. Pipsqueak"
+horizontal_alignment = 1
+
+[node name="ClockInPoint" parent="." unique_id=896012887 instance=ExtResource("clock_in")]
+visible = false
+position = Vector2(3750, 1315)
+enabled = false
+
+[node name="Bed" parent="." unique_id=1680398206 instance=ExtResource("bed")]
+visible = false
+position = Vector2(4000, 1315)
+enabled = false
+
+[node name="RouterWorkbench" parent="." unique_id=1811738377 instance=ExtResource("workbench")]
+visible = false
+position = Vector2(3850, 1315)
+active_phases = Array[int]([])
+required_before_sleep = false
+enabled = false
+
+[node name="SpitButton" type="StaticBody2D" parent="." unique_id=1434102298]
+position = Vector2(2800, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpitButton" unique_id=114664672]
+shape = SubResource("ButtonShape")
+
+[node name="Switch" type="Polygon2D" parent="SpitButton" unique_id=2029260366]
+color = Color(1, 0.35, 0.38, 1)
+polygon = PackedVector2Array(-17, -40, 17, -40, 17, 40, -17, 40)
+
+[node name="Label" type="Label" parent="SpitButton" unique_id=847706632]
+offset_left = -55.0
+offset_top = -78.0
+text = "BRIDGE SWITCH"
+
+[node name="Geometry" type="Node2D" parent="." unique_id=575266046]
+
+[node name="LessonFloor" type="StaticBody2D" parent="Geometry" unique_id=457761816]
+position = Vector2(1150, 700)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/LessonFloor" unique_id=1304247243]
+polygon = PackedVector2Array(-1250, -40, 1250, -40, 1250, 40, -1250, 40)
+
+[node name="LeftBoundary" type="StaticBody2D" parent="Geometry" unique_id=497517691]
+position = Vector2(-80, 450)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/LeftBoundary" unique_id=1249131249]
+polygon = PackedVector2Array(-20, -250, 20, -250, 20, 250, -20, 250)
+
+[node name="JumpWall" type="StaticBody2D" parent="Geometry" unique_id=885307643]
+position = Vector2(660, 590)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/JumpWall" unique_id=1569868772]
+polygon = PackedVector2Array(-25, -70, 25, -70, 25, 70, -25, 70)
+
+[node name="Bridge" type="StaticBody2D" parent="Geometry" unique_id=1721284517]
+position = Vector2(2575, 300)
+rotation = -1.5707964
+script = ExtResource("solid")
+fill_color = Color(0.68, 0.53, 0.32, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/Bridge" unique_id=742141407]
+polygon = PackedVector2Array(-175, -12, 175, -12, 175, 12, -175, 12)
+
+[node name="FarBank" type="StaticBody2D" parent="Geometry" unique_id=395519876]
+position = Vector2(2995, 700)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/FarBank" unique_id=2120970434]
+polygon = PackedVector2Array(-220, -40, 220, -40, 220, 40, -220, 40)
+
+[node name="RecoilWall" type="StaticBody2D" parent="Geometry" unique_id=122585358]
+position = Vector2(3160, 565)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/RecoilWall" unique_id=349056333]
+polygon = PackedVector2Array(-22.5, -95, 22.5, -95, 22.5, 95, -22.5, 95)
+
+[node name="WoodFloor" type="StaticBody2D" parent="Geometry" unique_id=1510895378]
+position = Vector2(3100, 992)
+script = ExtResource("solid")
+fill_color = Color(0.68, 0.43, 0.23, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/WoodFloor" unique_id=702508741]
+polygon = PackedVector2Array(-210, -12, 210, -12, 210, 12, -210, 12)
+
+[node name="NetworkFloor" type="StaticBody2D" parent="Geometry" unique_id=469927775]
+position = Vector2(3550, 1410)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/NetworkFloor" unique_id=790059932]
+polygon = PackedVector2Array(-1150, -50, 1150, -50, 1150, 50, -1150, 50)
+
+[node name="NetworkLeft" type="StaticBody2D" parent="Geometry" unique_id=581945854]
+position = Vector2(2440, 1200)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/NetworkLeft" unique_id=651572964]
+polygon = PackedVector2Array(-25, -165, 25, -165, 25, 165, -25, 165)
+
+[node name="NetworkRight" type="StaticBody2D" parent="Geometry" unique_id=471449679]
+position = Vector2(4680, 1200)
+script = ExtResource("solid")
+fill_color = Color(0.22, 0.31, 0.34, 1)
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/NetworkRight" unique_id=807880898]
+polygon = PackedVector2Array(-25, -165, 25, -165, 25, 165, -25, 165)
+
+[node name="GatewayStep" type="StaticBody2D" parent="Geometry" unique_id=1987931028]
+position = Vector2(3740, 1270)
+script = ExtResource("solid")
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/GatewayStep" unique_id=897529240]
+polygon = PackedVector2Array(-80, -10, 24, -11, 21, -107, 76, -108, 80, 10, -80, 10)
+
+[node name="GatewayDeck" type="StaticBody2D" parent="Geometry" unique_id=535832018]
+position = Vector2(3520, 1200)
+script = ExtResource("solid")
+outline_width = 2.0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Geometry/GatewayDeck" unique_id=1003162145]
+position = Vector2(0, -157.00008)
+scale = Vector2(1, 2.6250026)
+polygon = PackedVector2Array(-100, -10, 100, -10, 100, 10, -0.8022461, 10, -100, 10)
+
+[node name="NetworkGraph" parent="." unique_id=2010452251 instance=ExtResource("graph")]
+
+[node name="FirstRouter" parent="NetworkGraph" unique_id=1630887757 instance=ExtResource("router")]
+position = Vector2(1050, 632)
+key_identifier = &"first_router"
+display_name = "FirstRouter"
+
+[node name="SecondRouter" parent="NetworkGraph" unique_id=1537850794 instance=ExtResource("router")]
+position = Vector2(1530, 632)
+state = 0
+key_identifier = &"second_router"
+display_name = "SecondRouter"
+
+[node name="OffRouter" parent="NetworkGraph" unique_id=1126577428 instance=ExtResource("router")]
+position = Vector2(2000, 632)
+key_identifier = &"off_router"
+display_name = "OffRouter"
+
+[node name="Centre" parent="NetworkGraph" unique_id=112598161 instance=ExtResource("router")]
+position = Vector2(3700, 1218)
+state = 0
+key_identifier = &"centre"
+display_name = "Centre"
+connections = Array[NodePath]([NodePath("../RouterA"), NodePath("../RouterB"), NodePath("../GatewayRouter")])
+
+[node name="RouterA" parent="NetworkGraph" unique_id=1493577700 instance=ExtResource("router")]
+position = Vector2(2960, 1320)
+state = 0
+key_identifier = &"router_a"
+display_name = "RouterA"
+connections = Array[NodePath]([NodePath("../HouseA")])
+
+[node name="RouterB" parent="NetworkGraph" unique_id=2089831817 instance=ExtResource("router")]
+position = Vector2(4070, 1320)
+state = 0
+key_identifier = &"router_b"
+display_name = "RouterB"
+connections = Array[NodePath]([NodePath("../HouseB")])
+
+[node name="GatewayRouter" parent="NetworkGraph" unique_id=1960207402 instance=ExtResource("router")]
+position = Vector2(3518, 987)
+state = 0
+key_identifier = &"gateway_router"
+display_name = "GatewayRouter"
+connections = Array[NodePath]([NodePath("../Internet")])
+
+[node name="HouseA" parent="NetworkGraph" unique_id=322502840 instance=ExtResource("house")]
+position = Vector2(2770, 1310)
+character_profile = ExtResource("squirrel_profile")
+key_identifier = &"tutorial_a"
+display_name = "HouseA"
+
+[node name="Label" type="Label" parent="NetworkGraph/HouseA" unique_id=1793827407]
+offset_left = -55.0
+offset_top = -48.0
+text = "Mr. Pipsqueak"
+
+[node name="HouseB" parent="NetworkGraph" unique_id=1569711946 instance=ExtResource("house")]
+position = Vector2(4240, 1310)
+character_profile = ExtResource("deer_profile")
+key_identifier = &"tutorial_b"
+display_name = "HouseB"
+
+[node name="Label" type="Label" parent="NetworkGraph/HouseB" unique_id=1549372923]
+offset_left = -55.0
+offset_top = -48.0
+text = "Lady Stagborn"
+
+[node name="Internet" parent="NetworkGraph" unique_id=1943640421 instance=ExtResource("house")]
+position = Vector2(3519, 825)
+internet_gateway = true
+key_identifier = &"tutorial_internet"
+display_name = "Internet"
+
+[node name="Label" type="Label" parent="NetworkGraph/Internet" unique_id=1801481144]
+offset_left = -59.0
+offset_top = 101.0
+offset_right = 76.0
+offset_bottom = 149.0
+text = "Internet Gateway"
+
+[node name="GameplayUI" parent="." unique_id=1656619283 instance=ExtResource("hud")]
+
+[node name="PauseMenu" parent="." unique_id=533530027 instance=ExtResource("pause")]
+visible = false
+script = ExtResource("pause_script")
+
+[node name="DaySummary" parent="." unique_id=510736551 instance=ExtResource("summary")]
+visible = false
+
+[node name="GuideOverlay" type="CanvasLayer" parent="." unique_id=1369307124]
+layer = 35
+
+[node name="TutorialOverlay" type="CanvasLayer" parent="." unique_id=418315057]
+layer = 36
+
+[node name="GatewayIcon" type="TextureRect" parent="TutorialOverlay" unique_id=456398192]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -330.0
+offset_top = 164.0
+offset_right = -278.0
+offset_bottom = 216.0
+grow_horizontal = 0
+mouse_filter = 2
+texture = ExtResource("globe")
+expand_mode = 1
+stretch_mode = 5
+
+[editable path="Squirrel"]

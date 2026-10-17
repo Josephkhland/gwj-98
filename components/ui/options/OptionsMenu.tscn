@@ -1,0 +1,122 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/options/options_menu.gd" id="script"]
+[ext_resource type="Script" path="res://components/ui/audio_options/audio_options.gd" id="audio"]
+[ext_resource type="PackedScene" path="res://components/ui/key_bindings/KeyBindingsMenu.tscn" id="bindings"]
+
+[sub_resource type="Theme" id="Theme"]
+default_font_size = 22
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.065, 0.09, 0.14, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_left = 18
+corner_radius_bottom_right = 18
+
+[node name="OptionsMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 80
+script = ExtResource("script")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.01, 0.02, 0.04, 0.9)
+
+[node name="Margin" type="MarginContainer" parent="."]
+theme = SubResource("Theme")
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+
+[node name="Panel" type="PanelContainer" parent="Margin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Panel")
+
+[node name="Padding" type="MarginContainer" parent="Margin/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Column" type="VBoxContainer" parent="Margin/Panel/Padding"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Margin/Panel/Padding/Column"]
+layout_mode = 2
+text = "Options"
+theme_override_font_sizes/font_size = 36
+
+[node name="Tabs" type="TabContainer" parent="Margin/Panel/Padding/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Sound" type="MarginContainer" parent="Margin/Panel/Padding/Column/Tabs"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_bottom = 28
+
+[node name="AudioOptions" type="VBoxContainer" parent="Margin/Panel/Padding/Column/Tabs/Sound"]
+layout_mode = 2
+theme_override_constants/separation = 24
+script = ExtResource("audio")
+
+[node name="Bindings" parent="Margin/Panel/Padding/Column/Tabs" instance=ExtResource("bindings")]
+unique_name_in_owner = true
+layout_mode = 2
+embedded = true
+
+[node name="Network Colors" type="MarginContainer" parent="Margin/Panel/Padding/Column/Tabs"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_bottom = 28
+
+[node name="Column" type="VBoxContainer" parent="Margin/Panel/Padding/Column/Tabs/Network Colors"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+layout_mode = 2
+text = "Network accessibility"
+theme_override_font_sizes/font_size = 28
+
+[node name="Description" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+layout_mode = 2
+text = "Choose the colors used for active and broken routers and links on the minimap."
+autowrap_mode = 3
+
+[node name="NetworkPalette" type="OptionButton" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Preview" type="HBoxContainer" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="ActivePreview" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column/Preview"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "●  Active"
+
+[node name="BrokenPreview" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column/Preview"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "●  Broken"
+
+[node name="Back" type="Button" parent="Margin/Panel/Padding/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Back"

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dg7ne581ojc8n"
+path="res://.godot/imported/Dear - i.mp3-02cb7ea0e7e272d346ef40e8e7523ff4.mp3str"
+
+[deps]
+
+source_file="res://assets/cabalcrow/Dear - i.mp3"
+dest_files=["res://.godot/imported/Dear - i.mp3-02cb7ea0e7e272d346ef40e8e7523ff4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -4,6 +4,11 @@ signal completed(success: bool)
 
 @export_range(0.0, 2.0) var hand_approach_duration: float = 0.25
 @export var hand_offscreen_margin: Vector2 = Vector2(60, 60)
+@export var powered: bool = true
+@export var broken: bool = true
+@export_range(0.0, 10.0, 0.1) var power_blink_seconds: float = 2.0
+@onready var _power_light: Control = $UI/PowerPanel/Margin/Column/Light
+@onready var _power_status: Label = $UI/PowerPanel/Margin/Column/Status
 @onready var _ui: Control = $UI
 @onready var _button: TextureButton = $UI/ActionButton
 @onready var _hand: Node2D = $UI/Hand
@@ -18,6 +23,7 @@ signal completed(success: bool)
 var _approach: Tween
 var _pressing: bool = false
 var _finished: bool = false
+var _power_blink_left: float = 0.0
 
 func _ready() -> void:
 	_bubble_fallback.visible = _bubble_texture.texture == null
@@ -28,8 +34,27 @@ func _ready() -> void:
 	_aim_at(_ui.get_local_mouse_position())
 	_animations.play(&"idle")
 	_button.grab_focus()
+	_refresh_power_indicator()
 
-func _process(_delta: float) -> void:
+func configure_router(is_powered: bool, is_broken: bool) -> void:
+	powered = is_powered
+	broken = is_broken
+	_power_blink_left = 0
+	if is_node_ready():
+		_refresh_power_indicator()
+
+func _refresh_power_indicator() -> void:
+	_power_light.on = powered
+	_power_light.blinking = powered and not broken and _power_blink_left > 0
+	_power_light.color_on = Color("ef665d") if broken else Color("66e680")
+	_power_light.queue_redraw()
+	_power_status.text = "POWER OFF" if not powered else ("BROKEN" if broken else "ONLINE")
+
+func _process(delta: float) -> void:
+	if _power_blink_left > 0:
+		_power_blink_left = maxf(0, _power_blink_left - delta)
+		if _power_blink_left == 0:
+			_refresh_power_indicator()
 	if not _pressing and not _finished:
 		_aim_at(_ui.get_local_mouse_position())
 
@@ -73,12 +98,24 @@ func _play_press() -> void:
 
 func _on_animation_finished(animation_name: StringName) -> void:
 	if animation_name == &"press" and _pressing:
-		finish(true)
+		powered = not powered
+		_power_blink_left = power_blink_seconds if powered else 0.0
+		if powered:
+			broken = false
+		_pressing = false
+		_button.disabled = false
+		_button.texture_disabled = _button.texture_normal
+		_animations.play(&"idle")
+		_on_ui_resized()
+		_refresh_power_indicator()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel") and not event.is_echo():
 		get_viewport().set_input_as_handled()
-		finish(false)
+		_exit_inspection()
+
+func _exit_inspection() -> void:
+	finish(powered and not broken)
 
 func finish(success: bool) -> void:
 	if _finished:

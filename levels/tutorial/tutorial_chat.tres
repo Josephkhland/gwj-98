@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TownfolkDialogueChain" format=3 uid="uid://cp6hforho4gmd"]
+
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="chain"]
+[ext_resource type="Script" uid="uid://d2kogc0f3yh7e" path="res://components/modules/townfolk/dialogue_line.gd" id="line"]
+
+[sub_resource type="Resource" id="Line38"]
+script = ExtResource("line")
+text = "See how the words are turning pink slowly as I am speaking? Press [action:townfolk_react] when a word is fully pink to show how careful you are listening. It earns you points!"
+
+[sub_resource type="Resource" id="Line39"]
+script = ExtResource("line")
+text = "Also successful signal transmissions earn you points, so don't let yapping stop you from fixing the routers!"
+
+[resource]
+script = ExtResource("chain")
+chain_id = &"tutorial_listening"
+lines = Array[ExtResource("line")]([SubResource("Line38"), SubResource("Line39")])
+initially_unlocked = false

@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="MessageNotification" format=3]
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://c5ll2mtv4mlrh"]
 
-[ext_resource type="Script" path="res://components/modules/messaging/message_notification.gd" id="message"]
-[ext_resource type="Resource" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="2_aev31"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
 [ext_resource type="Resource" path="res://resources/character_profiles/internet_character_profile.tres" id="remote"]
 
 [resource]
 resource_name = "Deer 01"
 script = ExtResource("message")
-hour = 8
-minute = 36
 message_id = &"deer_01"
 from_house = &"deer_house"
 route = 1
 text = "Lady Stagborn going Live!"
 sender = ExtResource("deer")
 recipient = ExtResource("remote")
+minute = 0

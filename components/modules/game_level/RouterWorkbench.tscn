@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/modules/game_level/minigame_station.gd" id="1"]
+[ext_resource type="PackedScene" path="res://components/modules/frog_router_minigame/FrogRouterMinigame.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://assets/nicoichu/Software_Network_Router_WiFi_Wireless_Internet_Ethernet_Connection.png" id="3"]
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
+
+[sub_resource type="RectangleShape2D" id="Shape"]
+size = Vector2(72, 64)
+
+[node name="RouterWorkbench" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1")
+minigame_scene = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Placeholder" type="Polygon2D" parent="."]
+color = Color(0.25, 0.7, 0.65, 1)
+polygon = PackedVector2Array(-32, 4, 32, 4, 32, 10, 26, 10, 26, 32, 20, 32, 20, 10, -20, 10, -20, 32, -26, 32, -26, 10, -32, 10)
+
+[node name="Router" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("3")
+
+[node name="HintLabel" type="RichTextLabel" parent="."]
+z_index = 10
+offset_left = -110.0
+offset_top = -64.0
+offset_right = 110.0
+offset_bottom = -41.0
+text = "Press [action:interact] to tinker"
+horizontal_alignment = 1
+script = ExtResource("input_hints")
+fit_content = true
+scroll_active = false

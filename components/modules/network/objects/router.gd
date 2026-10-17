@@ -3,6 +3,8 @@ class_name SignalNetworkRouter
 extends SignalNetworkVertex
 
 enum State { OK, BROKEN }
+## Off and faulty routers both use BROKEN in the network; retain power for inspection.
+@export var powered: bool = true
 signal state_changed(previous_state: State, new_state: State)
 signal repair_started(player: Node2D)
 signal repair_finished(success: bool)
@@ -15,12 +17,15 @@ signal repair_requested(player: Node2D)
 			return
 		var previous := state
 		state = value
+		if state == State.OK:
+			powered = true
 		_refresh_visuals()
 		state_changed.emit(previous, state)
 		availability_changed.emit()
 @export_range(1.0, 1000.0) var interaction_radius: float = 80.0
 @export var player_group: StringName = &"players"
 @export var interact_action: StringName = &"interact"
+@export var inspect_working_routers: bool = true
 ## Optional interaction hint. Defaults to a direct child named HintLabel.
 @export_node_path("CanvasItem") var hint_label: NodePath = ^"HintLabel"
 ## Nodes may be Sprite2D, AnimatedSprite2D, or any other CanvasItem.
@@ -40,6 +45,8 @@ var _awaiting_external_repair: bool = false
 var _repair_suspension: RepairSuspension
 
 func _ready() -> void:
+	if not powered:
+		state = State.BROKEN
 	_refresh_visuals()
 	set_process_unhandled_input(not Engine.is_editor_hint())
 	set_process(not Engine.is_editor_hint())
@@ -51,7 +58,7 @@ func is_available() -> bool:
 	return state == State.OK
 
 func can_interact(player: Node2D) -> bool:
-	return is_instance_valid(player) and player.is_in_group(player_group) and state == State.BROKEN and not is_instance_valid(_minigame) and not _awaiting_external_repair and global_position.distance_to(player.global_position) <= interaction_radius
+	return is_instance_valid(player) and player.is_in_group(player_group) and (state == State.BROKEN or inspect_working_routers) and not is_instance_valid(_minigame) and not _awaiting_external_repair and global_position.distance_to(player.global_position) <= interaction_radius
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not InputMap.has_action(interact_action) or not event.is_action_pressed(interact_action) or event.is_echo():
@@ -80,12 +87,15 @@ func interact(player: Node2D) -> bool:
 	return true
 
 ## Completes a repair session handed out through repair_requested.
-func resolve_repair(success: bool) -> void:
+func resolve_repair(success: bool, final_power: Variant = null) -> void:
 	if not _awaiting_external_repair:
 		return
 	_awaiting_external_repair = false
 	var repaired := success and is_instance_valid(_player) and state == State.BROKEN
-	if repaired:
+	if final_power != null and is_instance_valid(_player):
+		powered = bool(final_power)
+		state = State.OK if success and powered else State.BROKEN
+	elif repaired:
 		state = State.OK
 	_player = null
 	repair_finished.emit(repaired)
@@ -99,6 +109,7 @@ func open_local_minigame(player: Node2D) -> bool:
 		return false
 	_minigame = instance
 	_player = player
+	configure_minigame(instance)
 	instance.add_to_group(&"signal_network_repair_session")
 	instance.connect("completed", _complete_repair, CONNECT_ONE_SHOT)
 	instance.tree_exiting.connect(_minigame_closed, CONNECT_ONE_SHOT)
@@ -109,6 +120,10 @@ func open_local_minigame(player: Node2D) -> bool:
 		repair_started.emit(player)
 	return true
 
+func configure_minigame(instance: Node) -> void:
+	if instance.has_method(&"configure_router"):
+		instance.call(&"configure_router", powered, state == State.BROKEN)
+
 func _complete_repair(success: bool) -> void:
 	if not is_instance_valid(_minigame):
 		return
@@ -116,7 +131,10 @@ func _complete_repair(success: bool) -> void:
 	_minigame = null
 	_release_suspension()
 	var repaired := success and is_instance_valid(_player) and state == State.BROKEN
-	if repaired:
+	if instance.has_method(&"configure_router") and is_instance_valid(_player):
+		powered = bool(instance.get("powered"))
+		state = State.OK if success and powered else State.BROKEN
+	elif repaired:
 		state = State.OK
 	instance.queue_free()
 	_player = null
@@ -158,9 +176,9 @@ func _refresh_hint() -> void:
 	if hint == null:
 		return
 	var show_hint := false
-	if not Engine.is_editor_hint() and state == State.BROKEN:
+	if not Engine.is_editor_hint() and InputMap.has_action(interact_action) and not get_tree().has_group(&"signal_network_repair_session"):
 		for candidate in get_tree().get_nodes_in_group(player_group):
-			if candidate is Node2D and global_position.distance_squared_to(candidate.global_position) <= interaction_radius * interaction_radius:
+			if candidate is Node2D and can_interact(candidate):
 				show_hint = true
 				break
 	hint.visible = show_hint

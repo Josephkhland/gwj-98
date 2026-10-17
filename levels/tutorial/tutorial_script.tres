@@ -1,0 +1,245 @@
+[gd_resource type="Resource" script_class="TownfolkDialogueChain" format=3 uid="uid://lp3twd1qlbyv"]
+
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="chain"]
+[ext_resource type="Script" uid="uid://d2kogc0f3yh7e" path="res://components/modules/townfolk/dialogue_line.gd" id="line"]
+
+[sub_resource type="Resource" id="Line_1"]
+resource_name = "1"
+script = ExtResource("line")
+text = "Goodmorning Tad! Are you ready to become an engineer? I am planning to retire and start herding Silk Worms."
+
+[sub_resource type="Resource" id="Line_2"]
+resource_name = "2"
+script = ExtResource("line")
+text = "Yes. It's very sudden. I understand you were just stretching, but it's really important and you are the only one that can do it."
+
+[sub_resource type="Resource" id="Line_3"]
+resource_name = "3"
+script = ExtResource("line")
+text = "Good good... In my line of trade, having questions is the healthy thing. Why I selected you? Lad, I've seen your mad gaming skills."
+
+[sub_resource type="Resource" id="Line_4"]
+resource_name = "4"
+script = ExtResource("line")
+text = "Okay... Now let's get to the basics. First press [action:move_left] or [action:move_right] to start moving. If your mom changed these buttons at birth- that's not my problem. "
+
+[sub_resource type="Resource" id="Line_5"]
+resource_name = "5"
+script = ExtResource("line")
+text = "Good goood... Now as we all know. You are a FROG! Press and Hold [action:jump] to start clenching your cheeks. You can use either of the shown jump controls! "
+
+[sub_resource type="Resource" id="Line_6"]
+resource_name = "6"
+script = ExtResource("line")
+text = "Aim with your mouse and when ready, release the button to LEAP. Be careful, if you keep CHARGING for TOO LONG something BAD might happen"
+
+[sub_resource type="Resource" id="Line_7"]
+resource_name = "7"
+script = ExtResource("line")
+text = "Good Good... Now follow me out here."
+
+[sub_resource type="Resource" id="Line_8"]
+resource_name = "8"
+script = ExtResource("line")
+text = "This is a router. It's currently BROKEN and requires fixing."
+
+[sub_resource type="Resource" id="Line_9"]
+resource_name = "9"
+script = ExtResource("line")
+text = "Don't just stare at me! Get next to it and press [action:interact] to inspect. "
+
+[sub_resource type="Resource" id="Line_10"]
+resource_name = "10"
+script = ExtResource("line")
+text = "All you got to do is turn it ON and OFF again. The routers have this big red button just for that purpose. One Click and it goes off. Two clicks and it goes on again!"
+
+[sub_resource type="Resource" id="Line_11"]
+resource_name = "11"
+script = ExtResource("line")
+text = "That was so easy right? Now let's get to the next part"
+
+[sub_resource type="Resource" id="Line_12"]
+resource_name = "12"
+script = ExtResource("line")
+text = "Now grab this. It's a Mcguffin that we use to inspect the NETWORK!"
+
+[sub_resource type="Resource" id="Line_13"]
+resource_name = "13"
+script = ExtResource("line")
+text = "You see, when your house connects to the internet, it actually just gets connected to a big World Wide Web that only exists because all these routers are connected with one another"
+
+[sub_resource type="Resource" id="Line_14"]
+resource_name = "14"
+script = ExtResource("line")
+text = "If a router is down. No SIGNALS may travel through it... Are you still with me?"
+
+[sub_resource type="Resource" id="Line_15"]
+resource_name = "15"
+script = ExtResource("line")
+text = "Good... Good... Let's talk SIGNALS now."
+
+[sub_resource type="Resource" id="Line_16"]
+resource_name = "16"
+script = ExtResource("line")
+text = "So technically A SIGNAL is much like a delivery truck, where the cargo is data."
+
+[sub_resource type="Resource" id="Line_17"]
+resource_name = "17"
+script = ExtResource("line")
+text = "It picks up the goods from your house, drives across the NETWORK and eventually... we hope at least... that it reaches its destination!"
+
+[sub_resource type="Resource" id="Line_18"]
+resource_name = "18"
+script = ExtResource("line")
+text = "Enough- Yapping... as the youth calls it these days. Let's fix this router over here and move on to the next one"
+
+[sub_resource type="Resource" id="Line_19"]
+resource_name = "19"
+script = ExtResource("line")
+text = "Be wary Tad. Sometimes a router might simply be turned off because some dump bird clicking on the power button! Like this one! Fix it!"
+
+[sub_resource type="Resource" id="Line_20"]
+resource_name = "20"
+script = ExtResource("line")
+text = "In cases such as this. It's really important. That you only press the button ONCE!"
+
+[sub_resource type="Resource" id="Line_20_a"]
+resource_name = "20.a"
+script = ExtResource("line")
+text = "If you press it TWICE, you can always just press it again though. It's really not that hard"
+
+[sub_resource type="Resource" id="Line_21"]
+resource_name = "21"
+script = ExtResource("line")
+text = "So on the Network McGuffin as we said, you can see all the routers and their status. If one is down, it will appear with RED. "
+
+[sub_resource type="Resource" id="Line_22"]
+resource_name = "22"
+script = ExtResource("line")
+text = "All connections towards it, will also be RED. At least that's what my master told me. But I see no difference between Red and Green so I hope it's actually true."
+
+[sub_resource type="Resource" id="Line_23"]
+resource_name = "23"
+script = ExtResource("line")
+text = "Yes but you'd prefer another color because this one doesn't grab your attention? I couldn't relate more bro"
+
+[sub_resource type="Resource" id="Line_24"]
+resource_name = "24"
+script = ExtResource("line")
+text = "You may ask your mom for an alternate eyesight experience by pressing [action:ui_cancel] to open the Pause menu and then going over to the options menu."
+
+[sub_resource type="Resource" id="Line_25"]
+resource_name = "25"
+script = ExtResource("line")
+text = "Either way, proceed with fixing everything and meet me at the bridge."
+
+[sub_resource type="Resource" id="Line_26"]
+resource_name = "26"
+script = ExtResource("line")
+text = "See that button over there at the other side? Press [action:spit] to start charging up your Spit. The release it!"
+
+[sub_resource type="Resource" id="Line_27"]
+resource_name = "27"
+script = ExtResource("line")
+text = "Good... Good..."
+
+[sub_resource type="Resource" id="Line_28"]
+resource_name = "28"
+script = ExtResource("line")
+text = "If you are airborne, spitting can help you move horizontally! Just make sure you have charged a bit of spit first."
+
+[sub_resource type="Resource" id="Line_29"]
+resource_name = "29"
+script = ExtResource("line")
+text = "Sometimes you might need to slam! Press [action:slam] while airborne to Slam! It halts your horizontal movement and might also help you break through wood!"
+
+[sub_resource type="Resource" id="Line_30"]
+resource_name = "30"
+script = ExtResource("line")
+text = "Now let's do a field test on Signals."
+
+[sub_resource type="Resource" id="Line_31"]
+resource_name = "31"
+script = ExtResource("line")
+text = "Let's see how this travels across our healthy network..."
+
+[sub_resource type="Resource" id="Line_32"]
+resource_name = "32"
+script = ExtResource("line")
+text = "Interesting right! As a benefit of the job we can also see everything that happens across the NETWORK. Chill up and read through the McGuffin I gave you"
+
+[sub_resource type="Resource" id="Line_33"]
+resource_name = "33"
+script = ExtResource("line")
+text = "Now let's see how an unhealthy network would operate!"
+
+[sub_resource type="Resource" id="Line_34"]
+resource_name = "34"
+script = ExtResource("line")
+text = "Of course a single broken router might not be enough to cause a total system failure."
+
+[sub_resource type="Resource" id="Line_35"]
+resource_name = "35"
+script = ExtResource("line")
+text = "Outsiders all talk through the World Wide Web Gateways. Also broadcasts need to be able to reach any of those Gateways. You can recognize them with this symbol on your McGuffin's network map [Icon used for Gateway]."
+
+[sub_resource type="Resource" id="Line_36"]
+resource_name = "36"
+script = ExtResource("line")
+text = "How about you Clock In there and see how this works in action?"
+
+[sub_resource type="Resource" id="Line_37"]
+resource_name = "37"
+script = ExtResource("line")
+text = "If you encounter someone during your shift, like me you may talk to them with [action:interact]."
+
+[sub_resource type="Resource" id="Line_38"]
+resource_name = "38"
+script = ExtResource("line")
+text = "See how the words are turning pink slowly as I am speaking? Press [action:townfolk_react] when a word is fully pink to show how careful you are listening. It earns you points!"
+
+[sub_resource type="Resource" id="Line_39"]
+resource_name = "39"
+script = ExtResource("line")
+text = "Also successful signal transmissions earn you points, so don't let yapping stop you from fixing the routers!"
+
+[sub_resource type="Resource" id="Line_40"]
+resource_name = "40"
+script = ExtResource("line")
+text = "Before you sleep, one last thing. This is my old practice router. A good engineer keeps their toes nimble, so give it a go every evening!"
+
+[sub_resource type="Resource" id="Line_41"]
+resource_name = "41"
+script = ExtResource("line")
+text = "Its screen shows two waves. The blue one is how the signal should look, the yellow one is what the router is actually doing. Make them match and you're done."
+
+[sub_resource type="Resource" id="Line_42"]
+resource_name = "42"
+script = ExtResource("line")
+text = "Too many or too few bumps? Slide FREQ. Too tall or too flat? Slide AMP. All fuzzy and jittery? Grab the antenna and swing it until the fuzz clears and the bars fill up."
+
+[sub_resource type="Resource" id="Line_43"]
+resource_name = "43"
+script = ExtResource("line")
+text = "If the yellow wave glitches and the ENC light blinks, the encoding is scrambled. Press DEC, read the serial number on the router's plate, find its PIN on your notes with Tab or right-click, and type it in."
+
+[sub_resource type="Resource" id="Line_44"]
+resource_name = "44"
+script = ExtResource("line")
+text = "A dark screen means it's off, so press I/O. A frozen screen with a blinking red ERR light? Turn it off and on again. Works every time!"
+
+[sub_resource type="Resource" id="Line_45"]
+resource_name = "45"
+script = ExtResource("line")
+text = "When the waves line up, it locks in. Go on, Lad, show me those mad gaming skills!"
+
+[sub_resource type="Resource" id="Line_end"]
+resource_name = "end"
+script = ExtResource("line")
+text = "Good...Good... I think you are probably ready to take over! Whenever you are ready to end your day, just go back to your bed and sleep."
+
+[resource]
+script = ExtResource("chain")
+chain_id = &"tutorial_script"
+lines = Array[ExtResource("line")]([SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4"), SubResource("Line_5"), SubResource("Line_6"), SubResource("Line_7"), SubResource("Line_8"), SubResource("Line_9"), SubResource("Line_10"), SubResource("Line_11"), SubResource("Line_12"), SubResource("Line_13"), SubResource("Line_14"), SubResource("Line_15"), SubResource("Line_16"), SubResource("Line_17"), SubResource("Line_18"), SubResource("Line_19"), SubResource("Line_20"), SubResource("Line_20_a"), SubResource("Line_21"), SubResource("Line_22"), SubResource("Line_23"), SubResource("Line_24"), SubResource("Line_25"), SubResource("Line_26"), SubResource("Line_27"), SubResource("Line_28"), SubResource("Line_29"), SubResource("Line_30"), SubResource("Line_31"), SubResource("Line_32"), SubResource("Line_33"), SubResource("Line_34"), SubResource("Line_35"), SubResource("Line_36"), SubResource("Line_37"), SubResource("Line_38"), SubResource("Line_39"), SubResource("Line_40"), SubResource("Line_41"), SubResource("Line_42"), SubResource("Line_43"), SubResource("Line_44"), SubResource("Line_45"), SubResource("Line_end")])
+reactions_enabled = false

@@ -27,6 +27,17 @@ var _tile_cache: Dictionary = {}
 
 func _ready() -> void:
 	clip_contents = true
+	var settings := get_node("/root/AccessibilitySettings")
+	settings.network_colors_changed.connect(_apply_network_colors)
+	_apply_network_colors()
+
+func _apply_network_colors() -> void:
+	var alternate: bool = get_node("/root/AccessibilitySettings").alternate_network_colors
+	router_ok_color = Color("4dd9ff") if alternate else Color("66e680")
+	router_broken_color = Color("ffb347") if alternate else Color("ff5950")
+	link_up_color = router_ok_color
+	link_down_color = Color(router_broken_color, 0.45)
+	queue_redraw()
 
 func _process(_delta: float) -> void:
 	if is_visible_in_tree() and _feed != null:

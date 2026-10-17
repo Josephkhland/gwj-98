@@ -1,5 +1,6 @@
 class_name TownfolkDialogueLine
 extends Resource
+const InputIcons = preload("res://components/ui/input_icons/input_icon_text.gd")
 ## Write normal text; syllable boundaries are estimated automatically.
 ## Optional | marks override a word's automatic split without appearing on screen.
 @export_multiline var text: String = ""
@@ -13,7 +14,7 @@ const ONSETS := ["str", "spr", "scr", "spl", "shr", "thr", "ch", "sh", "th", "ph
 func get_chunks() -> PackedStringArray:
 	var chunks := PackedStringArray()
 	var words := RegEx.new()
-	words.compile("\\s+|[^\\s]+")
+	words.compile("\\[[^\\]\\r\\n]+\\]|\\s+|[^\\s\\[]+|\\[")
 	for match_result in words.search_all(text):
 		var word := match_result.get_string()
 		if word.strip_edges().is_empty():
@@ -21,6 +22,8 @@ func get_chunks() -> PackedStringArray:
 				chunks.append(word)
 			else:
 				chunks[chunks.size() - 1] += word
+		elif InputIcons.is_input_token(word):
+			chunks.append(word)
 		elif word.contains("|"):
 			chunks.append_array(word.split("|", false))
 		else:
@@ -68,6 +71,8 @@ static func _split_word(word: String) -> PackedStringArray:
 	return chunks
 
 static func is_spoken(chunk: String) -> bool:
+	if InputIcons.is_input_token(chunk):
+		return false
 	for character in chunk:
 		if character.to_lower() != character.to_upper() or character.is_valid_int():
 			return true

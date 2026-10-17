@@ -1,0 +1,124 @@
+[gd_resource type="Resource" script_class="DayCycleSchedule" format=3 uid="uid://dphcw6xojj00x"]
+
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="3_bdnyu"]
+[ext_resource type="Resource" uid="uid://cp6hforho4gmd" path="res://levels/tutorial/tutorial_chat.tres" id="chat"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://d300b16yeddsq" path="res://components/modules/day_cycle/day_cycle_notification.gd" id="event"]
+[ext_resource type="Resource" path="res://resources/character_profiles/internet_character_profile.tres" id="internet"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
+[ext_resource type="Script" uid="uid://c3ndjtbdkat6f" path="res://components/modules/day_cycle/day_cycle_schedule.gd" id="schedule"]
+[ext_resource type="Resource" uid="uid://csnyjngut3mlo" path="res://resources/character_profiles/squirrel_character_profile.tres" id="squirrel"]
+
+[sub_resource type="Resource" id="Message1"]
+script = ExtResource("message")
+message_id = &"tutorial_practice_1"
+title = "Talk to Mr. Pipsqueak"
+from_house = &"tutorial_a"
+to_house = &"tutorial_b"
+text = "If you encounter someone during your shift, like me, you may talk to them using your interact control."
+sender = ExtResource("squirrel")
+recipient = ExtResource("deer")
+warning_minutes = 54.0
+expire_minutes = 180.0
+unlock_character = ExtResource("squirrel")
+unlock_chain = ExtResource("chat")
+time_basis = 1
+real_seconds = 3.0
+
+[sub_resource type="Resource" id="Message2"]
+script = ExtResource("message")
+message_id = &"tutorial_practice_2"
+title = "Practice delivery 2"
+from_house = &"tutorial_a"
+to_house = &"tutorial_b"
+text = "Check the minimap: keep a route between our house portraits before this message expires."
+sender = ExtResource("squirrel")
+recipient = ExtResource("deer")
+warning_minutes = 54.0
+expire_minutes = 180.0
+time_basis = 1
+real_seconds = 11.0
+
+[sub_resource type="Resource" id="Message3"]
+script = ExtResource("message")
+message_id = &"tutorial_practice_3"
+title = "Practice delivery 3"
+from_house = &"tutorial_a"
+to_house = &"tutorial_b"
+route = 2
+text = "An outside caller needs any reachable internet gateway to contact a house in town."
+sender = ExtResource("internet")
+recipient = ExtResource("deer")
+warning_minutes = 54.0
+expire_minutes = 180.0
+time_basis = 1
+real_seconds = 19.0
+
+[sub_resource type="Resource" id="Message4"]
+script = ExtResource("message")
+message_id = &"tutorial_practice_4"
+title = "Practice delivery 4"
+from_house = &"tutorial_a"
+to_house = &"tutorial_b"
+route = 1
+text = "A broadcast succeeds when our house can reach any internet gateway."
+sender = ExtResource("squirrel")
+recipient = ExtResource("internet")
+warning_minutes = 54.0
+expire_minutes = 180.0
+time_basis = 1
+real_seconds = 27.0
+
+[sub_resource type="Resource" id="Message5"]
+script = ExtResource("message")
+message_id = &"tutorial_practice_5"
+title = "Practice delivery 5"
+from_house = &"tutorial_a"
+to_house = &"tutorial_b"
+text = "One last local delivery. Fix the red routers along the route!"
+sender = ExtResource("squirrel")
+recipient = ExtResource("deer")
+warning_minutes = 54.0
+expire_minutes = 180.0
+time_basis = 1
+real_seconds = 35.0
+
+[sub_resource type="Resource" id="Outage1"]
+script = ExtResource("event")
+keyword = &"router_break"
+values = {
+"router": &"centre"
+}
+time_basis = 1
+real_seconds = 8.0
+
+[sub_resource type="Resource" id="Outage2"]
+script = ExtResource("event")
+keyword = &"router_break"
+values = {
+"router": &"router_b"
+}
+time_basis = 1
+real_seconds = 16.0
+
+[sub_resource type="Resource" id="Outage3"]
+script = ExtResource("event")
+keyword = &"router_break"
+values = {
+"router": &"gateway_router"
+}
+time_basis = 1
+real_seconds = 24.0
+
+[sub_resource type="Resource" id="Outage4"]
+script = ExtResource("event")
+keyword = &"router_break"
+values = {
+"router": &"router_a"
+}
+time_basis = 1
+real_seconds = 32.0
+
+[resource]
+script = ExtResource("schedule")
+notifications = Array[ExtResource("event")]([SubResource("Message1"), SubResource("Message2"), SubResource("Message3"), SubResource("Message4"), SubResource("Message5"), SubResource("Outage1"), SubResource("Outage2"), SubResource("Outage3"), SubResource("Outage4")])

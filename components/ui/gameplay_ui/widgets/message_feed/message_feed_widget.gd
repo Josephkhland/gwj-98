@@ -16,6 +16,11 @@ const Ribbon = preload("res://components/ui/gameplay_ui/widgets/message_feed/mes
 @export_range(0, 60, 0.5) var minimum_reading_seconds: float = 6
 @export_range(0, 10, 0.1) var reply_spacing_seconds: float = 1.5
 @export_range(1, 60, 1) var reading_characters_per_second: float = 16
+## Space reserved below expanded threads for level-specific HUD guidance.
+@export_range(0, 400, 1) var presentation_bottom_margin: float = 48:
+	set(value):
+		presentation_bottom_margin = value
+		_request_layout()
 var _cards: Dictionary = {}
 var _retired: Dictionary = {}
 var _queue: Array[NetworkMessage] = []
@@ -123,6 +128,12 @@ func reset() -> void:
 
 func get_active_message() -> NetworkMessage:
 	return _active
+
+## Visible expanded-thread bounds in HUD coordinates, including its ribbon.
+func get_presentation_rect() -> Rect2:
+	if not is_node_ready() or not is_visible_in_tree() or not _presentation_column.visible:
+		return Rect2()
+	return _presentation_column.get_global_rect()
 
 func get_ribbon_entry(message: NetworkMessage) -> Ribbon:
 	return _cards[message].panel if _cards.has(message) else null
@@ -317,7 +328,7 @@ func _refresh_layout() -> void:
 	var pending_width := maxf(width, size.x - (presentation_width + 8 if _active != null else 0))
 	_overview.columns = maxi(1, int(floor((pending_width - 16 + 8) / (width + 8))))
 	_overview_scroll.custom_minimum_size.y = minf(pending_max_rows * (slot_height + 8) - 8, _overview.get_combined_minimum_size().y)
-	var available_height := maxf(120, get_viewport_rect().size.y - global_position.y - slot_height - 48)
+	var available_height := maxf(120, get_viewport_rect().size.y - global_position.y - slot_height - presentation_bottom_margin)
 	var expand := clampf(_expansion_elapsed / maxf(0.05, _detail.reveal_seconds), 0, 1) if _stage == Stage.PRESENTING else 1.0
 	_detail_slot.custom_minimum_size.y = minf(available_height, _detail.get_combined_minimum_size().y) * smoothstep(0, 1, expand)
 	_detail_scroll.size = Vector2(presentation_width, _detail_slot.custom_minimum_size.y)

@@ -1,17 +1,18 @@
-[gd_resource type="Resource" script_class="MessageNotification" format=3]
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://iygyg5062a0g"]
 
-[ext_resource type="Script" path="res://components/modules/messaging/message_notification.gd" id="message"]
-[ext_resource type="Resource" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="2_6oqy1"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
 [ext_resource type="Resource" path="res://resources/character_profiles/internet_character_profile.tres" id="remote"]
 
 [resource]
 resource_name = "Deer 09"
 script = ExtResource("message")
-hour = 13
-minute = 24
 message_id = &"deer_09"
 from_house = &"deer_house"
 route = 1
 text = "That's all folks! May your future be bright, as the colors of the night!"
 sender = ExtResource("deer")
 recipient = ExtResource("remote")
+hour = 19
+minute = 45

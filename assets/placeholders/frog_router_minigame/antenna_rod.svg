@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="170" viewBox="0 0 24 170">
+<!-- Foot of the rod is at bottom centre (12,170); the ball centre (12,12) is the grab tip. -->
+<rect x="8" y="12" width="8" height="158" fill="#b8c2bd" stroke="#1f2422" stroke-width="2"/>
+<circle cx="12" cy="12" r="10" fill="#d6452f" stroke="#1f2422" stroke-width="2"/>
+</svg>

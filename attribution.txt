@@ -1,0 +1,11 @@
+|Role|Person|Quote|
+|Programmer|Josephkhland|"I barely slept throughout the Jam!"|
+|Composer|CabalCrow|"I can't believe I had to write a symphony for a jam."|
+|Artist|Sushuu|"Next time I do a game jam, I will definitely get a friend to split assets with!"|
+|Writer|Josephkhland|"This was a surprise to me."|
+|Designer|CabalCrow|"I still can't believe I had to write a symphony for a jam."|
+
+
+# Premade Assets 
+1-bit Pixel Icons - By nikoichu - https://nikoichu.itch.io/pixel-icons
+SimpleKeys - By beamedeighth - https://beamedeighth.itch.io/simplekeys-animated-pixel-keyboard-keys

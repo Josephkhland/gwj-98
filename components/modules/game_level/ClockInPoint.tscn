@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://components/modules/game_level/interaction_zone.gd" id="1"]
 
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
+
 [sub_resource type="RectangleShape2D" id="Shape"]
 size = Vector2(64, 72)
 
@@ -17,11 +19,14 @@ shape = SubResource("Shape")
 color = Color(0.95, 0.6, 0.2, 1)
 polygon = PackedVector2Array(-12, -36, 12, -36, 12, -12, 4, -12, 4, 36, -4, 36, -4, -12, -12, -12)
 
-[node name="HintLabel" type="Label" parent="."]
+[node name="HintLabel" type="RichTextLabel" parent="."]
 z_index = 10
 offset_left = -80.0
 offset_top = -64.0
 offset_right = 80.0
 offset_bottom = -41.0
-text = "Press [S] to clock in"
+text = "Press [action:interact] to clock in"
 horizontal_alignment = 1
+script = ExtResource("input_hints")
+fit_content = true
+scroll_active = false

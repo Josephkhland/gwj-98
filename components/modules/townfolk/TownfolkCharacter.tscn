@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://components/modules/townfolk/townfolk_character.gd" id="1"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="2"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://components/modules/townfolk/dialogue_bubble.gd" id="4"]
 [ext_resource type="Script" path="res://components/modules/sound_banks/sound_bank_player_2d.gd" id="5"]
 [ext_resource type="PackedScene" path="res://components/ui/townfolk_conversation/TownfolkConversation.tscn" id="6"]
+
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
 
 [sub_resource type="SpriteFrames" id="PlaceholderAvatar"]
 animations = [{
@@ -60,7 +62,7 @@ theme_override_font_sizes/font_size = 20
 
 [node name="Conversation" parent="." instance=ExtResource("6")]
 
-[node name="InteractionHint" type="Label" parent="."]
+[node name="InteractionHint" type="RichTextLabel" parent="."]
 visible = false
 material = SubResource("UnshadedHint")
 z_index = 10
@@ -71,5 +73,8 @@ offset_bottom = -88.0
 mouse_filter = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/normal_font_size = 16
 horizontal_alignment = 1
+script = ExtResource("input_hints")
+fit_content = true
+scroll_active = false

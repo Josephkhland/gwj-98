@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://components/ui/gameplay_ui/widgets/prompt/prompt_widget.gd" id="1"]
 
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
+
 [node name="PromptWidget" type="VBoxContainer"]
 mouse_filter = 2
 alignment = 2
@@ -11,7 +13,7 @@ widget_id = &"prompt"
 [node name="PromptPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="Margin" type="MarginContainer" parent="PromptPanel"]
@@ -22,8 +24,13 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 6
 
-[node name="PromptLabel" type="Label" parent="PromptPanel/Margin"]
+[node name="PromptLabel" type="RichTextLabel" parent="PromptPanel/Margin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/normal_font_size = 20
 horizontal_alignment = 1
+script = ExtResource("input_hints")
+fit_content = true
+scroll_active = false
+
+autowrap_mode = 3

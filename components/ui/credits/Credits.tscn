@@ -1,0 +1,97 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/credits/credits.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="player"]
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="hint"]
+
+[sub_resource type="Theme" id="Theme"]
+default_font_size = 22
+
+[node name="Credits" type="Node2D"]
+script = ExtResource("script")
+
+[node name="Playfield" type="Control" parent="."]
+clip_contents = true
+mouse_filter = 2
+
+[node name="Blocks" type="Node2D" parent="Playfield"]
+
+[node name="Bounds" type="StaticBody2D" parent="Playfield"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Floor" type="CollisionShape2D" parent="Playfield/Bounds"]
+
+[node name="Ceiling" type="CollisionShape2D" parent="Playfield/Bounds"]
+
+[node name="Left" type="CollisionShape2D" parent="Playfield/Bounds"]
+
+[node name="Right" type="CollisionShape2D" parent="Playfield/Bounds"]
+
+[node name="PlatformerCharacter" parent="Playfield" instance=ExtResource("player")]
+z_index = 2
+
+[node name="UI" type="Control" parent="."]
+theme = SubResource("Theme")
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 30.0
+offset_right = 300.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 38
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 87.0
+offset_right = 500.0
+offset_bottom = 117.0
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.62, 0.78, 0.74, 1)
+text = "A little hop for everyone who made this possible."
+horizontal_alignment = 1
+
+[node name="PauseScroll" type="Button" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -113.0
+offset_right = -30.0
+offset_bottom = -65.0
+toggle_mode = true
+text = "Pause scroll"
+focus_mode = 0
+
+[node name="Back" type="Button" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -113.0
+offset_right = 250.0
+offset_bottom = -65.0
+text = "Back to menu"
+focus_mode = 0
+
+[node name="Controls" type="RichTextLabel" parent="UI"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -52.0
+offset_right = 540.0
+offset_bottom = -12.0
+theme_override_font_sizes/normal_font_size = 18
+text = "[action:move_left] / [action:move_right] Move     Hold [action:jump] to jump     [action:ui_cancel] Back"
+script = ExtResource("hint")

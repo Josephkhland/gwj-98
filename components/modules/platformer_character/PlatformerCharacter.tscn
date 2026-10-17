@@ -28,6 +28,8 @@
 [ext_resource type="Script" uid="uid://dtpl7h0q74b7a" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
 [ext_resource type="Script" uid="uid://boeg4u8c7pbif" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
+[ext_resource type="Script" path="res://components/modules/sound_banks/movement_audio.gd" id="movement_audio"]
+
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
 
@@ -53,6 +55,11 @@ slam_action = &"slam"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1778574518]
 shape = SubResource("Body")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="MovementAudio" type="Node2D" parent="."]
+script = ExtResource("movement_audio")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1533543262]
 script = ExtResource("2")
@@ -159,6 +166,7 @@ state_id = 9
 animation = &"slamming"
 allows_charge = false
 allows_attack = false
+allows_spit = true
 
 [node name="RollingBack" type="Node" parent="StateMachine" unique_id=1815242387]
 script = ExtResource("migration_21")

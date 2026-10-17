@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bmuf4f1e5qe1k"
+path="res://.godot/imported/Fox - i.mp3-74c39664568a41897f4dda720625ae5e.mp3str"
+
+[deps]
+
+source_file="res://assets/cabalcrow/Fox - i.mp3"
+dest_files=["res://.godot/imported/Fox - i.mp3-74c39664568a41897f4dda720625ae5e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

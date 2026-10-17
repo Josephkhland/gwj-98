@@ -13,7 +13,9 @@ var _voices: Array[AudioStreamPlayer2D] = []
 func play() -> AudioStreamPlayer2D:
 	if bank == null:
 		return null
-	var clip := bank.random_clip()
+	return play_clip(bank.random_clip())
+
+func play_clip(clip: AudioStream) -> AudioStreamPlayer2D:
 	if clip == null:
 		return null
 	while _voices.size() >= maxi(1, max_voices):

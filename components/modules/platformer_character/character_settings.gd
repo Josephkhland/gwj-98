@@ -95,7 +95,7 @@ extends Resource
 ## charges; regeneration stops at this capacity.
 @export_range(1, 20) var spit_maximum_charges: int = 3
 ## Seconds needed to replenish one spent ammo charge. Each shot resets cooldown progress. Air shots require a
-## later floor contact to unlock regeneration; the current state's recharge permission must also be enabled.
+## later floor or wall contact to unlock regeneration; the current state's recharge permission must also be enabled.
 ## Separate from shot charging speed.
 @export_range(0.01, 10.0) var spit_recharge_time: float = 0.8
 ## Base uncharged projectile launch speed in pixels/second. Charge increases it toward
@@ -194,51 +194,51 @@ extends Resource
 @export_range(1.0, 4000.0) var spit_charge_fall_speed_limit: float = 250.0
 @export_group("Spit recharge by state")
 ## Allow ammo cooldown progress during IDLE (standing or landing slide). False pauses accumulated progress
-## instead of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration;
+## instead of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration;
 ## enabling this state cannot bypass that requirement.
 @export var idle_spit_recharge: bool = true
 ## Allow ammo cooldown progress during WALKING. False pauses accumulated progress instead of resetting it. An
-## airborne shot must still be followed by floor contact to unlock regeneration; enabling this state cannot
+## airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling this state cannot
 ## bypass that requirement.
 @export var walking_spit_recharge: bool = true
 ## Allow ammo cooldown progress during CHARGING (holding Jump). False pauses accumulated progress instead of
-## resetting it. An airborne shot must still be followed by floor contact to unlock regeneration; enabling
+## resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling
 ## this state cannot bypass that requirement.
 @export var charging_spit_recharge: bool = true
 ## Allow ammo cooldown progress during JUMPING (initial jump animation). False pauses accumulated progress
-## instead of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration;
+## instead of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration;
 ## enabling this state cannot bypass that requirement.
 @export var jumping_spit_recharge: bool = false
 ## Allow ammo cooldown progress during IN_AIR. False pauses accumulated progress instead of resetting it. An
-## airborne shot must still be followed by floor contact to unlock regeneration; enabling this state cannot
+## airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling this state cannot
 ## bypass that requirement.
 @export var in_air_spit_recharge: bool = false
 ## Allow ammo cooldown progress during ON_WALL (wall/ceiling attachment). False pauses accumulated progress
-## instead of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration;
+## instead of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration;
 ## enabling this state cannot bypass that requirement.
-@export var on_wall_spit_recharge: bool = false
+@export var on_wall_spit_recharge: bool = true
 ## Allow ammo cooldown progress during ATTACKING (melee). False pauses accumulated progress instead of
-## resetting it. An airborne shot must still be followed by floor contact to unlock regeneration; enabling
+## resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling
 ## this state cannot bypass that requirement.
 @export var attacking_spit_recharge: bool = true
 ## Allow ammo cooldown progress during GETTING_HIT (hit stun). False pauses accumulated progress instead of
-## resetting it. An airborne shot must still be followed by floor contact to unlock regeneration; enabling
+## resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling
 ## this state cannot bypass that requirement.
 @export var getting_hit_spit_recharge: bool = false
 ## Allow ammo cooldown progress during SQUEEZED. False pauses accumulated progress instead of resetting it. An
-## airborne shot must still be followed by floor contact to unlock regeneration; enabling this state cannot
+## airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling this state cannot
 ## bypass that requirement.
 @export var squeezed_spit_recharge: bool = false
 ## Allow ammo cooldown progress during SLAMMING (dive and impact). False pauses accumulated progress instead
-## of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration; enabling
+## of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling
 ## this state cannot bypass that requirement.
 @export var slamming_spit_recharge: bool = false
 ## Allow ammo cooldown progress during ROLLING_BACK (overcharged-Jump stun). False pauses accumulated progress
-## instead of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration;
+## instead of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration;
 ## enabling this state cannot bypass that requirement.
 @export var rolling_back_spit_recharge: bool = false
 ## Allow ammo cooldown progress during CHARGING_SPIT (holding Spit). False pauses accumulated progress instead
-## of resetting it. An airborne shot must still be followed by floor contact to unlock regeneration; enabling
+## of resetting it. An airborne shot must still be followed by floor or wall contact to unlock regeneration; enabling
 ## this state cannot bypass that requirement.
 @export var spit_charging_recharge: bool = false
 @export_group("Slam")

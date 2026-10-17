@@ -21,7 +21,7 @@ func begin_line(chunks: PackedStringArray) -> void:
 		offset += chunk.length()
 		_ends.append(offset)
 	var regex := RegEx.new()
-	regex.compile("\\S+")
+	regex.compile("\\[[^\\]\\r\\n]+\\]|[^\\s\\[]+|\\[")
 	for found in regex.search_all(text):
 		if not TownfolkDialogueLine.is_spoken(found.get_string()):
 			continue

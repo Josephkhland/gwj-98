@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/credits/credit_block.gd" id="script"]
+
+[node name="CreditBlock" type="AnimatableBody2D"]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("script")
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
+one_way_collision = true
+one_way_collision_margin = 6.0
+
+[node name="Content" type="VBoxContainer" parent="."]
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="Role" type="Label" parent="Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.26, 0.36, 0.34, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Name" type="Label" parent="Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.08, 0.17, 0.2, 1)
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Quote" type="Label" parent="Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.16, 0.25, 0.26, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Link" type="Label" parent="Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.18, 0.31, 0.35, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+autowrap_mode = 3

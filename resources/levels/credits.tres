@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LevelDefinition" format=3]
+
+[ext_resource type="Script" path="res://definitions/level_definition.gd" id="definition"]
+
+[resource]
+script = ExtResource("definition")
+scene_kind = 1
+id = &"credits"
+title = "Credits"
+scene_path = "res://components/ui/credits/Credits.tscn"

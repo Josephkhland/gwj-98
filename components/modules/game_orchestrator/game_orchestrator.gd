@@ -35,6 +35,7 @@ const PHASE_MAP_MARKERS := {
 @onready var fade: ColorRect = $TransitionLayer/Fade
 
 var _level: GameLevel
+var _credits: Node
 var _minigame: Node
 var _minigame_router: SignalNetworkRouter
 var _repair_suspension: RepairSuspension
@@ -76,6 +77,9 @@ func _load_current_level() -> void:
 	day_summary.hide()
 	gameplay_ui.hide()
 	_level = null
+	if definition.scene_kind == LevelDefinition.SceneKind.CREDITS:
+		await _load_credits(definition)
+		return
 	var level: GameLevel = await loader.load_level(definition)
 	if level == null:
 		_quit()
@@ -92,6 +96,26 @@ func _load_current_level() -> void:
 	gameplay_ui.show()
 	pause.pop(PAUSE_LOADING)
 	level.begin()
+	await _fade_to(0.0)
+
+func _load_credits(definition: LevelDefinition) -> void:
+	await loader.unload_current()
+	gameplay_ui.reset()
+	var scene := load(definition.scene_path) as PackedScene
+	if scene == null:
+		push_error("GameOrchestrator: could not load credits scene '%s'." % definition.scene_path)
+		_quit()
+		return
+	_credits = scene.instantiate()
+	if not _credits.has_signal(&"closed"):
+		push_error("GameOrchestrator: credits scene must expose closed().")
+		_credits.free()
+		_credits = null
+		_quit()
+		return
+	_credits.connect(&"closed", _quit)
+	loader.container.add_child(_credits)
+	pause.pop(PAUSE_LOADING)
 	await _fade_to(0.0)
 
 ## Connections live on the level's signals, so they disappear when the level is freed.
@@ -132,6 +156,7 @@ func _open_minigame(router: SignalNetworkRouter) -> void:
 		return
 	_minigame = instance
 	_minigame_router = router
+	router.configure_minigame(instance)
 	instance.add_to_group(&"signal_network_repair_session")
 	instance.connect(&"completed", _finish_minigame, CONNECT_ONE_SHOT)
 	instance.tree_exiting.connect(_finish_minigame.bind(false), CONNECT_ONE_SHOT)
@@ -145,6 +170,7 @@ func _finish_minigame(success: bool) -> void:
 	if _minigame == null:
 		return
 	var router := _minigame_router
+	var final_power: Variant = _minigame.get("powered") if _minigame.has_method(&"configure_router") else null
 	_minigame = null
 	_minigame_router = null
 	if is_instance_valid(_repair_suspension):
@@ -152,14 +178,17 @@ func _finish_minigame(success: bool) -> void:
 	_repair_suspension = null
 	gameplay_ui.show()
 	if is_instance_valid(router):
-		router.resolve_repair(success)
+		router.resolve_repair(success, final_power)
 
 func _on_level_completed(report: DayReport) -> void:
 	report.level_id = progress.get_current_level().id
 	progress.add_report(report)
 	pause.push(PAUSE_SUMMARY)
 	gameplay_ui.hide()
-	day_summary.show_report(report, progress.get_run_score(), progress.has_next())
+	var caption := ""
+	if progress.has_next() and progress.level_sequence[progress.current_index + 1].scene_kind == LevelDefinition.SceneKind.CREDITS:
+		caption = "Credits"
+	day_summary.show_report(report, progress.get_run_score(), progress.has_next(), caption)
 
 func _on_summary_continue() -> void:
 	if progress.advance():

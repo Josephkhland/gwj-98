@@ -25,7 +25,6 @@
 [ext_resource type="Script" path="res://definitions/character_profile.gd" id="townfolk_profile"]
 [ext_resource type="Script" path="res://components/modules/townfolk/dialogue_chain.gd" id="townfolk_chain"]
 [ext_resource type="Script" path="res://components/modules/townfolk/dialogue_line.gd" id="townfolk_line"]
-[ext_resource type="Script" path="res://components/modules/game_level/interaction_zone.gd" id="townfolk_interaction"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="townfolk_portrait"]
 
 [sub_resource type="Gradient" id="Gradient_plain"]
@@ -142,8 +141,6 @@ script = ExtResource("townfolk_chain")
 chain_id = &"sandbox_shift"
 lines = Array[ExtResource("townfolk_line")]([SubResource("TownfolkShiftLine1"), SubResource("TownfolkShiftLine2")])
 
-[sub_resource type="RectangleShape2D" id="TownfolkInteractionShape"]
-size = Vector2(120, 88)
 
 [node name="Sandbox" type="Node2D" unique_id=569843922]
 script = ExtResource("1_powch")
@@ -454,24 +451,6 @@ theme_override_font_sizes/font_size = 18
 text = "Sandbox Neighbour"
 horizontal_alignment = 1
 
-[node name="InteractionZone" type="Area2D" parent="Townfolk"]
-position = Vector2(0, -28)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("townfolk_interaction")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Townfolk/InteractionZone"]
-shape = SubResource("TownfolkInteractionShape")
-
-[node name="HintLabel" type="Label" parent="Townfolk/InteractionZone"]
-mouse_filter = 2
-offset_left = -160.0
-offset_top = -80.0
-offset_right = 160.0
-offset_bottom = -54.0
-theme_override_font_sizes/font_size = 16
-text = "Press [S] to talk"
-horizontal_alignment = 1
 
 [node name="CameraManager2D" parent="." unique_id=49561628 instance=ExtResource("4_cams")]
 initial_camera = &"player"
@@ -497,7 +476,6 @@ position = Vector2(688, -534)
 [node name="Marker2D2" type="Marker2D" parent="TestCollectableSpawner" unique_id=1881333649]
 position = Vector2(1917, -2)
 
-[connection signal="interacted" from="Townfolk/InteractionZone" to="." method="_on_townfolk_interacted"]
 
 [editable path="Platforms/Deck"]
 [editable path="Platforms/Ferry"]

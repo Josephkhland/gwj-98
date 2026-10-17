@@ -40,6 +40,7 @@ var _minigame_router: SignalNetworkRouter
 var _repair_suspension: RepairSuspension
 
 func _ready() -> void:
+	loader.progress_manager = progress
 	gameplay_ui.hide()
 	pause_menu.hide()
 	day_summary.hide()

@@ -5,6 +5,8 @@ extends HBoxContainer
 @onready var _initial: Label = $Portrait/Initial
 @onready var _name: Label = $Bubble/Margin/Content/Name
 @onready var _text: Label = $Bubble/Margin/Content/Text
+@onready var _before: Label = $Bubble/Margin/Content/Before
+@onready var _after: Label = $Bubble/Margin/Content/After
 @onready var _bubble: PanelContainer = $Bubble
 var _compact: bool = false
 var _narrow: bool = false
@@ -25,14 +27,20 @@ func _apply_layout() -> void:
 	_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_text.add_theme_font_size_override("font_size", 14 if _compact else (16 if _narrow else 18))
 	_text.max_lines_visible = 2 if _compact else -1
+	for action in [_before, _after]:
+		action.add_theme_font_size_override("font_size", 14 if value else 16)
 	_text.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS if _compact else TextServer.OVERRUN_NO_TRIMMING
 	for edge in ["left", "top", "right", "bottom"]:
 		$Bubble/Margin.add_theme_constant_override("margin_" + edge, 8 if value else 12)
 
-func configure(profile: CharacterProfile, fallback_name: String, value: String, sender: bool) -> void:
+func configure(profile: CharacterProfile, fallback_name: String, value: String, sender: bool, action_before: String = "", action_after: String = "") -> void:
 	var speaker_name := profile.display_name if profile != null and not profile.display_name.is_empty() else fallback_name
 	_name.text = speaker_name
 	_text.text = value
+	_before.text = action_before
+	_before.visible = not action_before.is_empty()
+	_after.text = action_after
+	_after.visible = not action_after.is_empty()
 	_portrait.texture = profile.portrait if profile != null else null
 	_portrait.visible = _portrait.texture != null
 	_initial.text = speaker_name.left(1).to_upper() if not speaker_name.is_empty() else "?"
@@ -50,6 +58,12 @@ func measure_for_width(width: float) -> float:
 	var padding := 16 if small else 24
 	_text.size.x = maxf(40, width - portrait_size - (6 if small else 10) - padding)
 	var height := maxf(portrait_size, _text.get_minimum_size().y + _name.get_minimum_size().y + 4 + padding)
+	var action_height := 0.0
+	for action in [_before, _after]:
+		action.size.x = _text.size.x
+		if action.visible:
+			action_height += action.get_minimum_size().y + 4
+	height += action_height
 	custom_minimum_size.y = height
 	size = Vector2(width, height)
 	return height

@@ -3,12 +3,16 @@
 [ext_resource type="Script" uid="uid://c7ybpsme3rfg2" path="res://components/modules/network/objects/router.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://c7tm101eutu36" path="res://components/modules/network/minigame/DirectedRepairMinigame.tscn" id="2"]
 
+[sub_resource type="CanvasItemMaterial" id="UnshadedHint"]
+light_mode = 1
+
 [node name="Router" type="Node2D" unique_id=1424610390]
 script = ExtResource("1")
 hint_label = null
 minigame_scene = ExtResource("2")
 
 [node name="HintLabel" type="Label" parent="." unique_id=543078533]
+material = SubResource("UnshadedHint")
 z_index = 10
 anchors_preset = 5
 anchor_left = 0.5

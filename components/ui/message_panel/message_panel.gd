@@ -319,7 +319,7 @@ func _begin_reply() -> void:
 	_responses.add_child(wrapper)
 	var row := BubbleScene.instantiate() as MessagePanelBubble
 	wrapper.add_child(row)
-	row.configure(message.definition.sender if from_sender else message.definition.recipient, _name_for(from_sender), reply.text, from_sender)
+	row.configure(message.definition.sender if from_sender else message.definition.recipient, _name_for(from_sender), reply.text, from_sender, reply.action_before, reply.action_after)
 	row.set_narrow(_column_layout)
 	_rows.append(wrapper)
 	_heights.append(row.measure_for_width(_content_width()))
@@ -332,7 +332,7 @@ func _begin_reading() -> void:
 	var characters := message.definition.text.length()
 	if message.state == NetworkMessage.State.DELIVERED:
 		for reply in _replies:
-			characters += reply.text.length()
+			characters += reply.text.length() + reply.action_before.length() + reply.action_after.length()
 	_remaining += maxf(minimum_reading_seconds, characters / maxf(1, reading_characters_per_second))
 	presentation_finished.emit()
 

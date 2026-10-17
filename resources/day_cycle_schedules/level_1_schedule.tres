@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" uid="uid://d300b16yeddsq" path="res://components/modules/day_cycle/day_cycle_notification.gd" id="1_dem5u"]
 [ext_resource type="Script" uid="uid://c3ndjtbdkat6f" path="res://components/modules/day_cycle/day_cycle_schedule.gd" id="2_g1sds"]
+[ext_resource type="Resource" path="res://resources/messages/deer_01.tres" id="deer_01"]
+[ext_resource type="Resource" uid="uid://bei30fofcopii" path="res://resources/messages/deer_02.tres" id="deer_02"]
+[ext_resource type="Resource" uid="uid://d1u2lg2d7yw72" path="res://resources/messages/deer_03.tres" id="deer_03"]
+[ext_resource type="Resource" uid="uid://bvjnwuiq80x11" path="res://resources/messages/deer_04.tres" id="deer_04"]
+[ext_resource type="Resource" uid="uid://i8epjosvbno0" path="res://resources/messages/deer_05.tres" id="deer_05"]
+[ext_resource type="Resource" uid="uid://bcjyqexfygtg5" path="res://resources/messages/deer_06.tres" id="deer_06"]
+[ext_resource type="Resource" path="res://resources/messages/deer_07.tres" id="deer_07"]
+[ext_resource type="Resource" uid="uid://cpah5k4tstuar" path="res://resources/messages/deer_08.tres" id="deer_08"]
+[ext_resource type="Resource" path="res://resources/messages/deer_09.tres" id="deer_09"]
 
 [sub_resource type="Resource" id="Resource_3b0ai"]
 script = ExtResource("1_dem5u")
@@ -12,5 +21,5 @@ metadata/_custom_type_script = "uid://d300b16yeddsq"
 
 [resource]
 script = ExtResource("2_g1sds")
-notifications = Array[ExtResource("1_dem5u")]([SubResource("Resource_3b0ai")])
+notifications = Array[ExtResource("1_dem5u")]([SubResource("Resource_3b0ai"), ExtResource("deer_01"), ExtResource("deer_02"), ExtResource("deer_03"), ExtResource("deer_04"), ExtResource("deer_05"), ExtResource("deer_06"), ExtResource("deer_07"), ExtResource("deer_08"), ExtResource("deer_09")])
 metadata/_custom_type_script = "uid://c3ndjtbdkat6f"

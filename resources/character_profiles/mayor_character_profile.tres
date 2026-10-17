@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://berw63c5ft7kr"]
+
+[ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_gn3ai"]
+
+[resource]
+script = ExtResource("1_gn3ai")
+character_id = &"mayor"
+display_name = "Mayor"
+metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

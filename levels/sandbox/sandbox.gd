@@ -19,17 +19,3 @@ func _ready() -> void:
 	bank.stream = recording
 	bank.segment_length = 0.06
 	$Townfolk.default_voice_bank = bank
-	$Townfolk.dialogue_started.connect(_on_townfolk_dialogue_started)
-	$Townfolk.dialogue_finished.connect(_on_townfolk_dialogue_ended)
-	$Townfolk.dialogue_cancelled.connect(_on_townfolk_dialogue_ended)
-
-func _on_townfolk_interacted(_listener: Node2D) -> void:
-	var chain_id := &"sandbox_shift" if phase == Phase.ON_SHIFT else &"sandbox_off_shift"
-	# Replay is useful here so both modes can be tried repeatedly in the sandbox.
-	$Townfolk.start_dialogue_by_id(chain_id, true)
-
-func _on_townfolk_dialogue_started(_chain: TownfolkDialogueChain) -> void:
-	$Townfolk/InteractionZone.enabled = false
-
-func _on_townfolk_dialogue_ended(_chain: TownfolkDialogueChain) -> void:
-	$Townfolk/InteractionZone.enabled = phase != Phase.COMPLETED

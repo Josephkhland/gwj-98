@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TownfolkDialogueChain" format=3 uid="uid://dvrxqp4ktkn2g"]
+
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="1"]
+[ext_resource type="Script" uid="uid://d2kogc0f3yh7e" path="res://components/modules/townfolk/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line1"]
+script = ExtResource("2")
+text = "The stars trust me with this knowledge. Though I may share clues and briefs about it, I cannot divulge further on such divine matters like the weather"
+
+[sub_resource type="Resource" id="Line2"]
+script = ExtResource("2")
+text = "What? You believe in S... Sc... Science? How absurd! How could a sentient species with no opposable thumbs even toy with such non-sense in their mind? Those meteorologists are charlatans and their tools are a scam! Only the stars know the truth!"
+
+[sub_resource type="Resource" id="Line3"]
+script = ExtResource("2")
+text = "How do I talk to the stars when it's cloudy? It's obvious I am no normal person. I share a special connection with the stars. If you weren't born in a lake maybe you'd understand."
+
+[resource]
+script = ExtResource("1")
+chain_id = &"deer_chain_1"
+lines = Array[ExtResource("2")]([SubResource("Line1"), SubResource("Line2"), SubResource("Line3")])
+initially_unlocked = false

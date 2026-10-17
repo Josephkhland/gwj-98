@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://bvjnwuiq80x11"]
+
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
+[ext_resource type="Resource" path="res://resources/character_profiles/outsider_character_profile.tres" id="remote"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="reply"]
+[ext_resource type="Resource" uid="uid://dvrxqp4ktkn2g" path="res://resources/dialogue_chains/deer_chain_1.tres" id="unlock"]
+
+[sub_resource type="Resource" id="Reply1"]
+script = ExtResource("reply")
+text = "DEATH!!!!"
+action_after = "Hangs up"
+
+[resource]
+resource_name = "Deer 04"
+script = ExtResource("message")
+message_id = &"deer_04"
+to_house = &"deer_house"
+route = 2
+text = "Ehm... I had another question but I am just curious... What place did the other guy call from?"
+sender = ExtResource("remote")
+recipient = ExtResource("deer")
+replies = Array[ExtResource("reply")]([SubResource("Reply1")])
+unlock_character = ExtResource("deer")
+unlock_chain = ExtResource("unlock")
+minute = 24

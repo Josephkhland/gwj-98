@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://csnyjngut3mlo"]
+
+[ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_vwmwd"]
+
+[resource]
+script = ExtResource("1_vwmwd")
+character_id = &"squirrel"
+display_name = "Mr. Pipsqueak"
+metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

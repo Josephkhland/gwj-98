@@ -5,3 +5,5 @@ extends Resource
 @export var lines: Array[TownfolkDialogueLine] = []
 @export var voice_bank: VoiceSoundBank
 @export var reactions_enabled: bool = true
+## ProgressManager can unlock this later without changing the shared resource.
+@export var initially_unlocked: bool = true

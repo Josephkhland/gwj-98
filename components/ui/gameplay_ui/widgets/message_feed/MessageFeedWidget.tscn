@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://components/ui/gameplay_ui/widgets/message_feed/message_feed_widget.gd" id="1"]
+[ext_resource type="PackedScene" path="res://components/ui/message_panel/MessagePanel.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/ui/gameplay_ui/widgets/message_feed/MessageRibbonEntry.tscn" id="3"]
+
+[node name="MessageFeedWidget" type="Control"]
+offset_right = 564.0
+offset_bottom = 68.0
+mouse_filter = 2
+script = ExtResource("1")
+widget_id = &"message_feed"
+
+[node name="Layout" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 564.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="PresentationColumn" type="VBoxContainer" parent="Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="ActiveRibbon" parent="Layout/PresentationColumn" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DetailSlot" type="Control" parent="Layout/PresentationColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+clip_contents = true
+mouse_filter = 2
+
+[node name="DetailScroll" type="ScrollContainer" parent="Layout/PresentationColumn/DetailSlot"]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 1
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+
+[node name="Conversation" parent="Layout/PresentationColumn/DetailSlot/DetailScroll" instance=ExtResource("2")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="OverviewScroll" type="ScrollContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 1
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+
+[node name="Overview" type="GridContainer" parent="Layout/OverviewScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2

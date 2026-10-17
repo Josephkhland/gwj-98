@@ -139,10 +139,10 @@ stretch_mode = 6
 
 [node name="ActionButton" type="TextureButton" parent="UI" unique_id=1089139933]
 layout_mode = 0
-offset_left = 360.0
-offset_top = 280.0
-offset_right = 520.0
-offset_bottom = 390.0
+offset_left = 653.0
+offset_top = 350.0
+offset_right = 1207.0
+offset_bottom = 730.0
 pivot_offset = Vector2(80, 55)
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_0psug")
@@ -156,10 +156,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -240.0
-offset_top = 24.0
-offset_right = 240.0
-offset_bottom = 204.0
+offset_left = -76.0
+offset_top = 25.0
+offset_right = 689.0
+offset_bottom = 345.0
 grow_horizontal = 2
 mouse_filter = 2
 
@@ -186,7 +186,7 @@ theme_override_styles/panel = SubResource("Style_bubble")
 [node name="Tail" type="Polygon2D" parent="UI/ThoughtBubble/Fallback" unique_id=979224285]
 position = Vector2(80, 175)
 color = Color(0.96, 0.97, 1, 1)
-polygon = PackedVector2Array(0, 0, 35, 0, 8, 30)
+polygon = PackedVector2Array(417, 111, 521, 121, 674, 406)
 
 [node name="Content" type="MarginContainer" parent="UI/ThoughtBubble" unique_id=1256004350]
 layout_mode = 1
@@ -210,7 +210,7 @@ alignment = 1
 [node name="Text" type="Label" parent="UI/ThoughtBubble/Content/Column" unique_id=1164110434]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1, 0.15, 0.22, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 42
 text = "Just gotta turn it on and off again... just like teach said"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -228,6 +228,7 @@ stretch_mode = 5
 position = Vector2(1212, 708)
 
 [node name="Aim" type="Node2D" parent="UI/Hand" unique_id=1718864545]
+position = Vector2(-44, 28)
 rotation = 0.55
 
 [node name="Motion" type="Node2D" parent="UI/Hand/Aim" unique_id=2007382836]

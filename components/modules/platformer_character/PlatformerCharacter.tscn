@@ -1,32 +1,32 @@
-[gd_scene format=3 uid="uid://c6408alotyl7t"]
+[gd_scene format=3 uid="uid://dx8f2alnuodqa"]
 
-[ext_resource type="Script" uid="uid://n84pl5rty4gf" path="res://components/modules/platformer_character/platformer_character.gd" id="1"]
-[ext_resource type="Script" uid="uid://c4g4c4035lles" path="res://components/modules/platformer_character/frog_visual.gd" id="2"]
-[ext_resource type="Script" uid="uid://btpnr1nsugvs7" path="res://components/modules/platformer_character/hitbox.gd" id="3"]
-[ext_resource type="Script" uid="uid://bpinlefymim0p" path="res://components/modules/platformer_character/hurtbox.gd" id="4"]
-[ext_resource type="Script" uid="uid://g1myc3fgyddb" path="res://components/modules/platformer_character/jump_preview.gd" id="5"]
-[ext_resource type="Script" uid="uid://cyo1tffjkxm82" path="res://components/modules/platformer_character/character_settings.gd" id="6"]
-[ext_resource type="Script" uid="uid://38mxekhf0vlf" path="res://components/modules/platformer_character/state_machine.gd" id="7"]
-[ext_resource type="Script" uid="uid://b44mnjn7wa1us" path="res://components/modules/platformer_character/states/idle.gd" id="8"]
-[ext_resource type="Script" uid="uid://bc5wjvvgm8u20" path="res://components/modules/platformer_character/states/walking.gd" id="9"]
-[ext_resource type="Script" uid="uid://dysrbsvmhc7pk" path="res://components/modules/platformer_character/states/charging.gd" id="10"]
-[ext_resource type="Script" uid="uid://dosx7ttyageyj" path="res://components/modules/platformer_character/states/jumping.gd" id="11"]
-[ext_resource type="Script" uid="uid://ddrnlb5tcmvtv" path="res://components/modules/platformer_character/states/in_air.gd" id="12"]
-[ext_resource type="Script" uid="uid://bed8450c7sw87" path="res://components/modules/platformer_character/states/on_wall.gd" id="13"]
-[ext_resource type="Script" uid="uid://b5uq3ldtite1e" path="res://components/modules/platformer_character/states/attacking.gd" id="14"]
-[ext_resource type="Script" uid="uid://hka8rf8nsqy2" path="res://components/modules/platformer_character/states/getting_hit.gd" id="15"]
-[ext_resource type="Script" uid="uid://bhhxkn85hw2fu" path="res://components/modules/platformer_character/states/squeezed.gd" id="16_aoi2g"]
-[ext_resource type="Script" uid="uid://ik5y3slnyms" path="res://components/modules/platformer_character/surface_anchor.gd" id="16_omva8"]
-[ext_resource type="Script" uid="uid://h5704jt43g4f" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
-[ext_resource type="Script" uid="uid://dwmdsgu6riue5" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
-
-[sub_resource type="Resource" id="Settings"]
-script = ExtResource("6")
-wall_hold_duration = 1.5
-reattach_delay = 0.0
-aim_speed_degrees = 150.0
-crush_overlap_tolerance = 0.256
-die_when_squeezed = false
+[ext_resource type="Script" uid="uid://cqcbfig2g6ppb" path="res://components/modules/platformer_character/platformer_character.gd" id="1"]
+[ext_resource type="Script" uid="uid://drvnu0ey63faw" path="res://components/modules/platformer_character/frog_visual.gd" id="2"]
+[ext_resource type="Resource" uid="uid://37i3iiwoneba" path="res://resources/player_settings.tres" id="2_aoi2g"]
+[ext_resource type="Script" uid="uid://cq11cugu71wek" path="res://components/modules/platformer_character/hitbox.gd" id="3"]
+[ext_resource type="Script" uid="uid://bmmjp686nutoh" path="res://components/modules/platformer_character/hurtbox.gd" id="4"]
+[ext_resource type="Script" uid="uid://ca4wmo5f7gdtw" path="res://components/modules/platformer_character/jump_preview.gd" id="5"]
+[ext_resource type="Script" uid="uid://bt44702m23b8d" path="res://components/modules/platformer_character/state_machine.gd" id="7"]
+[ext_resource type="Script" uid="uid://nlq3yjxcrb04" path="res://components/modules/platformer_character/states/idle.gd" id="8"]
+[ext_resource type="Script" uid="uid://fa7dcxtua2s0" path="res://components/modules/platformer_character/states/walking.gd" id="9"]
+[ext_resource type="Script" uid="uid://dvodqbmnahiq7" path="res://components/modules/platformer_character/states/charging.gd" id="10"]
+[ext_resource type="Script" uid="uid://b84t0a7pylgt3" path="res://components/modules/platformer_character/states/jumping.gd" id="11"]
+[ext_resource type="Script" uid="uid://cy76lgfcq5wr7" path="res://components/modules/platformer_character/states/in_air.gd" id="12"]
+[ext_resource type="Script" uid="uid://het5ibbsv04n" path="res://components/modules/platformer_character/states/on_wall.gd" id="13"]
+[ext_resource type="Script" uid="uid://ntq5o5ogthhj" path="res://components/modules/platformer_character/states/attacking.gd" id="14"]
+[ext_resource type="Script" uid="uid://b3phkyhfde4cv" path="res://components/modules/platformer_character/states/getting_hit.gd" id="15"]
+[ext_resource type="Script" uid="uid://cqh7j1772j8nu" path="res://components/modules/platformer_character/states/squeezed.gd" id="16_aoi2g"]
+[ext_resource type="Script" uid="uid://48nhofhqw5mk" path="res://components/modules/platformer_character/surface_anchor.gd" id="16_omva8"]
+[ext_resource type="Script" uid="uid://dg45rjxul01rp" path="res://components/modules/platformer_character/physics_safety.gd" id="17_jxjjd"]
+[ext_resource type="Script" uid="uid://2iydqunpt3xl" path="res://components/modules/platformer_character/splatter_audio.gd" id="18_aoi2g"]
+[ext_resource type="Script" uid="uid://dbd1g5jjmkysc" path="res://components/modules/sound_banks/footstep_audio.gd" id="audio_footsteps"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_bank.tres" id="bank_left"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_left_slide_bank.tres" id="bank_left_slide"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_bank.tres" id="bank_right"]
+[ext_resource type="Resource" path="res://resources/sound_banks/footstep_right_slide_bank.tres" id="bank_right_slide"]
+[ext_resource type="Script" uid="uid://cj4h6kd211s6n" path="res://components/modules/platformer_character/states/slamming.gd" id="migration_20"]
+[ext_resource type="Script" uid="uid://dtpl7h0q74b7a" path="res://components/modules/platformer_character/states/rolling_back.gd" id="migration_21"]
+[ext_resource type="Script" uid="uid://boeg4u8c7pbif" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
@@ -34,22 +34,37 @@ radius = 14.0
 [sub_resource type="RectangleShape2D" id="Attack"]
 size = Vector2(30, 24)
 
-[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980]
+[sub_resource type="CircleShape2D" id="Slam"]
+radius = 40.0
+
+[node name="PlatformerCharacter" type="CharacterBody2D" unique_id=661001980 groups=["pause_during_repairs"]]
 process_physics_priority = 100
 collision_layer = 2
 floor_snap_length = 4.0
 script = ExtResource("1")
-settings = SubResource("Settings")
+settings = ExtResource("2_aoi2g")
 move_left_action = &"move_left"
 move_right_action = &"move_right"
 charge_action = &"jump"
 attack_action = &"attack"
+heighten_action = &"heighten"
+spit_action = &"spit"
+slam_action = &"slam"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1778574518]
 shape = SubResource("Body")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1533543262]
 script = ExtResource("2")
+
+[node name="FootstepAudio" type="Node2D" parent="." unique_id=1465092904 node_paths=PackedStringArray("character", "visual")]
+script = ExtResource("audio_footsteps")
+character = NodePath("..")
+visual = NodePath("../Visual")
+left_bank = ExtResource("bank_left")
+right_bank = ExtResource("bank_right")
+left_slide_bank = ExtResource("bank_left_slide")
+right_slide_bank = ExtResource("bank_right_slide")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=935485385]
 collision_layer = 4
@@ -83,11 +98,13 @@ script = ExtResource("7")
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1421722652]
 script = ExtResource("8")
+allows_spit = true
 
 [node name="Walking" type="Node" parent="StateMachine" unique_id=677046392]
 script = ExtResource("9")
 state_id = 1
 animation = &"walking"
+allows_spit = true
 
 [node name="Charging" type="Node" parent="StateMachine" unique_id=1257628739]
 script = ExtResource("10")
@@ -100,11 +117,15 @@ allows_attack = false
 script = ExtResource("11")
 state_id = 3
 animation = &"jumping"
+allows_spit = true
+allows_slam = true
 
 [node name="InAir" type="Node" parent="StateMachine" unique_id=1800566894]
 script = ExtResource("12")
 state_id = 4
 animation = &"in_air"
+allows_spit = true
+allows_slam = true
 
 [node name="OnWall" type="Node" parent="StateMachine" unique_id=1341950986]
 script = ExtResource("13")
@@ -132,6 +153,29 @@ animation = &"squeezed"
 allows_charge = false
 allows_attack = false
 
+[node name="Slamming" type="Node" parent="StateMachine" unique_id=523603040]
+script = ExtResource("migration_20")
+state_id = 9
+animation = &"slamming"
+allows_charge = false
+allows_attack = false
+
+[node name="RollingBack" type="Node" parent="StateMachine" unique_id=1815242387]
+script = ExtResource("migration_21")
+state_id = 10
+animation = &"rolling_back"
+allows_charge = false
+allows_attack = false
+
+[node name="ChargingSpit" type="Node" parent="StateMachine" unique_id=603288619]
+script = ExtResource("migration_22")
+state_id = 11
+animation = &"charging_spit"
+allows_charge = false
+allows_attack = false
+allows_spit = true
+allows_slam = true
+
 [node name="SurfaceAnchor" type="Node" parent="." unique_id=2143830410]
 script = ExtResource("16_omva8")
 
@@ -140,3 +184,12 @@ script = ExtResource("17_jxjjd")
 
 [node name="SplatterAudio" type="AudioStreamPlayer2D" parent="." unique_id=343580456]
 script = ExtResource("18_aoi2g")
+
+[node name="SlamHitbox" type="Area2D" parent="." unique_id=730897105]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlamHitbox" unique_id=483115487]
+shape = SubResource("Slam")

@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="DayCycleSchedule" format=3 uid="uid://yjx8enet7k6s"]
+
+[ext_resource type="Script" uid="uid://d300b16yeddsq" path="res://components/modules/day_cycle/day_cycle_notification.gd" id="1_note"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="2_aqft5"]
+[ext_resource type="Script" uid="uid://c3ndjtbdkat6f" path="res://components/modules/day_cycle/day_cycle_schedule.gd" id="2_sched"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="3_msg"]
+
+[sub_resource type="Resource" id="Message_morning"]
+script = ExtResource("3_msg")
+message_id = &"morning_hello"
+from_house = &"frog_house"
+to_house = &"croc_house"
+text = "Good morning, neighbour!"
+warning_minutes = 20.0
+expire_minutes = 60.0
+keyword = &"message"
+hour = 8
+
+[sub_resource type="Resource" id="Message_newt"]
+script = ExtResource("3_msg")
+message_id = &"newt_invite"
+from_house = &"croc_house"
+to_house = &"newt_house"
+text = "Swamp party at noon?"
+points = 150
+expire_minutes = 90.0
+keyword = &"message"
+hour = 9
+minute = 0
+
+[sub_resource type="Resource" id="Break_deck"]
+script = ExtResource("1_note")
+keyword = &"router_break"
+values = {
+"router": &"r2"
+}
+hour = 9
+minute = 45
+
+[sub_resource type="Resource" id="Message_owl"]
+script = ExtResource("3_msg")
+message_id = &"owl_report"
+from_house = &"owl_house"
+to_house = &"frog_house"
+text = "Storm on the way. Tie down your lily pads."
+points = 150
+expire_minutes = 60.0
+keyword = &"message"
+minute = 15
+
+[sub_resource type="Resource" id="Break_random"]
+script = ExtResource("1_note")
+keyword = &"router_break"
+values = {
+"random": 1
+}
+
+[sub_resource type="Resource" id="Sunset"]
+script = ExtResource("1_note")
+keyword = &"sunset"
+hour = 11
+minute = 0
+
+[sub_resource type="Resource" id="Message_late"]
+script = ExtResource("3_msg")
+message_id = &"newt_reply"
+from_house = &"newt_house"
+to_house = &"croc_house"
+text = "Count me in!"
+warning_minutes = 20.0
+expire_minutes = 40.0
+keyword = &"message"
+hour = 11
+minute = 15
+
+[resource]
+script = ExtResource("2_sched")
+notifications = Array[ExtResource("1_note")]([SubResource("Message_morning"), SubResource("Message_newt"), SubResource("Break_deck"), SubResource("Message_owl"), SubResource("Break_random"), SubResource("Sunset"), SubResource("Message_late")])

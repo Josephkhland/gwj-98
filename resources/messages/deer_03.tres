@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://d1u2lg2d7yw72"]
+
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
+[ext_resource type="Resource" path="res://resources/character_profiles/anonymous_mayor_character_profile.tres" id="remote"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="reply"]
+
+[sub_resource type="Resource" id="Reply1"]
+script = ExtResource("reply")
+text = "... and the stars have spoken, your future holds... DEATH"
+
+[sub_resource type="Resource" id="Reply2"]
+script = ExtResource("reply")
+speaker = 0
+text = "Oh my... oh no.. oh-"
+action_after = "Lady Stagborn ends call"
+
+[resource]
+resource_name = "Deer 03"
+script = ExtResource("message")
+message_id = &"deer_03"
+to_house = &"deer_house"
+route = 2
+text = "What's the weather forecast?"
+sender = ExtResource("remote")
+recipient = ExtResource("deer")
+replies = Array[ExtResource("reply")]([SubResource("Reply1"), SubResource("Reply2")])
+hour = 9
+minute = 48

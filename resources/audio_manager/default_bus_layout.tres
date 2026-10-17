@@ -1,0 +1,10 @@
+[gd_resource type="AudioBusLayout" format=3]
+
+[resource]
+bus/0/name = &"Master"
+bus/1/name = &"SFX"
+bus/1/send = &"Master"
+bus/2/name = &"Music"
+bus/2/send = &"Master"
+bus/3/name = &"Ambience"
+bus/3/send = &"Master"

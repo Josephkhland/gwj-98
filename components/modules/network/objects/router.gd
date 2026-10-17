@@ -6,6 +6,9 @@ enum State { OK, BROKEN }
 signal state_changed(previous_state: State, new_state: State)
 signal repair_started(player: Node2D)
 signal repair_finished(success: bool)
+## When connected, the receiver hosts the minigame and must call resolve_repair().
+## Without a connection the router opens minigame_scene itself.
+signal repair_requested(player: Node2D)
 @export var state: State = State.BROKEN:
 	set(value):
 		if state == value:
@@ -33,6 +36,8 @@ signal repair_finished(success: bool)
 @export var minigame_scene: PackedScene
 var _minigame: Node
 var _player: Node2D
+var _awaiting_external_repair: bool = false
+var _repair_suspension: RepairSuspension
 
 func _ready() -> void:
 	_refresh_visuals()
@@ -46,7 +51,7 @@ func is_available() -> bool:
 	return state == State.OK
 
 func can_interact(player: Node2D) -> bool:
-	return is_instance_valid(player) and player.is_in_group(player_group) and state == State.BROKEN and not is_instance_valid(_minigame) and global_position.distance_to(player.global_position) <= interaction_radius
+	return is_instance_valid(player) and player.is_in_group(player_group) and state == State.BROKEN and not is_instance_valid(_minigame) and not _awaiting_external_repair and global_position.distance_to(player.global_position) <= interaction_radius
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not InputMap.has_action(interact_action) or not event.is_action_pressed(interact_action) or event.is_echo():
@@ -66,6 +71,27 @@ func _unhandled_input(event: InputEvent) -> void:
 func interact(player: Node2D) -> bool:
 	if not can_interact(player) or minigame_scene == null or get_tree().get_nodes_in_group(&"signal_network_repair_session").size() > 0:
 		return false
+	if repair_requested.get_connections().is_empty():
+		return open_local_minigame(player)
+	_awaiting_external_repair = true
+	_player = player
+	repair_started.emit(player)
+	repair_requested.emit(player)
+	return true
+
+## Completes a repair session handed out through repair_requested.
+func resolve_repair(success: bool) -> void:
+	if not _awaiting_external_repair:
+		return
+	_awaiting_external_repair = false
+	var repaired := success and is_instance_valid(_player) and state == State.BROKEN
+	if repaired:
+		state = State.OK
+	_player = null
+	repair_finished.emit(repaired)
+
+## Opens minigame_scene under the scene root; used when nobody hosts repairs.
+func open_local_minigame(player: Node2D) -> bool:
 	var instance := minigame_scene.instantiate()
 	if not instance.has_signal("completed"):
 		push_error("Router minigame root must expose completed(success: bool).")
@@ -76,6 +102,8 @@ func interact(player: Node2D) -> bool:
 	instance.add_to_group(&"signal_network_repair_session")
 	instance.connect("completed", _complete_repair, CONNECT_ONE_SHOT)
 	instance.tree_exiting.connect(_minigame_closed, CONNECT_ONE_SHOT)
+	_repair_suspension = RepairSuspension.new()
+	instance.add_child(_repair_suspension)
 	get_tree().root.add_child(instance)
 	if is_instance_valid(_minigame):
 		repair_started.emit(player)
@@ -86,6 +114,7 @@ func _complete_repair(success: bool) -> void:
 		return
 	var instance := _minigame
 	_minigame = null
+	_release_suspension()
 	var repaired := success and is_instance_valid(_player) and state == State.BROKEN
 	if repaired:
 		state = State.OK
@@ -94,15 +123,22 @@ func _complete_repair(success: bool) -> void:
 	repair_finished.emit(repaired)
 
 func _minigame_closed() -> void:
+	_release_suspension()
 	if is_instance_valid(_minigame):
 		_minigame = null
 		_player = null
 		repair_finished.emit(false)
 
 func _exit_tree() -> void:
+	_release_suspension()
 	if is_instance_valid(_minigame):
 		_minigame.queue_free()
 		_minigame = null
+
+func _release_suspension() -> void:
+	if is_instance_valid(_repair_suspension):
+		_repair_suspension.release()
+	_repair_suspension = null
 
 func _refresh_visuals() -> void:
 	if not is_inside_tree():

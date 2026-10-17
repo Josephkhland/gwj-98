@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://bei30fofcopii"]
+
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
+[ext_resource type="Resource" path="res://resources/character_profiles/outsider_character_profile.tres" id="remote"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="reply"]
+
+[sub_resource type="Resource" id="Reply1"]
+script = ExtResource("reply")
+text = "The stars hold a bright future for you! ... Oh wait it's reversed. Nevermiiiind"
+action_after = "closes call"
+
+[resource]
+resource_name = "Deer 02"
+script = ExtResource("message")
+message_id = &"deer_02"
+to_house = &"deer_house"
+route = 2
+text = "Will I find ever find true love?"
+sender = ExtResource("remote")
+recipient = ExtResource("deer")
+replies = Array[ExtResource("reply")]([SubResource("Reply1")])
+hour = 9
+minute = 12

@@ -1,0 +1,107 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/audio_debug/audio_debug_panel.gd" id="panel"]
+[ext_resource type="Script" path="res://components/ui/audio_debug/audio_waveform.gd" id="waveform"]
+
+[node name="AudioDebugPanel" type="CanvasLayer"]
+process_mode = 3
+layer = 120
+visible = false
+script = ExtResource("panel")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -600.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 0
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Margin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Column" type="VBoxContainer" parent="Panel/Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Panel/Margin/Scroll/Column"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Margin/Scroll/Column/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Audio debug  [F10]"
+theme_override_font_sizes/font_size = 20
+
+[node name="CloseButton" type="Button" parent="Panel/Margin/Scroll/Column/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
+[node name="Legend" type="Label" parent="Panel/Margin/Scroll/Column"]
+layout_mode = 2
+autowrap_mode = 2
+text = "Bus input • cyan: left / orange: right • display zoom only"
+
+[node name="SFXMeter" type="Label" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXWaveform" type="Control" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("waveform")
+
+[node name="MusicMeter" type="Label" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Music"
+
+[node name="MusicWaveform" type="Control" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("waveform")
+
+[node name="AmbienceMeter" type="Label" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Ambience"
+
+[node name="AmbienceWaveform" type="Control" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("waveform")
+
+[node name="SoundCount" type="Label" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Active sounds: 0"
+
+[node name="Sounds" type="Tree" parent="Panel/Margin/Scroll/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 165)
+layout_mode = 2
+size_flags_vertical = 3
+columns = 5
+column_titles_visible = true
+hide_root = true
+select_mode = 1

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://chde7vnbif27p"]
+
+[ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_mlsgb"]
+
+[resource]
+script = ExtResource("1_mlsgb")
+character_id = &"burd"
+display_name = "Burd"
+metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

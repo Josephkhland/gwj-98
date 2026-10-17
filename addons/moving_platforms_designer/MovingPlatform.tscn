@@ -19,7 +19,7 @@ height = 20
 fill_from = Vector2(0, 0)
 fill_to = Vector2(0, 1)
 
-[node name="MovingPlatform" type="Node2D"]
+[node name="MovingPlatform" type="Node2D" groups=["pause_during_repairs"]]
 script = ExtResource("1")
 texture = SubResource("Texture")
 

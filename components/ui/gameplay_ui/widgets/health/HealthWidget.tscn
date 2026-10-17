@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/ui/gameplay_ui/widgets/health/health_widget.gd" id="1"]
+
+[node name="HealthWidget" type="PanelContainer"]
+visible = false
+mouse_filter = 2
+script = ExtResource("1")
+widget_id = &"health"
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="Row" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Margin/Row"]
+layout_mode = 2
+text = "Health"
+
+[node name="HealthBar" type="ProgressBar" parent="Margin/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+max_value = 3.0
+step = 1.0
+value = 3.0
+show_percentage = false

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://components/modules/platformer_character/character_settings.gd" id="1_sdi6r"]
+
+[resource]
+script = ExtResource("1_sdi6r")
+wall_hold_duration = 1.5
+reattach_delay = 0.0
+aim_speed_degrees = 150.0
+crush_overlap_tolerance = 0.256
+die_when_squeezed = false

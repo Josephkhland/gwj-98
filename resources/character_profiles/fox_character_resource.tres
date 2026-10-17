@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://dsaxljv7m00wk"]
+
+[ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_ihonn"]
+
+[resource]
+script = ExtResource("1_ihonn")
+character_id = &"fox"
+display_name = "Slick Wily"
+metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://0rb74v7k71kc" path="res://assets/josephkhland/frog_hand.png" id="3_arcev"]
 [ext_resource type="Script" path="res://components/modules/frog_router_minigame/led.gd" id="power_light"]
 [ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
+[ext_resource type="Script" path="res://components/modules/sound_banks/router_audio.gd" id="router_audio"]
 
 [sub_resource type="StyleBoxFlat" id="PowerPanelStyle"]
 bg_color = Color(0.07, 0.1, 0.12, 0.97)
@@ -130,6 +131,10 @@ _data = {
 [node name="DirectedRepairMinigame" type="CanvasLayer" unique_id=251447359]
 layer = 100
 script = ExtResource("1")
+
+[node name="RouterAudio" type="Node2D" parent="."]
+script = ExtResource("router_audio")
+spatial = false
 
 [node name="UI" type="Control" parent="." unique_id=636350656]
 layout_mode = 3

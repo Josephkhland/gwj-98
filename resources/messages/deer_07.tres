@@ -1,17 +1,19 @@
-[gd_resource type="Resource" script_class="MessageNotification" format=3]
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://tvd2vhib6on0"]
 
-[ext_resource type="Script" path="res://components/modules/messaging/message_notification.gd" id="message"]
-[ext_resource type="Resource" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="2_wknyf"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
 [ext_resource type="Resource" path="res://resources/character_profiles/internet_character_profile.tres" id="remote"]
 
 [resource]
 resource_name = "Deer 07"
 script = ExtResource("message")
-hour = 12
-minute = 12
 message_id = &"deer_07"
 from_house = &"deer_house"
 route = 1
 text = "Maaambo Jambo..."
 sender = ExtResource("deer")
 recipient = ExtResource("remote")
+hour = 17
+minute = 18
+second = 45.0

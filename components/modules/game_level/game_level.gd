@@ -219,6 +219,8 @@ func _set_phase(value: Phase) -> void:
 	if value == Phase.AFTER_HOURS and phase != Phase.AFTER_HOURS:
 		evening_practice_completed = false
 		_practice_result = ""
+		if lighting != null:
+			lighting.sunset()
 	phase = value
 	_refresh_zones()
 	phase_changed.emit(phase)

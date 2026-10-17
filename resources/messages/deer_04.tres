@@ -23,4 +23,6 @@ recipient = ExtResource("deer")
 replies = Array[ExtResource("reply")]([SubResource("Reply1")])
 unlock_character = ExtResource("deer")
 unlock_chain = ExtResource("unlock")
-minute = 24
+hour = 13
+minute = 39
+second = 22.5

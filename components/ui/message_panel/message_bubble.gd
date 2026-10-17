@@ -41,7 +41,7 @@ func configure(profile: CharacterProfile, fallback_name: String, value: String, 
 	_before.visible = not action_before.is_empty()
 	_after.text = action_after
 	_after.visible = not action_after.is_empty()
-	_portrait.texture = profile.portrait if profile != null else null
+	_portrait.texture = CharacterProfile.get_message_portrait(profile)
 	_portrait.visible = _portrait.texture != null
 	_initial.text = speaker_name.left(1).to_upper() if not speaker_name.is_empty() else "?"
 	_initial.visible = _portrait.texture == null

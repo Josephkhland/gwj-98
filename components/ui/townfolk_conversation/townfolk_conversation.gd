@@ -62,7 +62,7 @@ func reveal_chunk(chunk: String, bank: VoiceSoundBank) -> void:
 	_text.visible_characters = InputIcons.rendered_length(_revealed_source)
 	if bank == null or not TownfolkDialogueLine.is_spoken(chunk):
 		return
-	var clip := bank.random_clip()
+	var clip := bank.clip_for_syllable(chunk)
 	if clip == null:
 		return
 	_voice.stream = clip

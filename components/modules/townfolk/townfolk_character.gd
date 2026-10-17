@@ -97,6 +97,11 @@ func _ready() -> void:
 	_refresh_avatar()
 	if Engine.is_editor_hint():
 		return
+	var initial_voice := default_voice_bank
+	if initial_voice == null and character_profile != null:
+		initial_voice = character_profile.voice_bank
+	if initial_voice != null:
+		initial_voice.prepare()
 	add_to_group(&"townfolk_speakers")
 	word_reactions = TownfolkWordReactions.new()
 	word_reactions.resolved.connect(_on_word_resolved)
@@ -234,7 +239,11 @@ func start_dialogue(chain: TownfolkDialogueChain, allow_replay: bool = false) ->
 	_active_chain = chain
 	_active_mode = mode
 	_bank = chain.voice_bank if chain.voice_bank != null else default_voice_bank
+	if _bank == null and character_profile != null:
+		_bank = character_profile.voice_bank
 	voice.bank = _bank
+	if _bank != null:
+		_bank.prepare()
 	voice.max_distance = hearing_range
 	bubble.reset()
 	word_reactions.timing_window = reaction_window
@@ -345,9 +354,18 @@ func _on_chunk(chunk: String, line_index: int, chunk_index: int) -> void:
 	_refresh_word_text()
 	if not can_hear(target) or not TownfolkDialogueLine.is_spoken(chunk):
 		return
-	var played := voice.play()
-	if played != null and _bank != null:
-		played.pitch_scale = _bank.random_pitch()
+	if _bank != null:
+		voice.stop()
+		var clip := _bank.clip_for_syllable(chunk)
+		if get_parent() is CanvasLayer:
+			# The tutorial guide is in screen space during repair instructions.
+			var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
+			if played != null:
+				played.pitch_scale = _bank.random_pitch()
+		else:
+			var played := voice.play_clip(clip)
+			if played != null:
+				played.pitch_scale = _bank.random_pitch()
 	syllable_heard.emit(target, playback.chain, line_index, chunk_index, chunk.strip_edges())
 
 func _on_highlight(index: int) -> void:

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c7tm101eutu36" path="res://components/modules/network/minigame/DirectedRepairMinigame.tscn" id="2"]
 
 [ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
+[ext_resource type="Script" path="res://components/modules/sound_banks/router_audio.gd" id="router_audio"]
 
 [sub_resource type="CanvasItemMaterial" id="UnshadedHint"]
 light_mode = 1
@@ -12,6 +13,9 @@ light_mode = 1
 script = ExtResource("1")
 hint_label = NodePath("HintLabel")
 minigame_scene = ExtResource("2")
+
+[node name="RouterAudio" type="Node2D" parent="."]
+script = ExtResource("router_audio")
 
 [node name="HintLabel" type="RichTextLabel" parent="." unique_id=543078533]
 visible = false

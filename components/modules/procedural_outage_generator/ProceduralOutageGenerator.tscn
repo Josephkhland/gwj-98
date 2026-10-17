@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/modules/procedural_outage_generator/procedural_outage_generator.gd" id="1"]
+
+[node name="ProceduralOutageGenerator" type="Node"]
+script = ExtResource("1")

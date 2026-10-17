@@ -45,6 +45,8 @@ func _on_line_revealed(index: int) -> void:
 	_refresh_word_text()
 
 func _ready() -> void:
+	if default_voice_bank == null and character_profile != null:
+		default_voice_bank = character_profile.voice_bank
 	if default_voice_bank == null:
 		# Temporary voice until the squirrel has a recording assigned in the Inspector.
 		var clip := AudioStreamWAV.new()

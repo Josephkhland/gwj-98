@@ -44,6 +44,7 @@ func configure_router(is_powered: bool, is_broken: bool) -> void:
 		_refresh_power_indicator()
 
 func _refresh_power_indicator() -> void:
+	$RouterAudio.set_status(powered, not broken)
 	_power_light.on = powered
 	_power_light.blinking = powered and not broken and _power_blink_left > 0
 	_power_light.color_on = Color("ef665d") if broken else Color("66e680")
@@ -121,6 +122,7 @@ func finish(success: bool) -> void:
 	if _finished:
 		return
 	_finished = true
+	$RouterAudio.stop()
 	_button.disabled = true
 	set_process(false)
 	if _approach != null and _approach.is_valid():

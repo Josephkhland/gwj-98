@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="VoiceSoundBank" format=3 uid="uid://c6hpeqfly8eyq"]
+
+[ext_resource type="AudioStream" uid="uid://b6sly8r6x4evb" path="res://assets/cabalcrow/Dear - a.mp3" id="a"]
+[ext_resource type="Script" uid="uid://cel8rywah54u5" path="res://components/modules/sound_banks/sound_bank.gd" id="bank"]
+[ext_resource type="AudioStream" uid="uid://bt03uhryla61s" path="res://assets/cabalcrow/Dear - e.mp3" id="e"]
+[ext_resource type="AudioStream" uid="uid://dg7ne581ojc8n" path="res://assets/cabalcrow/Dear - i.mp3" id="i"]
+[ext_resource type="AudioStream" uid="uid://d2i830roqer3a" path="res://assets/cabalcrow/Dear - o.mp3" id="o"]
+[ext_resource type="AudioStream" uid="uid://irkb2ebcqswc" path="res://assets/cabalcrow/Dear - u.mp3" id="u"]
+[ext_resource type="Script" uid="uid://dvir7b8lqal4v" path="res://components/modules/sound_banks/voice_sound_bank.gd" id="voice"]
+
+[sub_resource type="Resource" id="A"]
+script = ExtResource("bank")
+stream = ExtResource("a")
+segment_length = 1.0
+segment_count = 8
+
+[sub_resource type="Resource" id="E"]
+script = ExtResource("bank")
+stream = ExtResource("e")
+segment_length = 1.0
+segment_count = 8
+
+[sub_resource type="Resource" id="I"]
+script = ExtResource("bank")
+stream = ExtResource("i")
+segment_length = 1.0
+segment_count = 8
+
+[sub_resource type="Resource" id="O"]
+script = ExtResource("bank")
+stream = ExtResource("o")
+segment_length = 1.0
+segment_count = 8
+
+[sub_resource type="Resource" id="U"]
+script = ExtResource("bank")
+stream = ExtResource("u")
+segment_length = 1.0
+segment_count = 8
+
+[resource]
+script = ExtResource("voice")
+pitch_min = 0.98
+pitch_max = 1.02
+vowel_banks = Dictionary[StringName, ExtResource("bank")]({
+&"a": SubResource("A"),
+&"e": SubResource("E"),
+&"i": SubResource("I"),
+&"o": SubResource("O"),
+&"u": SubResource("U")
+})
+stream = ExtResource("a")
+segment_length = 1.0
+segment_count = 8

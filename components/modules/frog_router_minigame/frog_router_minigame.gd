@@ -210,6 +210,7 @@ func _update_router(delta: float) -> void:
 		and absf(_amp.value - target_amplitude) <= slider_tolerance \
 		and _encoding == Encoding.OK and antenna_error <= antenna_tolerance
 	_sync_time = _sync_time + delta if synced and _drag_source == null else 0.0
+	$RouterAudio.set_status(_powered, synced)
 	if synced and not _won and _sync_time >= sync_hold_time:
 		_win()
 	_led_power.on = _powered
@@ -410,6 +411,7 @@ func finish(success: bool) -> void:
 	if _finished:
 		return
 	_finished = true
+	$RouterAudio.stop()
 	set_process(false)
 	set_process_input(false)
 	for tween: Tween in [_press_tween, _notes_tween, _win_tween]:

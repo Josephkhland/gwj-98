@@ -1,9 +1,13 @@
 [gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://dsaxljv7m00wk"]
 
 [ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_ihonn"]
+[ext_resource type="Resource" path="res://resources/sound_banks/fox_voice_bank.tres" id="voice"]
+[ext_resource type="Texture2D" path="res://assets/josephkhland/fox_portrait_prototype.png" id="portrait"]
 
 [resource]
 script = ExtResource("1_ihonn")
 character_id = &"fox"
 display_name = "Slick Wily"
+portrait = ExtResource("portrait")
+voice_bank = ExtResource("voice")
 metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

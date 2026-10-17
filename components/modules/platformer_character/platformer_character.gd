@@ -260,7 +260,8 @@ func _update_landing_slide(previously_grounded: bool) -> void:
 
 func _apply_ground_horizontal(delta: float, speed_multiplier: float = 1.0) -> void:
 	var target := _move_axis * settings.walk_speed * speed_multiplier
-	_apply_surface_friction(delta, get_floor_normal())
+	var spit_friction := 5.
+	_apply_surface_friction(delta * (spit_friction + 1. - speed_multiplier * spit_friction), get_floor_normal())
 	if not is_zero_approx(_move_axis) and absf(velocity.x) < absf(target):
 		velocity.x = move_toward(velocity.x, target, settings.walk_speed * 8.0 * delta)
 	return
@@ -323,7 +324,7 @@ func _maximum_spit_cost() -> int:
 	return maxi(1, mini(settings.spit_max_charges_per_shot, settings.spit_maximum_charges))
 
 func get_spit_charge_ratio() -> float:
-	return clampf(_spit_charge_time / maxf(settings.spit_max_charge_time, 0.001), 0.0, 1.0)
+	return clampf(_spit_charge_time * 10. / maxf(settings.spit_max_charge_time, 0.001), 0.0, 1.0)
 
 func get_spit_maximum_charges() -> int:
 	return settings.spit_maximum_charges
@@ -388,8 +389,13 @@ func _fire_spit(charge_ratio: float) -> void:
 func _update_spit_recharge(delta: float) -> void:
 	if not settings.spit_enabled or spit_charges >= settings.spit_maximum_charges:
 		return
-	if not _spit_recharge_ready or not settings.allows_spit_recharge(state_machine.current.animation):
-		return
+	# if not _spit_recharge_ready or not settings.allows_spit_recharge(state_machine.current.animation):
+	# 	return
+	for contact in _get_surface_contacts(_slide_normal):
+		if surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
+			spit_charges = 1
+			return
+	return
 	_spit_recharge_progress += delta
 	var interval := maxf(settings.spit_recharge_time, 0.001)
 	while _spit_recharge_progress >= interval and spit_charges < settings.spit_maximum_charges:

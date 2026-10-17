@@ -3,6 +3,7 @@ extends Node
 ## Loads level scenes in the background, adds them to the container and frees the previous one.
 signal load_progress(ratio: float)
 @export var container: Node
+var progress_manager: ProgressManager
 var current_level: GameLevel
 
 ## Frees the current level, then loads and adds the new one. Returns null on failure.
@@ -32,6 +33,7 @@ func load_level(definition: LevelDefinition) -> GameLevel:
 		instance.free()
 		return null
 	current_level = level
+	level.dialogue_progress = progress_manager
 	container.add_child(level)
 	return level
 

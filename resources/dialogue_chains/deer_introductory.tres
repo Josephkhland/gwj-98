@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TownfolkDialogueChain" format=3 uid="uid://sdd14i3l622p"]
+
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="1"]
+[ext_resource type="Script" uid="uid://d2kogc0f3yh7e" path="res://components/modules/townfolk/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line1"]
+script = ExtResource("2")
+text = "Slimy manifestation, spawn of the lake, descendant of the forbidden named abomination... Be damned, I think the stars really hate you little one. But alas! As the only champion of Wifi among our blessed lands, you shall be allowed to croak another day!"
+
+[sub_resource type="Resource" id="Line2"]
+script = ExtResource("2")
+text = "What are you still here for? Are you begging the one and only Lady Stagborn to tell your fortune? As it may... Huuuum- Huuuum- Stars listen to my voice! Let me breath through the aether and speak your wisdom!"
+
+[sub_resource type="Resource" id="Line3"]
+script = ExtResource("2")
+text = "LEAPS and LOOPS and SLIDES and GOOPS! What a terrible and disgusting future! No hush hush, someone has a stream to be on."
+
+[resource]
+script = ExtResource("1")
+chain_id = &"deer_introductory"
+lines = Array[ExtResource("2")]([SubResource("Line1"), SubResource("Line2"), SubResource("Line3")])

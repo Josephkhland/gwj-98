@@ -26,6 +26,11 @@ const ConversationView = preload("res://components/ui/townfolk_conversation/town
 @export_group("Off-Shift Dialogue")
 @export var off_shift_dialogue_chains: Array[TownfolkDialogueChain] = []
 @export var interact_action: StringName = &"interact"
+@export_group("Interaction")
+@export var interaction_enabled: bool = true
+@export_range(1, 1000, 1) var interaction_radius: float = 90
+## Normally supplied by the enclosing GameLevel.
+@export var progress_manager: ProgressManager
 @export_group("Dialogue Phase")
 ## Defaults to the nearest enclosing GameLevel when unassigned.
 @export var phase_source: GameLevel
@@ -72,6 +77,12 @@ var _heart_shape := PackedVector2Array()
 var _using_conversation: bool = false
 var _locked_listener: Node2D
 var _listener_process_mode: ProcessMode
+var _local_progress: ProgressManager
+var _fallback_profile: CharacterProfile
+var _active_progress: ProgressManager
+var _active_profile: CharacterProfile
+var _active_chain: TownfolkDialogueChain
+var _active_mode: ProgressManager.DialogueMode
 @onready var playback: TownfolkDialoguePlayback = $DialoguePlayback
 @onready var bubble: TownfolkDialogueBubble = $DialogueBubble
 @onready var mouth: Marker2D = $MouthAnchor
@@ -80,6 +91,7 @@ var _listener_process_mode: ProcessMode
 @onready var conversation: ConversationView = $Conversation
 @onready var world_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _fallback_avatar: SpriteFrames = world_sprite.sprite_frames
+@onready var interaction_hint: Label = $InteractionHint
 
 func _ready() -> void:
 	_refresh_avatar()
@@ -110,9 +122,10 @@ func _ready() -> void:
 			ancestor = ancestor.get_parent()
 	if phase_source != null:
 		phase_source.phase_changed.connect(_on_phase_changed)
-	var chains := get_available_dialogue_chains()
-	if autoplay and not chains.is_empty():
-		start_dialogue(chains[0])
+	if autoplay:
+		var next := get_next_dialogue_chain()
+		if next != null:
+			start_dialogue(next, true)
 
 func _refresh_avatar() -> void:
 	if not is_instance_valid(world_sprite):
@@ -141,6 +154,71 @@ func get_dialogue_phase() -> GameLevel.Phase:
 func get_available_dialogue_chains() -> Array[TownfolkDialogueChain]:
 	return dialogue_chains if get_dialogue_phase() == GameLevel.Phase.ON_SHIFT else off_shift_dialogue_chains
 
+func get_next_dialogue_chain() -> TownfolkDialogueChain:
+	return _get_progress_manager().get_next_dialogue(_get_progress_profile(), get_available_dialogue_chains(), _get_dialogue_mode())
+
+func can_interact(candidate: Node2D) -> bool:
+	return _in_interaction_range(candidate) and not playback.is_playing and not get_tree().has_group(ConversationView.SESSION_GROUP) and not get_tree().has_group(&"signal_network_repair_session") and get_next_dialogue_chain() != null
+
+func interact(candidate: Node2D) -> bool:
+	if not can_interact(candidate):
+		return false
+	# Only unfinished chains are selected, including retrying a cancelled presentation.
+	return start_dialogue(get_next_dialogue_chain(), true)
+
+func _get_progress_manager() -> ProgressManager:
+	if is_instance_valid(progress_manager):
+		return progress_manager
+	if is_instance_valid(phase_source):
+		if not is_instance_valid(phase_source.dialogue_progress):
+			# The level adopts this node in its _ready, after child actors are ready.
+			phase_source.dialogue_progress = ProgressManager.new()
+		return phase_source.dialogue_progress
+	if not is_instance_valid(_local_progress):
+		_local_progress = ProgressManager.new()
+		_local_progress.name = "DialogueProgress"
+		add_child(_local_progress)
+	return _local_progress
+
+func _get_progress_profile() -> CharacterProfile:
+	if character_profile != null:
+		return character_profile
+	if _fallback_profile == null:
+		_fallback_profile = CharacterProfile.new()
+	return _fallback_profile
+
+func _get_dialogue_mode() -> ProgressManager.DialogueMode:
+	return ProgressManager.DialogueMode.WORK_SHIFT if get_dialogue_phase() == GameLevel.Phase.ON_SHIFT else ProgressManager.DialogueMode.OFF_SHIFT
+
+func _in_interaction_range(candidate: Node2D) -> bool:
+	return interaction_enabled and is_visible_in_tree() and get_dialogue_phase() != GameLevel.Phase.COMPLETED and is_instance_valid(candidate) and global_position.distance_squared_to(candidate.global_position) <= interaction_radius * interaction_radius
+
+func _owns_interaction_input(candidate: Node2D) -> bool:
+	var distance := global_position.distance_squared_to(candidate.global_position)
+	for other in get_tree().get_nodes_in_group(&"townfolk_speakers"):
+		if other == self or not other is TownfolkCharacter or not other._in_interaction_range(candidate):
+			continue
+		var other_distance: float = other.global_position.distance_squared_to(candidate.global_position)
+		if other_distance < distance or (is_equal_approx(other_distance, distance) and other.get_instance_id() < get_instance_id()):
+			return false
+	return true
+
+func _refresh_interaction_hint(candidate: Node2D) -> void:
+	interaction_hint.visible = not playback.is_playing and _in_interaction_range(candidate) and not get_tree().has_group(ConversationView.SESSION_GROUP) and not get_tree().has_group(&"signal_network_repair_session") and _owns_interaction_input(candidate)
+	if not interaction_hint.visible:
+		return
+	var speaker := character_profile.display_name if character_profile != null and not character_profile.display_name.is_empty() else String(name)
+	if get_next_dialogue_chain() == null:
+		interaction_hint.text = "%s is busy" % speaker
+		return
+	var binding := "Interact"
+	if InputMap.has_action(interact_action):
+		for event in InputMap.action_get_events(interact_action):
+			if event is InputEventKey:
+				binding = event.as_text_physical_keycode() if event.physical_keycode != 0 else event.as_text_keycode()
+				break
+	interaction_hint.text = "[%s] Talk to %s" % [binding, speaker]
+
 ## Returns false for an invalid, already started, or busy request. No implicit interruption.
 func start_dialogue(chain: TownfolkDialogueChain, allow_replay: bool = false) -> bool:
 	if not is_node_ready() or Engine.is_editor_hint() or playback.is_playing or chain == null:
@@ -151,6 +229,15 @@ func start_dialogue(chain: TownfolkDialogueChain, allow_replay: bool = false) ->
 	var key := _chain_key(chain)
 	if not allow_replay and _spoken.has(key):
 		return false
+	var manager := _get_progress_manager()
+	var profile := _get_progress_profile()
+	var mode := _get_dialogue_mode()
+	if not manager.begin_dialogue(profile, chain, mode, allow_replay):
+		return false
+	_active_progress = manager
+	_active_profile = profile
+	_active_chain = chain
+	_active_mode = mode
 	_bank = chain.voice_bank if chain.voice_bank != null else default_voice_bank
 	voice.bank = _bank
 	voice.max_distance = hearing_range
@@ -159,6 +246,7 @@ func start_dialogue(chain: TownfolkDialogueChain, allow_replay: bool = false) ->
 	word_reactions.perfect_window = minf(reaction_perfect_window, reaction_window)
 	playback.minimum_hold_seconds = reaction_window + 0.02 if reactions_enabled and chain.reactions_enabled else 0.0
 	if not playback.start(chain, _using_conversation):
+		_release_progress(false)
 		return false
 	if _using_conversation:
 		conversation.interact_action = interact_action
@@ -183,6 +271,7 @@ func stop_dialogue() -> void:
 	var cancelled := playback.chain
 	playback.stop()
 	_clear_presentation()
+	_release_progress(false)
 	dialogue_cancelled.emit(cancelled)
 
 func can_hear(candidate: Node2D) -> bool:
@@ -197,6 +286,7 @@ func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	_current_listener = _find_listener()
+	_refresh_interaction_hint(_current_listener)
 	if _using_conversation and playback.is_playing:
 		return
 	var hearing := can_hear(_current_listener)
@@ -208,7 +298,14 @@ func _process(delta: float) -> void:
 		_refresh_word_text()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or event.is_echo() or not InputMap.has_action(reaction_action):
+	if Engine.is_editor_hint() or event.is_echo():
+		return
+	if InputMap.has_action(interact_action) and event.is_action_pressed(interact_action):
+		var target := _find_listener()
+		if _in_interaction_range(target) and _owns_interaction_input(target) and interact(target):
+			get_viewport().set_input_as_handled()
+			return
+	if not InputMap.has_action(reaction_action):
 		return
 	if not playback.is_playing or _using_conversation or not reactions_enabled or not playback.chain.reactions_enabled:
 		return
@@ -270,7 +367,22 @@ func _refresh_word_text() -> void:
 
 func _on_finished(chain: TownfolkDialogueChain) -> void:
 	_clear_presentation()
+	_release_progress(true)
 	dialogue_finished.emit(chain)
+
+func _release_progress(completed: bool) -> void:
+	var manager := _active_progress
+	var profile := _active_profile
+	var chain := _active_chain
+	var mode := _active_mode
+	_active_progress = null
+	_active_profile = null
+	_active_chain = null
+	if is_instance_valid(manager):
+		if completed:
+			manager.finish_dialogue(profile, chain, mode)
+		else:
+			manager.cancel_dialogue(profile, chain, mode)
 
 func _on_line_revealed(_index: int) -> void:
 	if _using_conversation:
@@ -293,6 +405,7 @@ func _release_listener() -> void:
 
 func _exit_tree() -> void:
 	_release_listener()
+	_release_progress(false)
 
 func _clear_presentation() -> void:
 	conversation.close()

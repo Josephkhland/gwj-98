@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CharacterProfile" format=3]
+
+[ext_resource type="Script" path="res://definitions/character_profile.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/nicoichu/Software_Planet_Geography_Localization_Global_Language_Translation_1.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+character_id = &"internet"
+display_name = "Internet"
+portrait = ExtResource("2")

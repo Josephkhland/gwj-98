@@ -17,8 +17,16 @@ signal level_completed(report: DayReport)
 
 const MARKER_BED := &"bed"
 const MARKER_CLOCK_IN := &"clock_in"
+const CollisionSurfaceOverlay = preload("res://components/modules/level_geometry/collision_surface_overlay.gd")
 
 @export var level_title: String = ""
+@export_group("Blockout")
+## Runtime-only white fill over wall and moving-platform collision surfaces.
+@export var show_collision_surfaces: bool = false:
+	set(value):
+		show_collision_surfaces = value
+		if is_instance_valid(_collision_surface_overlay):
+			_collision_surface_overlay.visible = value
 @export_group("Prompts")
 @export var waking_prompt: String = "Head outside and clock in."
 @export var on_shift_prompt: String = ""
@@ -33,6 +41,8 @@ const MARKER_CLOCK_IN := &"clock_in"
 @export var bed: InteractionZone
 @export var clock_in_point: InteractionZone
 @export var music_manager: MusicManager
+## Injected by the level loader for a run; F6 creates a level-local manager.
+@export var dialogue_progress: ProgressManager
 
 var phase: Phase = Phase.WAKING
 var routers_repaired: int = 0
@@ -40,8 +50,14 @@ var _handlers: Dictionary[StringName, Callable] = {}
 var _begun: bool = false
 var _clock_text: String = ""
 var _minimap_feed: MinimapFeed
+var _collision_surface_overlay: Node2D
 
 func _ready() -> void:
+	if dialogue_progress == null:
+		dialogue_progress = ProgressManager.new()
+	if dialogue_progress.get_parent() == null:
+		dialogue_progress.name = "DialogueProgress"
+		add_child(dialogue_progress)
 	if music_manager == null:
 		music_manager = get_node_or_null(^"MusicManager") as MusicManager
 	if music_manager == null:
@@ -50,6 +66,11 @@ func _ready() -> void:
 		add_child(music_manager)
 	if not _resolve_nodes():
 		return
+	_collision_surface_overlay = CollisionSurfaceOverlay.new()
+	_collision_surface_overlay.name = "CollisionSurfaceOverlay"
+	_collect_solids(self, _collision_surface_overlay.sources)
+	add_child(_collision_surface_overlay)
+	_collision_surface_overlay.visible = show_collision_surfaces
 	register_handler(&"sunrise", _on_sunrise)
 	register_handler(&"sunset", _on_sunset)
 	register_handler(&"lighting", _on_lighting)
@@ -58,7 +79,7 @@ func _ready() -> void:
 	register_handler(&"router_break", _on_router_break)
 	_setup_clock()
 	message_board.setup(network_graph, day_cycle)
-	message_board.message_changed.connect(message_changed.emit)
+	message_board.message_changed.connect(_on_message_changed)
 	message_board.score_changed.connect(score_changed.emit)
 	for router in _get_routers():
 		router.repair_finished.connect(_on_repair_finished)
@@ -264,6 +285,12 @@ func _on_lighting(values: Dictionary) -> void:
 
 func _on_message_warning(values: Dictionary) -> void:
 	message_board.announce(values["message"])
+
+func _on_message_changed(message: NetworkMessage) -> void:
+	var definition := message.definition
+	if message.state == NetworkMessage.State.DELIVERED and definition.unlock_character != null and definition.unlock_chain != null:
+		dialogue_progress.unlock_dialogue(definition.unlock_character, definition.unlock_chain.chain_id, definition.unlock_mode)
+	message_changed.emit(message)
 
 func _on_message_transmit(values: Dictionary) -> void:
 	message_board.transmit(values["message"])

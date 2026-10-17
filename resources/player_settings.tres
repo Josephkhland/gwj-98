@@ -4,16 +4,27 @@
 
 [resource]
 script = ExtResource("1_tvsrg")
+slide_friction = 0.12
+landing_boost_coefficient = 0.05
 wall_attachment_gravity_multiplier = 0.0
 walk_speed = 200.0
 gravity = 1200.0
 terminal_speed = 4000.0
-max_charge_time = 3.0
+max_charge_time = 1.5
 jump_charge_rate = 900.0
 minimum_jump_speed = 400.0
 maximum_jump_speed = 800.0
 wall_hold_duration = 0.4
 reattach_delay = 0.0
 aim_speed_degrees = 150.0
+spit_maximum_charges = 1
+spit_recharge_time = 0.0
+spit_speed = 100.0
+spit_recoil = 200.0
+spit_power_uses_ammo_tiers = false
+spit_charged_speed_multiplier = 10.0
+spit_charged_recoil_multiplier = 4.0
+spit_charge_ground_speed_multiplier = 0.0
+slam_speed = 1000.0
 crush_overlap_tolerance = 0.256
 die_when_squeezed = false

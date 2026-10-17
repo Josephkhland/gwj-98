@@ -14,8 +14,11 @@ func register_impact(entry_velocity: Vector2, normal: Vector2, surface_velocity:
 	boost = maxf(boost, boost_coefficient * impact_speed)
 
 func apply(velocity: Vector2, normal: Vector2, surface_velocity: Vector2, delta: float, friction_coefficient: float) -> Vector2:
+	# A ground-state tick can run after floor contact is lost. No surface means no friction.
+	if normal.is_zero_approx():
+		return velocity
 	# Damp relative sliding speed without damping the carrier's own movement.
-	var tangent_velocity := (velocity - surface_velocity).slide(normal)
+	var tangent_velocity := (velocity - surface_velocity).slide(normal.normalized())
 	# Friction is a rate in inverse seconds; boost scales that rate.
 	var effective_friction := friction_coefficient * (1.0 + boost)
 	# With nonnegative tuning and delta, damping stays between zero and one.

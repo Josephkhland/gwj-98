@@ -4,3 +4,5 @@ extends Resource
 enum Speaker { SENDER, RECIPIENT }
 @export var speaker: Speaker = Speaker.RECIPIENT
 @export_multiline var text: String = ""
+@export_multiline var action_before: String = ""
+@export_multiline var action_after: String = ""

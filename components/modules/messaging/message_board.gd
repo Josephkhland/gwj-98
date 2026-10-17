@@ -88,10 +88,16 @@ func _get_or_create(definition: MessageNotification) -> NetworkMessage:
 	var message := NetworkMessage.new()
 	message.definition = definition
 	# Lookups log their own errors; unknown houses simply never connect.
-	message.from_house = _graph.get_house_by_key(definition.from_house)
-	message.to_house = _graph.get_house_by_key(definition.to_house)
+	if definition.route != MessageNotification.Route.FROM_INTERNET:
+		message.from_house = _graph.get_house_by_key(definition.from_house)
+	if definition.route != MessageNotification.Route.TO_INTERNET:
+		message.to_house = _graph.get_house_by_key(definition.to_house)
 	message.from_label = message.from_house.get_label() if message.from_house != null else str(definition.from_house)
 	message.to_label = message.to_house.get_label() if message.to_house != null else str(definition.to_house)
+	if definition.route == MessageNotification.Route.FROM_INTERNET:
+		message.from_label = definition.sender.display_name if definition.sender != null else "Internet"
+	elif definition.route == MessageNotification.Route.TO_INTERNET:
+		message.to_label = definition.recipient.display_name if definition.recipient != null else "Internet"
 	var send_clock := definition.get_game_seconds(_clock.real_seconds_per_day, _clock.get_day_start_seconds(), _clock.get_game_seconds_per_day())
 	_set_times(message, send_clock - _clock.get_day_start_seconds())
 	_messages.append(message)
@@ -104,10 +110,13 @@ func _set_times(message: NetworkMessage, send_seconds: float) -> void:
 	message.deadline_text = _format_clock(message.deadline_seconds)
 
 func _try_deliver(message: NetworkMessage) -> bool:
-	if message.state != NetworkMessage.State.PENDING or message.from_house == null or message.to_house == null:
+	if message.state != NetworkMessage.State.PENDING:
 		return false
-	if not _graph.are_houses_connected(message.from_house, message.to_house):
+	if not _has_delivery_route(message):
 		return false
+	# A lazy graph rebuild may already have delivered this through connectivity_changed.
+	if message.state != NetworkMessage.State.PENDING:
+		return message.state == NetworkMessage.State.DELIVERED
 	var now := _clock.get_elapsed_game_seconds()
 	message.delivered_seconds = now
 	message.score = scoring_rule.score(message.definition.points, (now - message.send_seconds) / 60.0, message.definition.expire_minutes)
@@ -116,6 +125,23 @@ func _try_deliver(message: NetworkMessage) -> bool:
 	message_changed.emit(message)
 	score_changed.emit(total_score, message.score)
 	return true
+
+func _has_delivery_route(message: NetworkMessage) -> bool:
+	if message.definition.route == MessageNotification.Route.HOUSE_TO_HOUSE:
+		return message.from_house != null and message.to_house != null and _graph.are_houses_connected(message.from_house, message.to_house)
+	var outbound := message.definition.route == MessageNotification.Route.TO_INTERNET
+	var local_house := message.from_house if outbound else message.to_house
+	if local_house == null:
+		return false
+	for vertex in _graph.get_vertices():
+		var gateway := vertex as SignalNetworkHouse
+		if gateway != null and gateway.is_internet_gateway() and _graph.are_houses_connected(local_house, gateway):
+			if outbound:
+				message.to_house = gateway
+			else:
+				message.from_house = gateway
+			return true
+	return false
 
 func _expire(message: NetworkMessage) -> void:
 	message.state = NetworkMessage.State.EXPIRED

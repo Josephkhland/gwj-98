@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MessageNotification" format=3 uid="uid://i8epjosvbno0"]
+
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Script" uid="uid://31g58cjce0dt" path="res://components/modules/messaging/message_notification.gd" id="message"]
+[ext_resource type="Resource" path="res://resources/character_profiles/anonymous_mayor_character_profile.tres" id="remote"]
+[ext_resource type="Script" uid="uid://bybh66jai7ab2" path="res://components/modules/messaging/message_reply.gd" id="reply"]
+
+[sub_resource type="Resource" id="Reply1"]
+script = ExtResource("reply")
+text = "The Nine of Wands. The stars will test you!"
+action_after = "Hangs up"
+
+[resource]
+resource_name = "Deer 05"
+script = ExtResource("message")
+message_id = &"deer_05"
+to_house = &"deer_house"
+route = 2
+text = "Is help going to arrive?"
+sender = ExtResource("remote")
+recipient = ExtResource("deer")
+replies = Array[ExtResource("reply")]([SubResource("Reply1")])
+hour = 11
+minute = 0

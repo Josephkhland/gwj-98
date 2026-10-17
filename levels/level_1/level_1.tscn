@@ -12,10 +12,22 @@
 [ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="3_la5aw"]
 [ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="4_5b03i"]
 [ext_resource type="Resource" uid="uid://cctpv8asj73ii" path="res://resources/day_cycle_schedules/level_1_schedule.tres" id="4_hyp3v"]
-[ext_resource type="PackedScene" uid="uid://c5eqkf1lr28xa" path="res://components/modules/day_cycle/town_lights/Floodlight.tscn" id="4_lwxes"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="5_5b03i"]
-[ext_resource type="PackedScene" uid="uid://dawp1u828hte7" path="res://components/modules/day_cycle/town_lights/LampPost.tscn" id="5_tk2t7"]
-[ext_resource type="PackedScene" path="res://components/modules/day_cycle/town_lights/WallLamp.tscn" id="6_drths"]
+[ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="11_0rvqm"]
+[ext_resource type="Resource" uid="uid://chde7vnbif27p" path="res://resources/character_profiles/burd_character_profile.tres" id="12_mgcax"]
+[ext_resource type="Resource" uid="uid://csnyjngut3mlo" path="res://resources/character_profiles/squirrel_character_profile.tres" id="13_plqb7"]
+[ext_resource type="Resource" uid="uid://dsaxljv7m00wk" path="res://resources/character_profiles/fox_character_resource.tres" id="14_e6dmr"]
+[ext_resource type="Resource" uid="uid://berw63c5ft7kr" path="res://resources/character_profiles/mayor_character_profile.tres" id="16_hmxt8"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/Bed.tscn" id="17_drths"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/ClockInPoint.tscn" id="18_owtu7"]
+[ext_resource type="Script" uid="uid://cy11kv75wsgq4" path="res://components/modules/messaging/message_board.gd" id="19_owtu7"]
+[ext_resource type="PackedScene" path="res://components/modules/townfolk/TownfolkCharacter.tscn" id="20_vk63l"]
+[ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="20_xywve"]
+[ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="21_vk63l"]
+[ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="22_f313t"]
+[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
+[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
+[ext_resource type="Script" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
@@ -100,21 +112,10 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_drths"]
+[sub_resource type="Curve2D" id="Curve2D_0rvqm"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
-}
-point_count = 9
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1iwl3"]
-resource_local_to_scene = true
-size = Vector2(34, 225.5)
-
-[sub_resource type="Curve2D" id="Curve2D_xywve"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
 point_count = 9
 
@@ -125,9 +126,9 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_vhlys"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
-point_count = 12
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mnfdo"]
 resource_local_to_scene = true
@@ -136,7 +137,7 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_xjrjs"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
 }
 point_count = 12
 
@@ -144,8 +145,30 @@ point_count = 12
 resource_local_to_scene = true
 size = Vector2(34, 225.5)
 
-[node name="Level1" type="Node2D" unique_id=910846331]
+[sub_resource type="Curve2D" id="Curve2D_lu7vs"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+}
+point_count = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jmd8"]
+resource_local_to_scene = true
+size = Vector2(34, 225.5)
+
+[node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
 script = ExtResource("1_qbdb0")
+level_title = "Day 1"
+show_collision_surfaces = true
+day_cycle = NodePath("DayCycleManager")
+lighting = NodePath("DayCycleLighting2D")
+network_graph = NodePath("NetworkGraph")
+message_board = NodePath("MessageBoard")
+player = NodePath("PlatformerCharacter")
+player_spawn = NodePath("PlayerSpawn")
+bed = NodePath("Bed")
+clock_in_point = NodePath("ClockInPoint")
+music_manager = NodePath("MusicManager")
 
 [node name="TownBackground" parent="." unique_id=1201888540 instance=ExtResource("2_1ow6f")]
 visible = false
@@ -155,32 +178,15 @@ unique_name_in_owner = true
 initial_phase = 1
 transition_seconds = 15.01
 
-[node name="Floodlight" parent="DayCycleLighting2D" unique_id=2030796685 instance=ExtResource("4_lwxes")]
-position = Vector2(-36, -34)
-
-[node name="Floodlight2" parent="DayCycleLighting2D" unique_id=83129348 instance=ExtResource("4_lwxes")]
-position = Vector2(64, -38)
-
-[node name="LampPost" parent="DayCycleLighting2D" unique_id=1864723137 instance=ExtResource("5_tk2t7")]
-position = Vector2(815, -111)
-
-[node name="WallLamp" parent="DayCycleLighting2D" unique_id=702444423 instance=ExtResource("6_drths")]
-position = Vector2(278, -119)
-energy = 1.0
-
-[node name="Background" type="CanvasLayer" parent="." unique_id=1172451239]
-layer = -1
-
 [node name="DayCycleManager" parent="." unique_id=216922671 instance=ExtResource("3_1ow6f")]
 day_start_time = "08:00"
 day_end_time = "20:00"
-real_minutes_per_day = 3.001
+real_minutes_per_day = 3.054167429606
 schedule = ExtResource("4_hyp3v")
-autostart = true
 
 [node name="PlatformerCharacter" parent="." unique_id=661001980 instance=ExtResource("2_epb64")]
 z_index = 1
-position = Vector2(-992, 1888)
+position = Vector2(-598, 810)
 
 [node name="CameraManager2D" parent="." unique_id=2089399337 instance=ExtResource("3_iey7c")]
 position = Vector2(-513, 38)
@@ -197,57 +203,135 @@ metadata/_custom_type_script = "uid://8l3trd1taiau"
 
 [node name="House" parent="NetworkGraph" unique_id=1533480250 instance=ExtResource("2_8jbay")]
 modulate = Color(0.21960784, 0.19215687, 1, 1)
-position = Vector2(10, -49)
-key_identifier = &"frog_house"
-display_name = "Frog House"
+position = Vector2(-3002, 590)
+character_profile = ExtResource("11_0rvqm")
+key_identifier = &"deer_house"
+display_name = "Lady Stagborn's House"
 
 [node name="House2" parent="NetworkGraph" unique_id=1077202862 instance=ExtResource("2_8jbay")]
 modulate = Color(0.21960784, 0.19215687, 1, 1)
-position = Vector2(-18, 458)
-key_identifier = &"croc_house"
-display_name = "Croclumb House"
-connections = Array[NodePath]([NodePath("../Router4")])
+position = Vector2(-428, 1545)
+character_profile = ExtResource("12_mgcax")
+key_identifier = &"bird_house"
+display_name = "Burd's House"
+
+[node name="House3" parent="NetworkGraph" unique_id=278732102 instance=ExtResource("2_8jbay")]
+modulate = Color(0.21960784, 0.19215687, 1, 1)
+position = Vector2(-850, -257)
+character_profile = ExtResource("13_plqb7")
+key_identifier = &"h3"
+display_name = "House 3"
+connections = Array[NodePath]([NodePath("../Router12")])
+
+[node name="House4" parent="NetworkGraph" unique_id=744359825 instance=ExtResource("2_8jbay")]
+modulate = Color(0.21960784, 0.19215687, 1, 1)
+position = Vector2(-3180, 1668)
+character_profile = ExtResource("14_e6dmr")
+key_identifier = &"h4"
+display_name = "House 4"
+connections = Array[NodePath]([NodePath("../Router7")])
+
+[node name="Gateway1" parent="NetworkGraph" unique_id=2004566899 instance=ExtResource("2_8jbay")]
+modulate = Color(0.21960784, 0.19215687, 1, 1)
+position = Vector2(-1299, 2279)
+internet_gateway = true
+key_identifier = &"gateway_1"
+display_name = "Internet Gateway 1"
+connections = Array[NodePath]([NodePath("../Router8")])
 
 [node name="Router" parent="NetworkGraph" unique_id=893130211 instance=ExtResource("3_la5aw")]
-position = Vector2(240, -340)
+position = Vector2(-2736, 155)
 hint_label = NodePath("HintLabel")
 key_identifier = &"r1"
-display_name = "R1 (Outside Frog House)"
 connections = Array[NodePath]([NodePath("../House")])
 
 [node name="Router2" parent="NetworkGraph" unique_id=84250392 instance=ExtResource("3_la5aw")]
-position = Vector2(924, -24)
+position = Vector2(-2103, 563)
 hint_label = NodePath("HintLabel")
 key_identifier = &"r2"
-display_name = "Frog Neighborhood Cabin"
-connections = Array[NodePath]([NodePath("../Router")])
+connections = Array[NodePath]([NodePath("../Router"), NodePath("../Router6")])
 
 [node name="Router3" parent="NetworkGraph" unique_id=1995126100 instance=ExtResource("3_la5aw")]
-position = Vector2(900, 583)
+position = Vector2(-1850, 909)
 state = 0
 hint_label = NodePath("HintLabel")
 key_identifier = &"r3"
-display_name = "Bog Neigbhorhood Cabin"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router4" parent="NetworkGraph" unique_id=1932095599 instance=ExtResource("3_la5aw")]
-position = Vector2(462, 229)
+position = Vector2(-1948, 1354)
 state = 0
 hint_label = NodePath("HintLabel")
 key_identifier = &"r4"
-display_name = "R4 (Outside Croclumb House)"
-connections = Array[NodePath]([NodePath("../Router3")])
+display_name = "Router 4"
+connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), NodePath("../Router8")])
 
 [node name="Router5" parent="NetworkGraph" unique_id=2033677965 instance=ExtResource("3_la5aw")]
-position = Vector2(1267, -263)
+position = Vector2(-1693, -232)
 hint_label = NodePath("HintLabel")
 key_identifier = &"r5"
-display_name = "R5 (Outside Owl House)"
 connections = Array[NodePath]([NodePath("../Router2")])
+
+[node name="Router6" parent="NetworkGraph" unique_id=1424610390 instance=ExtResource("3_la5aw")]
+position = Vector2(-2674, 1096)
+hint_label = NodePath("HintLabel")
+key_identifier = &"r6"
+connections = Array[NodePath]([NodePath("../Router7")])
+
+[node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
+position = Vector2(-2682, 1823)
+hint_label = NodePath("../Router6/HintLabel")
+key_identifier = &"r7"
+
+[node name="Router8" parent="NetworkGraph" unique_id=1678648894 instance=ExtResource("3_la5aw")]
+position = Vector2(-1296, 1476)
+hint_label = NodePath("../Router7/HintLabel")
+key_identifier = &"r8"
+connections = Array[NodePath]([NodePath("../Router9")])
+
+[node name="Router9" parent="NetworkGraph" unique_id=2002947098 instance=ExtResource("3_la5aw")]
+position = Vector2(-960, 1222)
+hint_label = NodePath("../Router7/HintLabel")
+key_identifier = &"r9"
+connections = Array[NodePath]([NodePath("../House2")])
+
+[node name="Router10" parent="NetworkGraph" unique_id=654400491 instance=ExtResource("3_la5aw")]
+position = Vector2(-1211, 692)
+hint_label = NodePath("../Router7/HintLabel")
+key_identifier = &"r10"
+connections = Array[NodePath]([NodePath("../Router9"), NodePath("../Router3"), NodePath("../Router11")])
+
+[node name="Router11" parent="NetworkGraph" unique_id=997192392 instance=ExtResource("3_la5aw")]
+position = Vector2(-563, 448)
+hint_label = NodePath("../Router7/HintLabel")
+key_identifier = &"r11"
+
+[node name="Router12" parent="NetworkGraph" unique_id=87479911 instance=ExtResource("3_la5aw")]
+position = Vector2(-992, 34)
+hint_label = NodePath("../Router5/HintLabel")
+key_identifier = &"r12"
+connections = Array[NodePath]([NodePath("../Router11"), NodePath("../Router5")])
+
+[node name="Mayor" parent="NetworkGraph" unique_id=449386620 instance=ExtResource("2_8jbay")]
+modulate = Color(0.21960784, 0.19215687, 1, 1)
+position = Vector2(-22, 482)
+character_profile = ExtResource("16_hmxt8")
+key_identifier = &"to_mayor"
+display_name = "To Mayor's House"
+connections = Array[NodePath]([NodePath("../Router11")])
+
+[node name="Gateway2" parent="NetworkGraph" unique_id=1198326557 instance=ExtResource("2_8jbay")]
+modulate = Color(0.21960784, 0.19215687, 1, 1)
+position = Vector2(-1701, -652)
+internet_gateway = true
+key_identifier = &"gateway_3"
+display_name = "Internet Gateway 3"
+connections = Array[NodePath]([NodePath("../Router5")])
 
 [node name="Wall" type="StaticBody2D" parent="." unique_id=44437407]
 position = Vector2(-1904, 765)
 collision_layer = 9
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Wall" unique_id=1850583976]
 position = Vector2(920.5625, -937.125)
@@ -424,6 +508,7 @@ shape = SubResource("RectangleShape2D_tk2t7")
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Wall" unique_id=886166143]
 position = Vector2(1272, 779)
 shape = SubResource("RectangleShape2D_wl75l")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D54" type="CollisionShape2D" parent="Wall" unique_id=1717701030]
 position = Vector2(444, 779)
@@ -488,14 +573,17 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_drths")
+curve = SubResource("Curve2D_0rvqm")
+
+[node name="Body" parent="MovingPlatform" index="1"]
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
 visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
-shape = SubResource("RectangleShape2D_1iwl3")
+shape = SubResource("RectangleShape2D_wa3ku")
 
 [node name="MovingPlatform3" parent="." unique_id=845979641 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -508,14 +596,17 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform3" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_xywve")
+curve = SubResource("Curve2D_vhlys")
+
+[node name="Body" parent="MovingPlatform3" index="1"]
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform3/Body" index="0"]
 visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform3/Body" index="1"]
-shape = SubResource("RectangleShape2D_wa3ku")
+shape = SubResource("RectangleShape2D_mnfdo")
 
 [node name="MovingPlatform2" parent="." unique_id=813500050 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -528,14 +619,17 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform2" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_vhlys")
+curve = SubResource("Curve2D_xjrjs")
+
+[node name="Body" parent="MovingPlatform2" index="1"]
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform2/Body" index="0"]
 visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform2/Body" index="1"]
-shape = SubResource("RectangleShape2D_mnfdo")
+shape = SubResource("RectangleShape2D_ya87f")
 
 [node name="MovingPlatform4" parent="." unique_id=1062858323 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -549,19 +643,52 @@ disappear_duration = 0.0
 [node name="MovementPath" parent="MovingPlatform4" index="0"]
 position = Vector2(8, 0)
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_xjrjs")
+curve = SubResource("Curve2D_lu7vs")
 
 [node name="Body" parent="MovingPlatform4" index="1"]
 position = Vector2(8, 0)
+collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform4/Body" index="0"]
 visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform4/Body" index="1"]
-shape = SubResource("RectangleShape2D_ya87f")
+shape = SubResource("RectangleShape2D_2jmd8")
 
-[connection signal="notification" from="DayCycleManager" to="." method="_on_day_cycle_manager_notification"]
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=816260377]
+position = Vector2(-2846, -35)
+
+[node name="Bed" parent="." unique_id=12741662 instance=ExtResource("17_drths")]
+position = Vector2(-2783, 4)
+
+[node name="ClockInPoint" parent="." unique_id=750564692 instance=ExtResource("18_owtu7")]
+position = Vector2(-990, 1910)
+
+[node name="MessageBoard" type="Node" parent="." unique_id=649108590]
+script = ExtResource("19_owtu7")
+
+[node name="MusicManager" parent="." unique_id=1693539517 instance=ExtResource("20_xywve")]
+morning = ExtResource("21_vk63l")
+main = ExtResource("22_f313t")
+
+[node name="DeerTownfolkCharacter" parent="." unique_id=1238639566 instance=ExtResource("20_vk63l")]
+position = Vector2(-2781, 625)
+character_profile = ExtResource("11_0rvqm")
+dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_chain_1")])
+off_shift_dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_intro")])
+
+[node name="BurdTownfolkCharacter" parent="." unique_id=1114119585 instance=ExtResource("20_vk63l")]
+position = Vector2(-496, 1503)
+character_profile = ExtResource("12_mgcax")
+
+[node name="FoxTownfolkCharacter" parent="." unique_id=1964815674 instance=ExtResource("20_vk63l")]
+position = Vector2(-3022, 1945)
+character_profile = ExtResource("14_e6dmr")
+
+[node name="SquirrelTownfolkCharacter" parent="." unique_id=1910306370 instance=ExtResource("20_vk63l")]
+position = Vector2(-903, -222)
+character_profile = ExtResource("13_plqb7")
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform3"]

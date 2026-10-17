@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cp00k0biyl2y6"]
+
+[ext_resource type="Texture2D" uid="uid://c53ylmxj44x7d" path="res://icon.svg" id="1_esd7l"]
+[ext_resource type="Script" uid="uid://1k25hhe88clm" path="res://components/modules/test_collectable_indicator.gd" id="2_775oq"]
+
+[node name="TestCollectableIndicator" type="Sprite2D" unique_id=205918734]
+texture = ExtResource("1_esd7l")
+script = ExtResource("2_775oq")

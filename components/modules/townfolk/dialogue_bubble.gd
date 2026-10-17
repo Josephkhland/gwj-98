@@ -8,6 +8,7 @@ extends Node2D
 @export_range(0, 0.12, 0.005) var shape_quirk: float = 0.055
 var mouth_position := Vector2(0, 95)
 const GoldGlitter = preload("res://components/modules/townfolk/gold_glitter.gd")
+const InputIcons = preload("res://components/ui/input_icons/input_icon_text.gd")
 var _glitter := GoldGlitter.new()
 var _shape_phases := Vector3(0.7, 2.4, 4.1)
 var _tail_bend: float = 8.0
@@ -18,11 +19,14 @@ var _popup_rise: float = 0.0
 var minimized: bool = false
 var _collapse: float = 0.0
 var _animation_time: float = 0.0
+var _input_text: String = ""
+var _input_segments: Array[Dictionary] = []
 
 @onready var text_label: RichTextLabel = $Text
 @onready var popup_label: Label = $Popup
 
 func _ready() -> void:
+	text_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	text_label.add_theme_color_override("default_color", text_color)
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text_label.fit_content = true
@@ -31,25 +35,39 @@ func _ready() -> void:
 	text_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	popup_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	popup_label.hide()
+	var store := get_node_or_null("/root/InputBindings")
+	if store != null and store.has_signal("bindings_changed"):
+		store.bindings_changed.connect(_refresh_input_icons)
 	if Engine.is_editor_hint():
 		set_text("Dialogue preview")
 
 func set_text(value: String) -> void:
+	_input_text = value
+	_input_segments = []
 	text_label.clear()
-	text_label.add_text(value)
+	InputIcons.append_to(text_label, value)
 	_layout_text()
 
 func set_segments(segments: Array[Dictionary]) -> void:
+	_input_segments = segments.duplicate(true)
 	text_label.clear()
 	for segment in segments:
 		text_label.push_color(segment.color)
 		if segment.gold:
 			text_label.push_customfx(_glitter, {})
-		text_label.add_text(segment.text)
+		InputIcons.append_to(text_label, segment.text)
 		if segment.gold:
 			text_label.pop()
 		text_label.pop()
 	_layout_text()
+
+func _refresh_input_icons() -> void:
+	if not is_inside_tree():
+		return
+	if _input_segments.is_empty():
+		set_text(_input_text)
+	else:
+		set_segments(_input_segments)
 
 func _layout_text() -> void:
 	text_label.position = Vector2(-bubble_size.x / 2.0 + 24, -bubble_size.y + 20)

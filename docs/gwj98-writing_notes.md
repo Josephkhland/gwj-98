@@ -203,10 +203,11 @@ Beyond that his participation in the narrative is going to be simple: He just ma
 
 ### Messages Related to Squirel
 
-
-
 ### Dialogue Chains
-Introduction_Chain: 
+TODO
+
+## Tutorial Script
+   (Squirrel shows up in front of the Player as they walk out of their house) 
    1: "Goodmorning Tad! Are you ready to become an engineer? I am planning to retire and start herding Silk Worms."
    2: "Yes. It's very sudden. I understand you were just stretching, but it's really important and you are the only one that can do it."
    3: "Good good... In my line of trade, having questions is the healthy thing. Why I selected you? Lad, I've seen your mad gaming skills."
@@ -249,4 +250,47 @@ Introduction_Chain:
    24: "You may ask your mom for an alternate eyesight experience by pressing [ESC] to open the Pause menu and then going over to the options menu."
    25: "Either way, proceed with fixing everything and meet me at the bridge."
 
-   (Moves to the Bridge. Where he teaches the Spit)
+   (Moves to the Bridge. Where he teaches the Spit. The bridge is lifted)
+   26: "See that button over there at the other side? Press [Right Click] to start charging up your Spit. The release it!" 
+   (After the player hits the button with his spit, the bridge gets lowered allowing crossing). 
+   27: "Good... Good..." 
+   (Moves across the bridge and starts waiting for the next position)
+   28: "If you are airborne, spitting can help you move horizontally! Just make sure you have charged a bit of spit first." 
+   (The obstacle here is a wall that the player needs to jump over, on the other side a hole with a path under the starting point needing to be reached)
+   (if the player falls down they pit, they shhould just get repositioned back to the starting point for this obstacle)
+   (When the obstacle is completed the squirrel digs fades into the background and then appears next to you)
+   29: "Sometimes you might need to slam! Press [S] while airborne to Slam! It halts your horizontal movement and might also help you break through wood!"
+   (We can have a Wood floor on the spot where they are standing, that breaks with a slam).
+   (After going through, they get to drop into a big room of some shorts. We are going to explain how the Messages get delivered here so we need at least 
+   four routers, placed as a star network, two houses and an internet gateway. Each house is attached to one router, likewise the internet gateway, the routers they are connected to, connect to a central router)
+   30: "Now let's do a field test on Signals." 
+   (Message appears entering the message board, we need indicative arrows pointing at it and explaing what each component of the message panel is)
+   31: "Let's see how this travels across our healthy network..."
+   (Next the game fixes the router on the center and shows you a succesful signal)
+   32: "Interesting right! As a benefit of the job we can also see everything that happens across the NETWORK. Chill up and read through the McGuffin I gave you".
+   (The messages being relate are just explaining stuff as well, like how to look at the minimap to recognize who is sending, who is receiving and making sure a route between them exists when its time for the message)
+   33: "Now let's see how an unhealthy network would operate!" 
+   (The central router breaks, message instantly appears and fails). 
+   34: "Of course a single broken router might not be enough to cause a total system failure."
+   (The central router is fixed and the internet gateway's router breaks. Game shows how Person A can still send a message to Person B)
+   (At the same time it tries sending a message to the gate way).
+   35: "Outsiders all talk through the World Wide Web Gateways. Also broadcasts need to be able to reach any of those Gateways. You can recognize them with this symbol on your McGuffin's network map [Icon used for Gateway].
+   36: "How about you Clock In there and see how this works in action?" 
+   (A Clock IN station appears, it gets pointed at and you can go and clock in. Using the routers/houses in the area it has some outages happening and some messages happening. The duration for this "shift" should be around 40s)
+   37: "If you encounter someone during your shift, like me you may talk to them with [S]." (This is sent as one of the first messages that succeeds because the whole network is fixed).
+   (The above message unlocks a dialogue option with the tutorial squirrel during the shift).
+   38: "See how the words are turning pink slowly as I am speaking? Press [C] when a word is fully pink to show how careful you are listening. It earns you points!" 
+   39: "Also successful signal transmissions earn you points, so don't let yapping stop you from fixing the routers!" (Follow-up of the dialogue chain of the squirel)
+   (Routers break in a specific sequence during this shift - we can randomize it). 
+   (Then after the shift ends we get the following) 
+   (A practice workbench with the frog router spawns next to the player)
+   40: "Before you sleep, one last thing. This is my old practice router. A good engineer keeps their toes nimble, so give it a go every evening!"
+   41: "Its screen shows two waves. The blue one is how the signal should look, the yellow one is what the router is actually doing. Make them match and you're done."
+   42: "Too many or too few bumps? Slide FREQ. Too tall or too flat? Slide AMP. All fuzzy and jittery? Grab the antenna and swing it until the fuzz clears and the bars fill up."
+   43: "If the yellow wave glitches and the ENC light blinks, the encoding is scrambled. Press DEC, read the serial number on the router's plate, find its PIN on your notes with Tab or right-click, and type it in."
+   44: "A dark screen means it's off, so press I/O. A frozen screen with a blinking red ERR light? Turn it off and on again. Works every time!"
+   45: "When the waves line up, it locks in. Go on, Lad, show me those mad gaming skills!"
+   (The player has to solve the practice router once, then:)
+   36: "Good...Good... I think you are probably ready to take over! Whenever you are ready to end your day, just go back to your bed and sleep." 
+   (We just spawn a bed in the room to make things easier and that's the end of the tutorial)
+   (As a note, we don't use the Off-shift Dialogue Conversation during the tutorial. We use the on-shift one, just making sure the tutorial_squirrel has a big range for hearing them). 

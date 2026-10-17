@@ -10,6 +10,11 @@ func _ready() -> void:
 	_layout_message_feed()
 
 func _layout_message_feed() -> void:
+	var prompt := get_widget(&"prompt")
+	if prompt != null:
+		var width := minf(800, maxf(240, $Root.size.x - 32))
+		prompt.offset_left = -width / 2
+		prompt.offset_right = width / 2
 	var feed := get_widget(&"message_feed")
 	if feed == null:
 		return

@@ -1,9 +1,13 @@
 [gd_resource type="Resource" script_class="CharacterProfile" format=3 uid="uid://enknf51x38qm"]
 
 [ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_jpcb6"]
+[ext_resource type="Resource" path="res://resources/sound_banks/deer_voice_bank.tres" id="voice"]
+[ext_resource type="Texture2D" path="res://assets/josephkhland/deer_portrait_prototoype.png" id="portrait"]
 
 [resource]
 script = ExtResource("1_jpcb6")
 character_id = &"deer"
 display_name = "Lady Stagborn"
+portrait = ExtResource("portrait")
+voice_bank = ExtResource("voice")
 metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

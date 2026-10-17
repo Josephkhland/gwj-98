@@ -290,6 +290,10 @@ func _can_spit() -> bool:
 func _begin_spit() -> void:
 	if not _can_spit() or spit_charges <= 0:
 		return
+	if state == State.SLAMMING and not state_machine.current.impacted:
+		# Cancel both the dive state and its forced downward speed before charging/firing.
+		velocity.y = minf(velocity.y, settings.spit_charge_fall_speed_limit)
+		_change_state(State.IN_AIR)
 	if settings.spit_charge_enabled:
 		_spit_charge_grounded = is_grounded()
 		_change_state(State.CHARGING_SPIT)
@@ -389,13 +393,22 @@ func _fire_spit(charge_ratio: float) -> void:
 func _update_spit_recharge(delta: float) -> void:
 	if not settings.spit_enabled or spit_charges >= settings.spit_maximum_charges:
 		return
-	# if not _spit_recharge_ready or not settings.allows_spit_recharge(state_machine.current.animation):
-	# 	return
+	var wall_contact := _attached and absf(_surface_normal.x) >= cos(floor_max_angle)
+	if is_grounded() or wall_contact:
+		_spit_recharge_ready = true
 	for contact in _get_surface_contacts(_slide_normal):
-		if surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
-			spit_charges = 1
-			return
-	return
+		var normal := contact.get_normal()
+		if normal.dot(Vector2.UP) >= cos(floor_max_angle):
+			_spit_recharge_ready = true
+		elif absf(normal.x) >= cos(floor_max_angle):
+			wall_contact = true
+			_spit_recharge_ready = true
+	var recharge_state: StringName = state_machine.current.animation
+	# A wall touch can occur without entering the sticky-wall attachment state.
+	if wall_contact and state in [State.JUMPING, State.IN_AIR, State.ON_WALL]:
+		recharge_state = &"on_wall"
+	if not _spit_recharge_ready or not settings.allows_spit_recharge(recharge_state):
+		return
 	_spit_recharge_progress += delta
 	var interval := maxf(settings.spit_recharge_time, 0.001)
 	while _spit_recharge_progress >= interval and spit_charges < settings.spit_maximum_charges:

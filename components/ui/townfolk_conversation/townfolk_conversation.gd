@@ -2,21 +2,26 @@ extends CanvasLayer
 ## Screen-space, player-paced dialogue. Does not award hearing or reaction rewards.
 signal advance_requested
 const SESSION_GROUP := &"townfolk_conversation_session"
+const InputIcons = preload("res://components/ui/input_icons/input_icon_text.gd")
 var interact_action: StringName = &"interact"
 var _complete: bool = false
 var _last_line: bool = false
+var _revealed_source: String = ""
+var _line_source: String = ""
 @onready var _art_area: Control = $Root/ArtArea
 @onready var _portrait: TextureRect = $Root/ArtArea/Portrait
 @onready var _name: Label = $Root/NameFrame/Margin/Name
 @onready var _text: RichTextLabel = $Root/TextFrame/Margin/Content/Text
 @onready var _continue: Button = $Root/TextFrame/Margin/Content/Footer/Continue
-@onready var _hint: Label = $Root/TextFrame/Margin/Content/Footer/Hint
+@onready var _hint: InputHintLabel = $Root/TextFrame/Margin/Content/Footer/Hint
 @onready var _voice: AudioStreamPlayer = $Voice
 
 func _ready() -> void:
+	_text.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	hide()
 	_continue.pressed.connect(advance_requested.emit)
 	_art_area.resized.connect(_layout_portrait)
+	InputBindings.bindings_changed.connect(_refresh_input_icons)
 
 func open(profile: CharacterProfile, fallback_name: String) -> void:
 	_name.text = profile.display_name if profile != null and not profile.display_name.is_empty() else fallback_name
@@ -43,7 +48,9 @@ func _layout_portrait() -> void:
 	_portrait.position = Vector2(0, _art_area.size.y - _portrait.size.y)
 
 func begin_line(line: TownfolkDialogueLine, last_line: bool) -> void:
-	_text.text = "".join(line.get_chunks())
+	_line_source = "".join(line.get_chunks())
+	InputIcons.set_text(_text, _line_source)
+	_revealed_source = ""
 	_text.visible_characters = 0
 	_text.scroll_to_line(0)
 	_complete = false
@@ -51,10 +58,11 @@ func begin_line(line: TownfolkDialogueLine, last_line: bool) -> void:
 	_update_prompt()
 
 func reveal_chunk(chunk: String, bank: VoiceSoundBank) -> void:
-	_text.visible_characters += chunk.length()
+	_revealed_source += chunk
+	_text.visible_characters = InputIcons.rendered_length(_revealed_source)
 	if bank == null or not TownfolkDialogueLine.is_spoken(chunk):
 		return
-	var clip := bank.random_clip()
+	var clip := bank.clip_for_syllable(chunk)
 	if clip == null:
 		return
 	_voice.stream = clip
@@ -68,6 +76,13 @@ func complete_line() -> void:
 	_complete = true
 	_update_prompt()
 
+func _refresh_input_icons() -> void:
+	if not is_inside_tree():
+		return
+	InputIcons.set_text(_text, _line_source)
+	_text.visible_characters = -1 if _complete else InputIcons.rendered_length(_revealed_source)
+	_update_prompt()
+
 func _input(event: InputEvent) -> void:
 	if not visible or not InputMap.has_action(interact_action):
 		return
@@ -78,10 +93,4 @@ func _input(event: InputEvent) -> void:
 
 func _update_prompt() -> void:
 	_continue.text = ("Finish" if _last_line else "Continue") if _complete else "Reveal text"
-	var binding := "Interact"
-	var events := InputMap.action_get_events(interact_action) if InputMap.has_action(interact_action) else []
-	for event in events:
-		if event is InputEventKey:
-			binding = event.as_text_physical_keycode() if event.physical_keycode != 0 else event.as_text_keycode()
-			break
-	_hint.text = "%s to %s" % [binding, _continue.text.to_lower()]
+	_hint.set_hint("[action:%s] to %s" % [interact_action, _continue.text.to_lower()])

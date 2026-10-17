@@ -53,6 +53,17 @@ func stop() -> void:
 	_holding = false
 	waits_for_input = false
 
+## Finish only the current reveal, retaining the normal reading hold and line order.
+func reveal_current_line() -> void:
+	if not is_playing or not is_revealing:
+		return
+	_chunk_index = _chunks.size()
+	is_revealing = false
+	_pending_highlight = -1
+	_holding = true
+	_remaining = 0.0 if waits_for_input else maxf(chain.lines[line_index].hold_seconds, minimum_hold_seconds)
+	line_revealed.emit(line_index)
+
 ## First press completes the current line silently; another advances or finishes.
 func continue_dialogue() -> void:
 	if not is_playing or not waits_for_input:

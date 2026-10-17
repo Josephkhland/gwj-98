@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://components/ui/townfolk_conversation/townfolk_conversation.gd" id="1"]
+
+[ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
 
 [sub_resource type="StyleBoxFlat" id="TextFrame"]
 bg_color = Color(0.98, 0.94, 0.83, 0.99)
@@ -114,11 +116,14 @@ scroll_following = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Hint" type="Label" parent="Root/TextFrame/Margin/Content/Footer"]
+[node name="Hint" type="RichTextLabel" parent="Root/TextFrame/Margin/Content/Footer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.36, 0.4, 0.37, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_colors/default_color = Color(0.36, 0.4, 0.37, 1)
+theme_override_font_sizes/normal_font_size = 18
+script = ExtResource("input_hints")
+fit_content = true
+scroll_active = false
 
 [node name="Continue" type="Button" parent="Root/TextFrame/Margin/Content/Footer"]
 layout_mode = 2

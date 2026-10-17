@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqhr3r4ivex1f"
+path="res://.godot/imported/Bird - i.mp3-0f943c1022c78da12428b72d7b7bcbd1.mp3str"
+
+[deps]
+
+source_file="res://assets/cabalcrow/Bird - i.mp3"
+dest_files=["res://.godot/imported/Bird - i.mp3-0f943c1022c78da12428b72d7b7bcbd1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

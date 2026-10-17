@@ -13,11 +13,13 @@
 [ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="4_5b03i"]
 [ext_resource type="Resource" uid="uid://cctpv8asj73ii" path="res://resources/day_cycle_schedules/level_1_schedule.tres" id="4_hyp3v"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="5_5b03i"]
+[ext_resource type="PackedScene" uid="uid://c5eqkf1lr28xa" path="res://components/modules/day_cycle/town_lights/Floodlight.tscn" id="5_wa3ku"]
+[ext_resource type="PackedScene" path="res://components/modules/day_cycle/town_lights/WallLamp.tscn" id="6_vhlys"]
+[ext_resource type="PackedScene" uid="uid://dawp1u828hte7" path="res://components/modules/day_cycle/town_lights/LampPost.tscn" id="7_ta3uh"]
 [ext_resource type="Resource" uid="uid://enknf51x38qm" path="res://resources/character_profiles/deer_character_profile.tres" id="11_0rvqm"]
 [ext_resource type="Resource" uid="uid://chde7vnbif27p" path="res://resources/character_profiles/burd_character_profile.tres" id="12_mgcax"]
 [ext_resource type="Resource" uid="uid://csnyjngut3mlo" path="res://resources/character_profiles/squirrel_character_profile.tres" id="13_plqb7"]
 [ext_resource type="Resource" uid="uid://dsaxljv7m00wk" path="res://resources/character_profiles/fox_character_resource.tres" id="14_e6dmr"]
-[ext_resource type="Resource" uid="uid://berw63c5ft7kr" path="res://resources/character_profiles/mayor_character_profile.tres" id="16_hmxt8"]
 [ext_resource type="PackedScene" path="res://components/modules/game_level/Bed.tscn" id="17_drths"]
 [ext_resource type="PackedScene" path="res://components/modules/game_level/ClockInPoint.tscn" id="18_owtu7"]
 [ext_resource type="Script" uid="uid://cy11kv75wsgq4" path="res://components/modules/messaging/message_board.gd" id="19_owtu7"]
@@ -25,9 +27,12 @@
 [ext_resource type="PackedScene" path="res://components/modules/music_manager/MusicManager.tscn" id="20_xywve"]
 [ext_resource type="AudioStream" uid="uid://cfl6kqen5uhwc" path="res://assets/cabalcrow/wake-up.mp3" id="21_vk63l"]
 [ext_resource type="AudioStream" uid="uid://djxtudqgukwmx" path="res://assets/cabalcrow/exposition-full.mp3" id="22_f313t"]
-[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
-[ext_resource type="Resource" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
-[ext_resource type="Script" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
+[ext_resource type="PackedScene" path="res://components/modules/day_cycle/town_lights/Bollard.tscn" id="29_hmxt8"]
+[ext_resource type="Resource" uid="uid://dvrxqp4ktkn2g" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
+[ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
+[ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
+[ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
@@ -112,7 +117,7 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_0rvqm"]
+[sub_resource type="Curve2D" id="Curve2D_e6dmr"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
@@ -178,6 +183,64 @@ unique_name_in_owner = true
 initial_phase = 1
 transition_seconds = 15.01
 
+[node name="Bollard" parent="DayCycleLighting2D" unique_id=1782011656 instance=ExtResource("29_hmxt8")]
+position = Vector2(-2895, -15)
+
+[node name="Bollard2" parent="DayCycleLighting2D" unique_id=2055759074 instance=ExtResource("29_hmxt8")]
+position = Vector2(-2470, -10)
+
+[node name="Floodlight" parent="DayCycleLighting2D" unique_id=1307856037 instance=ExtResource("5_wa3ku")]
+position = Vector2(-1502, 470)
+
+[node name="Floodlight2" parent="DayCycleLighting2D" unique_id=11846350 instance=ExtResource("5_wa3ku")]
+position = Vector2(-2207, 414)
+
+[node name="Floodlight4" parent="DayCycleLighting2D" unique_id=115337984 instance=ExtResource("5_wa3ku")]
+position = Vector2(-915, 1817)
+rotation = 0.5899213
+
+[node name="Floodlight3" parent="DayCycleLighting2D" unique_id=1890110917 instance=ExtResource("5_wa3ku")]
+position = Vector2(-2119, 37)
+
+[node name="WallLamp" parent="DayCycleLighting2D" unique_id=1420121695 instance=ExtResource("6_vhlys")]
+position = Vector2(-1324, 1686)
+energy = 1.0
+
+[node name="WallLamp2" parent="DayCycleLighting2D" unique_id=1839935919 instance=ExtResource("6_vhlys")]
+position = Vector2(-2199, 1075)
+energy = 1.0
+
+[node name="LampPost" parent="DayCycleLighting2D" unique_id=1864723137 instance=ExtResource("7_ta3uh")]
+position = Vector2(-633, 1397)
+
+[node name="WallLamp3" parent="DayCycleLighting2D" unique_id=1980727788 instance=ExtResource("6_vhlys")]
+position = Vector2(-402, 375)
+scale = Vector2(-1, -1)
+energy = 1.0
+
+[node name="Bollard3" parent="DayCycleLighting2D" unique_id=329722172 instance=ExtResource("29_hmxt8")]
+position = Vector2(-1127, 433)
+
+[node name="Bollard4" parent="DayCycleLighting2D" unique_id=446366689 instance=ExtResource("29_hmxt8")]
+position = Vector2(-1829, 1051)
+
+[node name="Bollard5" parent="DayCycleLighting2D" unique_id=648241122 instance=ExtResource("29_hmxt8")]
+position = Vector2(-2350, 1246)
+
+[node name="LampPost2" parent="DayCycleLighting2D" unique_id=2029036769 instance=ExtResource("7_ta3uh")]
+position = Vector2(-3149, 1434)
+
+[node name="WallLamp4" parent="DayCycleLighting2D" unique_id=1803383073 instance=ExtResource("6_vhlys")]
+position = Vector2(-2842, 927)
+energy = 1.0
+
+[node name="LampPost3" parent="DayCycleLighting2D" unique_id=470686551 instance=ExtResource("7_ta3uh")]
+position = Vector2(-2180, 1753)
+
+[node name="WallLamp5" parent="DayCycleLighting2D" unique_id=1526097689 instance=ExtResource("6_vhlys")]
+position = Vector2(-1342, -81)
+energy = 1.0
+
 [node name="DayCycleManager" parent="." unique_id=216922671 instance=ExtResource("3_1ow6f")]
 day_start_time = "08:00"
 day_end_time = "20:00"
@@ -198,6 +261,11 @@ follow_target = NodePath("../../PlatformerCharacter")
 follow_offset = Vector2(0, -64)
 camera_name = &"player"
 metadata/_custom_type_script = "uid://8l3trd1taiau"
+
+[node name="ProceduralOutageGenerator" parent="." node_paths=PackedStringArray("network_graph", "level", "day_cycle") instance=ExtResource("outage_generator")]
+network_graph = NodePath("../NetworkGraph")
+level = NodePath("..")
+day_cycle = NodePath("../DayCycleManager")
 
 [node name="NetworkGraph" parent="." unique_id=447306671 instance=ExtResource("1_j48du")]
 
@@ -241,84 +309,74 @@ connections = Array[NodePath]([NodePath("../Router8")])
 
 [node name="Router" parent="NetworkGraph" unique_id=893130211 instance=ExtResource("3_la5aw")]
 position = Vector2(-2736, 155)
-hint_label = NodePath("HintLabel")
+state = 0
 key_identifier = &"r1"
 connections = Array[NodePath]([NodePath("../House")])
 
 [node name="Router2" parent="NetworkGraph" unique_id=84250392 instance=ExtResource("3_la5aw")]
 position = Vector2(-2103, 563)
-hint_label = NodePath("HintLabel")
+state = 0
 key_identifier = &"r2"
 connections = Array[NodePath]([NodePath("../Router"), NodePath("../Router6")])
 
 [node name="Router3" parent="NetworkGraph" unique_id=1995126100 instance=ExtResource("3_la5aw")]
 position = Vector2(-1850, 909)
 state = 0
-hint_label = NodePath("HintLabel")
 key_identifier = &"r3"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router4" parent="NetworkGraph" unique_id=1932095599 instance=ExtResource("3_la5aw")]
 position = Vector2(-1948, 1354)
 state = 0
-hint_label = NodePath("HintLabel")
 key_identifier = &"r4"
 display_name = "Router 4"
 connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), NodePath("../Router8")])
 
 [node name="Router5" parent="NetworkGraph" unique_id=2033677965 instance=ExtResource("3_la5aw")]
 position = Vector2(-1693, -232)
-hint_label = NodePath("HintLabel")
+state = 0
 key_identifier = &"r5"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router6" parent="NetworkGraph" unique_id=1424610390 instance=ExtResource("3_la5aw")]
-position = Vector2(-2674, 1096)
-hint_label = NodePath("HintLabel")
+position = Vector2(-2681, 1084)
+state = 0
 key_identifier = &"r6"
 connections = Array[NodePath]([NodePath("../Router7")])
 
 [node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
 position = Vector2(-2682, 1823)
-hint_label = NodePath("../Router6/HintLabel")
+state = 0
 key_identifier = &"r7"
 
 [node name="Router8" parent="NetworkGraph" unique_id=1678648894 instance=ExtResource("3_la5aw")]
 position = Vector2(-1296, 1476)
-hint_label = NodePath("../Router7/HintLabel")
+state = 0
 key_identifier = &"r8"
 connections = Array[NodePath]([NodePath("../Router9")])
 
 [node name="Router9" parent="NetworkGraph" unique_id=2002947098 instance=ExtResource("3_la5aw")]
 position = Vector2(-960, 1222)
-hint_label = NodePath("../Router7/HintLabel")
+state = 0
 key_identifier = &"r9"
 connections = Array[NodePath]([NodePath("../House2")])
 
 [node name="Router10" parent="NetworkGraph" unique_id=654400491 instance=ExtResource("3_la5aw")]
 position = Vector2(-1211, 692)
-hint_label = NodePath("../Router7/HintLabel")
+state = 0
 key_identifier = &"r10"
 connections = Array[NodePath]([NodePath("../Router9"), NodePath("../Router3"), NodePath("../Router11")])
 
 [node name="Router11" parent="NetworkGraph" unique_id=997192392 instance=ExtResource("3_la5aw")]
 position = Vector2(-563, 448)
-hint_label = NodePath("../Router7/HintLabel")
+state = 0
 key_identifier = &"r11"
 
 [node name="Router12" parent="NetworkGraph" unique_id=87479911 instance=ExtResource("3_la5aw")]
 position = Vector2(-992, 34)
-hint_label = NodePath("../Router5/HintLabel")
+state = 0
 key_identifier = &"r12"
 connections = Array[NodePath]([NodePath("../Router11"), NodePath("../Router5")])
-
-[node name="Mayor" parent="NetworkGraph" unique_id=449386620 instance=ExtResource("2_8jbay")]
-modulate = Color(0.21960784, 0.19215687, 1, 1)
-position = Vector2(-22, 482)
-character_profile = ExtResource("16_hmxt8")
-key_identifier = &"to_mayor"
-display_name = "To Mayor's House"
-connections = Array[NodePath]([NodePath("../Router11")])
 
 [node name="Gateway2" parent="NetworkGraph" unique_id=1198326557 instance=ExtResource("2_8jbay")]
 modulate = Color(0.21960784, 0.19215687, 1, 1)
@@ -573,7 +631,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_0rvqm")
+curve = SubResource("Curve2D_e6dmr")
 
 [node name="Body" parent="MovingPlatform" index="1"]
 collision_layer = 9
@@ -664,6 +722,9 @@ position = Vector2(-2783, 4)
 
 [node name="ClockInPoint" parent="." unique_id=750564692 instance=ExtResource("18_owtu7")]
 position = Vector2(-990, 1910)
+
+[node name="RouterWorkbench" parent="." unique_id=631205236 instance=ExtResource("router_workbench")]
+position = Vector2(-2571, 1)
 
 [node name="MessageBoard" type="Node" parent="." unique_id=649108590]
 script = ExtResource("19_owtu7")

@@ -49,6 +49,12 @@ func setup(graph: SignalNetworkGraph, clock: DayCycleManager) -> void:
 func get_messages() -> Array[NetworkMessage]:
 	return _messages.duplicate()
 
+func award_bonus(points: int) -> void:
+	if points <= 0:
+		return
+	total_score += points
+	score_changed.emit(total_score, points)
+
 func announce(definition: MessageNotification) -> void:
 	var message := _get_or_create(definition)
 	if message.state == NetworkMessage.State.UPCOMING:

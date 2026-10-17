@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://byf5unl1wqykm"
+path="res://.godot/imported/Squirrel - o.mp3-b69e21a3eaac2378612133da6052f888.mp3str"
+
+[deps]
+
+source_file="res://assets/cabalcrow/Squirrel - o.mp3"
+dest_files=["res://.godot/imported/Squirrel - o.mp3-b69e21a3eaac2378612133da6052f888.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -78,7 +78,7 @@ func advance_visual(delta: float) -> void:
 func _set_avatar(avatar: PanelContainer, profile: CharacterProfile, name_text: String) -> void:
 	var portrait := avatar.get_node("Portrait") as TextureRect
 	var initial := avatar.get_node("Initial") as Label
-	portrait.texture = profile.portrait if profile != null else null
+	portrait.texture = CharacterProfile.get_message_portrait(profile)
 	portrait.visible = portrait.texture != null
 	initial.visible = portrait.texture == null
 	initial.text = name_text.left(1).to_upper()

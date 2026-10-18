@@ -1,6 +1,7 @@
 class_name MinimapWidget
 extends HudWidget
 const WARNING_ICON: Texture2D = preload("res://assets/nicoichu/Software_Warning_Sign_Triangle_Exclaimation_Mark_Error.png")
+const AttackFlashes = preload("res://components/modules/network/objects/router_attack_flash_pattern.gd")
 ## Data-driven minimap centred on a level marker or player. Draws level solids (static/moving collision
 ## shapes and tile collisions), then either the signal network or the chosen markers.
 ## Markers outside the view stick to the edge so the player knows which way to go.
@@ -18,6 +19,7 @@ const WARNING_ICON: Texture2D = preload("res://assets/nicoichu/Software_Warning_
 @export var house_color: Color = Color(0.45, 0.75, 1.0)
 @export var router_ok_color: Color = Color(0.4, 0.9, 0.5)
 @export var router_broken_color: Color = Color(1.0, 0.35, 0.3)
+@export var router_attacked_color: Color = Color("ffb347")
 @export var link_up_color: Color = Color(0.5, 0.85, 1.0, 0.9)
 @export var link_down_color: Color = Color(1.0, 0.35, 0.3, 0.45)
 @export var marker_colors: Dictionary[StringName, Color] = {&"bed": Color(0.75, 0.55, 1.0), &"clock_in": Color(1.0, 0.65, 0.25)}
@@ -151,12 +153,30 @@ func _draw_network(to_map: Transform2D) -> void:
 			else:
 				draw_rect(Rect2(point - Vector2(5, 5), Vector2(10, 10)), house_color)
 		else:
-			var tint := router_ok_color if vertex.is_available() else router_broken_color
+			var tint := _get_router_tint(vertex)
 			if router_icon != null:
 				_draw_icon(router_icon, point, network_icon_size, tint)
 			else:
 				draw_circle(point, 5.0, tint)
+			_draw_attack_flashes(vertex, point)
 	_draw_repair_warnings(to_map)
+
+func _get_router_tint(vertex: SignalNetworkVertex) -> Color:
+	if vertex is SignalNetworkRouter and vertex.state == SignalNetworkRouter.State.BEING_ATTACKED:
+		return router_attacked_color
+	return router_ok_color if vertex.is_available() else router_broken_color
+
+func _draw_attack_flashes(vertex: SignalNetworkVertex, point: Vector2) -> void:
+	var router := vertex as SignalNetworkRouter
+	if router == null or router.state != SignalNetworkRouter.State.BEING_ATTACKED:
+		return
+	for flash in AttackFlashes.get_flashes(router.get_attack_elapsed(), router.get_instance_id()):
+		var points := AttackFlashes.make_ray(float(flash.angle), network_icon_size / 2.0 + 3.0, network_icon_size / 2.0 + 14.0)
+		for index in points.size():
+			points[index] += point
+		var color := router_attacked_color.lerp(Color("ff5950"), float(flash.heat))
+		color.a = float(flash.alpha)
+		draw_polyline(points, color, 1.7, true)
 
 func _draw_repair_ripples(to_map: Transform2D) -> void:
 	if not is_instance_valid(_feed.message_board):

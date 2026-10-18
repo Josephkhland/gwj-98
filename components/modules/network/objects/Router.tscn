@@ -5,14 +5,105 @@
 
 [ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
 [ext_resource type="Script" path="res://components/modules/sound_banks/router_audio.gd" id="router_audio"]
+[ext_resource type="Script" path="res://components/modules/network/objects/router_attack_visuals.gd" id="attack_visuals"]
 
 [sub_resource type="CanvasItemMaterial" id="UnshadedHint"]
 light_mode = 1
+
+[sub_resource type="Gradient" id="GreenCircle"]
+offsets = PackedFloat32Array(0, 0.94, 1)
+colors = PackedColorArray(0.196, 0.804, 0.196, 1, 0.196, 0.804, 0.196, 1, 0.196, 0.804, 0.196, 0)
+
+[sub_resource type="GradientTexture2D" id="OperationalTexture"]
+gradient = SubResource("GreenCircle")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="RedCircle"]
+offsets = PackedFloat32Array(0, 0.94, 1)
+colors = PackedColorArray(0.804, 0.361, 0.361, 1, 0.804, 0.361, 0.361, 1, 0.804, 0.361, 0.361, 0)
+
+[sub_resource type="GradientTexture2D" id="BrokenTexture"]
+gradient = SubResource("RedCircle")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="OffCircle"]
+offsets = PackedFloat32Array(0, 0.94, 1)
+colors = PackedColorArray(0.35, 0.38, 0.4, 1, 0.35, 0.38, 0.4, 1, 0.35, 0.38, 0.4, 0)
+
+[sub_resource type="GradientTexture2D" id="PoweredDownTexture"]
+gradient = SubResource("OffCircle")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="SpriteFrames" id="RouterFrames"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": SubResource("OperationalTexture")}],
+"loop": true, "name": &"operational", "speed": 5.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("BrokenTexture")}],
+"loop": true, "name": &"broken", "speed": 5.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("PoweredDownTexture")}],
+"loop": true, "name": &"powered_down", "speed": 5.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("OperationalTexture")}],
+"loop": true, "name": &"being_attacked", "speed": 5.0
+}, {
+"frames": [{"duration": 1.0, "texture": SubResource("OperationalTexture")}],
+"loop": true, "name": &"attack_interrupted", "speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="AttackBarBackground"]
+bg_color = Color(0.03, 0.05, 0.07, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
+
+[sub_resource type="StyleBoxFlat" id="AttackBarFill"]
+bg_color = Color(1, 0.7, 0.28, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
 
 [node name="Router" type="Node2D" unique_id=1424610390]
 script = ExtResource("1")
 hint_label = NodePath("HintLabel")
 minigame_scene = ExtResource("2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("RouterFrames")
+animation = &"operational"
+
+[node name="AttackVisuals" type="Node2D" parent="."]
+material = SubResource("UnshadedHint")
+z_index = 5
+script = ExtResource("attack_visuals")
+
+[node name="ProgressBar" type="ProgressBar" parent="AttackVisuals"]
+material = SubResource("UnshadedHint")
+offset_left = -30.0
+offset_top = -28.0
+offset_right = 30.0
+offset_bottom = -22.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("AttackBarBackground")
+theme_override_styles/fill = SubResource("AttackBarFill")
+max_value = 1.0
+step = 0.001
+show_percentage = false
 
 [node name="RouterAudio" type="Node2D" parent="."]
 script = ExtResource("router_audio")

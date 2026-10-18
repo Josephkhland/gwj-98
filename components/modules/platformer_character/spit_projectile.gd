@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 		var point := _cast.get_collision_point(0)
 		var normal := _cast.get_collision_normal(0)
 		global_position = origin.lerp(next, _cast.get_closest_collision_safe_fraction())
+		_notify_routers(origin, global_position)
 		# Stop before notifying consumers so only one impact can be delivered.
 		set_physics_process(false)
 		var actor: Node = _source.get_ref() as Node if _source != null else null
@@ -63,6 +64,12 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	global_position = next
+	_notify_routers(origin, global_position)
+
+func _notify_routers(from: Vector2, to: Vector2) -> void:
+	var actor: Node = _source.get_ref() as Node if _source != null else null
+	if is_instance_valid(actor):
+		get_tree().call_group(&"attacked_network_routers", &"check_spit_pass", from, to, radius, actor)
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, radius, Color("#b2eb91"))

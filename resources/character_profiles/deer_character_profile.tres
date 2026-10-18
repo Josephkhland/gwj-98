@@ -3,11 +3,13 @@
 [ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_jpcb6"]
 [ext_resource type="Texture2D" uid="uid://ipis4jfry2wy" path="res://assets/josephkhland/deer_portrait_prototoype.png" id="portrait"]
 [ext_resource type="Resource" uid="uid://c6hpeqfly8eyq" path="res://resources/sound_banks/deer_voice_bank.tres" id="voice"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting deer.png" id="full_body"]
 
 [resource]
 script = ExtResource("1_jpcb6")
 character_id = &"deer"
 display_name = "Lady Stagborn"
 portrait = ExtResource("portrait")
+full_body_portrait = ExtResource("full_body")
 voice_bank = ExtResource("voice")
 metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

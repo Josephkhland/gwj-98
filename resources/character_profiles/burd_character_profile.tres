@@ -3,11 +3,13 @@
 [ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_mlsgb"]
 [ext_resource type="Resource" path="res://resources/sound_banks/burd_voice_bank.tres" id="voice"]
 [ext_resource type="Texture2D" path="res://assets/josephkhland/bird_portrait_prototype.png" id="portrait"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting burd.png" id="full_body"]
 
 [resource]
 script = ExtResource("1_mlsgb")
 character_id = &"burd"
 display_name = "Burd"
 portrait = ExtResource("portrait")
+full_body_portrait = ExtResource("full_body")
 voice_bank = ExtResource("voice")
 metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

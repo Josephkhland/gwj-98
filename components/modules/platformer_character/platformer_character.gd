@@ -155,7 +155,7 @@ func _physics_process(delta: float) -> void:
 	_invulnerability = maxf(0.0, _invulnerability - delta)
 	var charge_started := _charge_held and not _was_charge
 	var attack_started := _attack_held and not _was_attack
-	var spit_started := _spit_held and not _was_spit
+	var spit_started := _spit_held
 	var slam_started := _slam_held and not _was_slam
 	_was_charge = _charge_held
 	_was_attack = _attack_held

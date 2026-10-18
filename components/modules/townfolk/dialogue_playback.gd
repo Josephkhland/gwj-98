@@ -112,7 +112,9 @@ func advance(delta: float) -> void:
 		_chunk_index += 1
 		var line := chain.lines[line_index]
 		var delay := maxf(0.02, line.syllable_seconds)
-		if chunk.strip_edges().ends_with(".") or chunk.strip_edges().ends_with("!") or chunk.strip_edges().ends_with("?") or chunk.strip_edges().ends_with(","):
+		if chunk.strip_edges().ends_with(","):
+			delay += maxf(0.0, line.punctuation_comma)
+		elif chunk.strip_edges().ends_with(".") or chunk.strip_edges().ends_with("!") or chunk.strip_edges().ends_with("?"):
 			delay += maxf(0.0, line.punctuation_pause)
 		_remaining += delay
 		_pending_highlight = -1 if waits_for_input else index

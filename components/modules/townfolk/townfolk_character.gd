@@ -357,15 +357,16 @@ func _on_chunk(chunk: String, line_index: int, chunk_index: int) -> void:
 	if _bank != null:
 		voice.stop()
 		var clip := _bank.clip_for_syllable(chunk)
-		if get_parent() is CanvasLayer:
-			# The tutorial guide is in screen space during repair instructions.
-			var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
-			if played != null:
-				played.pitch_scale = _bank.random_pitch()
-		else:
-			var played := voice.play_clip(clip)
-			if played != null:
-				played.pitch_scale = _bank.random_pitch()
+		if clip:
+			if get_parent() is CanvasLayer:
+				# The tutorial guide is in screen space during repair instructions.
+				var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
+				if played != null:
+					played.pitch_scale = _bank.random_pitch()
+			else:
+				var played := voice.play_clip(clip)
+				if played != null:
+					played.pitch_scale = _bank.random_pitch()
 	syllable_heard.emit(target, playback.chain, line_index, chunk_index, chunk.strip_edges())
 
 func _on_highlight(index: int) -> void:

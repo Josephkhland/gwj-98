@@ -5,7 +5,8 @@ const InputIcons = preload("res://components/ui/input_icons/input_icon_text.gd")
 ## Optional | marks override a word's automatic split without appearing on screen.
 @export_multiline var text: String = ""
 @export_range(0.02, 2.0, 0.01) var syllable_seconds: float = 0.03
-@export_range(0.0, 3.0, 0.05) var punctuation_pause: float = 0.6
+@export_range(0.0, 3.0, 0.05) var punctuation_comma: float = 0.2
+@export_range(0.0, 3.0, 0.05) var punctuation_pause: float = 0.4
 ## Shift bubbles only. Off-shift conversations always wait for player input.
 @export_range(0.0, 30.0, 0.1) var hold_seconds: float = 6.0
 

@@ -29,10 +29,10 @@ func vowel_for_syllable(syllable: String) -> StringName:
 
 func clip_for_syllable(syllable: String) -> AudioStreamWAV:
 	if vowel_banks.is_empty():
-		return random_clip()
+		return
 	var vowel := vowel_for_syllable(syllable)
 	if not vowel_banks.has(vowel):
-		vowel = vowel_banks.keys().pick_random()
+		return
 	var bank := vowel_banks[vowel] as SoundBank
 	var clip := bank.random_clip() if bank != null else random_clip()
 	return _trim_blip(clip)

@@ -297,9 +297,10 @@ schedule = ExtResource("4_hyp3v")
 z_index = 1
 position = Vector2(-598, 810)
 
-[node name="CameraManager2D" parent="." unique_id=2089399337 instance=ExtResource("3_iey7c")]
+[node name="CameraManager2D" parent="." unique_id=2089399337 node_paths=PackedStringArray("bounds_texture") instance=ExtResource("3_iey7c")]
 position = Vector2(-513, 38)
 initial_camera = &"player"
+bounds_texture = NodePath("../ActualBackground")
 
 [node name="FollowCamera2D" type="Camera2D" parent="CameraManager2D" unique_id=2113931683 node_paths=PackedStringArray("follow_target")]
 script = ExtResource("4_5b03i")
@@ -864,14 +865,13 @@ shape = SubResource("RectangleShape2D_n5t7a")
 position = Vector2(-5312, 8)
 
 [node name="Bed" parent="." unique_id=12741662 instance=ExtResource("17_drths")]
-visible = false
 position = Vector2(-5312, 16)
 
 [node name="ClockInPoint" parent="." unique_id=750564692 instance=ExtResource("18_owtu7")]
 position = Vector2(-990, 1910)
 
 [node name="RouterWorkbench" parent="." unique_id=631205236 instance=ExtResource("router_workbench")]
-position = Vector2(-2571, 1)
+position = Vector2(-4852, 9)
 
 [node name="MessageBoard" type="Node" parent="." unique_id=649108590]
 script = ExtResource("19_owtu7")

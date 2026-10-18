@@ -8,6 +8,8 @@ var alternate_network_colors: bool = false
 var minimap_size_percent: float = DEFAULT_MINIMAP_SIZE_PERCENT
 var show_router_message_hints: bool = true
 
+var difficulty: int = 1
+
 func _ready() -> void:
 	var config := ConfigFile.new()
 	if config.load(settings_path) == OK:

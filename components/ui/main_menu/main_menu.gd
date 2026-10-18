@@ -9,19 +9,25 @@ signal quit_requested
 @onready var _start: Button = %StartButton
 @onready var _quit: Button = %QuitButton
 
+
 func _ready() -> void:
 	_title.text = ProjectSettings.get_setting("application/config/name", "")
-	_start.pressed.connect(_on_start_pressed)
+	# _start.pressed.connect(_on_start_pressed)
+	_start.pressed.connect(func(): $DifficultyMenu.open(%OptionsButton))
 	_quit.pressed.connect(quit_requested.emit)
 	%TutorialButton.pressed.connect(tutorial_requested.emit)
 	%CreditsButton.pressed.connect(credits_requested.emit)
 	%OptionsButton.pressed.connect(func(): $OptionsMenu.open(%OptionsButton))
 	_start.grab_focus()
 
+
 func open() -> void:
 	$OptionsMenu.close()
+	$DifficultyMenu.close()
 	show()
 	_start.grab_focus()
 
-func _on_start_pressed() -> void:
+
+func on_start_pressed(difficulty: int) -> void:
+	AccessibilitySettings.difficulty = difficulty
 	start_requested.emit(0)

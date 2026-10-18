@@ -3,6 +3,7 @@
 |Composer|CabalCrow|"I can't believe I had to write a symphony for a jam."|
 |Artist|Sushuu|"Next time I do a game jam, I will definitely get a friend to split assets with!"|
 |Writer|Josephkhland|"This was a surprise to me."|
+|Prototypes Artist|Josephkhland|"I drew everything for the minigames!"|
 |Designer|CabalCrow|"I still can't believe I had to write a symphony for a jam."|
 
 

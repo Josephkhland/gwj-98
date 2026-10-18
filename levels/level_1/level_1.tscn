@@ -33,6 +33,7 @@
 [ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
 [ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
 [ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
+[ext_resource type="PackedScene" path="res://components/modules/random_message_generator/RandomMessageGenerator.tscn" id="random_messages"]
 
 [sub_resource type="Curve" id="Curve_vhlys"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.26141077, 0.49438208), 2.7875082, 2.7875082, 0, 0, Vector2(0.5352697, 1), 0.0, 0.0, 0, 0, Vector2(0.6970954, 0.8876405), -2.3983948, -2.3983948, 0, 0, Vector2(1, 0.3146068), 0.82893795, 0.0, 0, 0]
@@ -786,6 +787,8 @@ character_profile = ExtResource("14_e6dmr")
 [node name="SquirrelTownfolkCharacter" parent="." unique_id=1910306370 instance=ExtResource("20_vk63l")]
 position = Vector2(-903, -222)
 character_profile = ExtResource("13_plqb7")
+
+[node name="RandomMessageGenerator" parent="." instance=ExtResource("random_messages")]
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform3"]

@@ -23,6 +23,8 @@ enum Route { HOUSE_TO_HOUSE, TO_INTERNET, FROM_INTERNET }
 @export var replies: Array[MessageReply] = []
 @export_group("Delivery")
 @export var points: int = 100
+## Award the full configured points even when delivery is late. Expired mail still gives zero.
+@export var fixed_score: bool = false
 @export_range(0.0, 720.0, 1.0, "or_greater") var warning_minutes: float = 30.0
 ## How long after transmission a late delivery still counts (capped by the end of shift).
 @export_range(1.0, 1440.0, 1.0, "or_greater") var expire_minutes: float = 120.0

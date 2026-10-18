@@ -11,6 +11,8 @@ const DOCUMENT = preload("res://assets/nicoichu/Software_Email_Message_Read_Open
 @export_range(0.1, 1, 0.05) var centering_seconds: float = 0.3
 @export_range(0.1, 1, 0.05) var closed_seconds: float = 0.35
 @export_range(0.1, 1, 0.05) var opened_seconds: float = 0.4
+## Small world-space repair hint; uses the same portraits and state icons as the board.
+@export var repair_hint: bool = false
 var message: NetworkMessage
 var visual: Visual = Visual.WARNING
 var _game_seconds: float = 0
@@ -87,6 +89,9 @@ func _set_avatar(avatar: PanelContainer, profile: CharacterProfile, name_text: S
 func _render() -> void:
 	if not is_node_ready() or message == null:
 		return
+	if repair_hint:
+		_render_repair_hint()
+		return
 	var middle := size.x * 0.5
 	var sender_x := 24.0
 	var recipient_x := size.x - 24
@@ -146,6 +151,25 @@ func _render() -> void:
 		_timer.text = "READING" if document_is_visible() else "OPENING"
 		_timer.show()
 	_timer.add_theme_color_override("font_color", accent if emphasized else Color("ffd382"))
+
+func _render_repair_hint() -> void:
+	_title.hide()
+	_timer.hide()
+	_sender.position = Vector2(5, 5)
+	_recipient.position = Vector2(size.x - 31, 5)
+	_sender.size = Vector2(26, 26)
+	_recipient.size = Vector2(26, 26)
+	_icon.size = Vector2(22, 22)
+	_icon.pivot_offset = _icon.size / 2.0
+	_icon.position = Vector2(size.x / 2.0 - 11, 7)
+	_icon.texture = FORWARD if message.state == NetworkMessage.State.UPCOMING else PLANE
+	_icon.rotation_degrees = 0 if message.state == NetworkMessage.State.UPCOMING else 45
+	_icon.modulate = Color.WHITE
+	if message.state == NetworkMessage.State.PENDING:
+		_icon.position.x += sin(_elapsed * 4.0) * 6.0
+	_style.bg_color = Color(0.05, 0.08, 0.1, 0.78)
+	_style.set_border_width_all(1)
+	_style.border_color = message.get_guidance_color()
 
 func _render_opening(sender_x: float, recipient_x: float, middle: float) -> void:
 	var travel_end := arrival_seconds + centering_seconds

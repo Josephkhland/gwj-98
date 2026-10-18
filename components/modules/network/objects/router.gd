@@ -2,12 +2,17 @@
 class_name SignalNetworkRouter
 extends SignalNetworkVertex
 
-enum State { OK, BROKEN }
+enum State { OK, BROKEN, BEING_ATTACKED, ATTACK_INTERRUPTED }
+enum AttackOutcome { RANDOM, BROKEN, POWERED_DOWN }
+const ATTACKED_ROUTERS_GROUP := &"attacked_network_routers"
 ## Off and faulty routers both use BROKEN in the network; retain power for inspection.
 @export var powered: bool = true
 signal state_changed(previous_state: State, new_state: State)
 signal repair_started(player: Node2D)
 signal repair_finished(success: bool)
+signal attack_started
+signal attack_interrupted
+signal attack_completed(powered_down: bool)
 ## When connected, the receiver hosts the minigame and must call resolve_repair().
 ## Without a connection the router opens minigame_scene itself.
 signal repair_requested(player: Node2D)
@@ -17,8 +22,18 @@ signal repair_requested(player: Node2D)
 			return
 		var previous := state
 		state = value
-		if state == State.OK:
+		if state != State.BROKEN:
 			powered = true
+		if state == State.BEING_ATTACKED:
+			_initialize_attack()
+		elif state == State.ATTACK_INTERRUPTED:
+			_recovery_from = clampf(_attack_left / maxf(0.01, _attack_total), 0.0, 1.0)
+			_recovery_elapsed = 0.0
+		if is_inside_tree() and not Engine.is_editor_hint():
+			if state == State.BEING_ATTACKED:
+				add_to_group(ATTACKED_ROUTERS_GROUP)
+			elif is_in_group(ATTACKED_ROUTERS_GROUP):
+				remove_from_group(ATTACKED_ROUTERS_GROUP)
 		_refresh_visuals()
 		state_changed.emit(previous, state)
 		availability_changed.emit()
@@ -26,6 +41,23 @@ signal repair_requested(player: Node2D)
 @export var player_group: StringName = &"players"
 @export var interact_action: StringName = &"interact"
 @export var inspect_working_routers: bool = true
+@export_group("Attacks")
+## Real seconds. The outage generator can override this per attack.
+@export_range(0.1, 60.0, 0.1, "or_greater") var default_attack_duration: float = 8.0
+@export var default_attack_outcome: AttackOutcome = AttackOutcome.RANDOM
+@export_range(1.0, 500.0, 1.0) var attack_player_radius: float = 150.0
+@export_range(1.0, 500.0, 1.0) var attack_spit_radius: float = 100.0
+@export_range(0.0, 2.0, 0.05) var interruption_pause_seconds: float = 0.15
+@export_range(0.05, 3.0, 0.05) var recovery_seconds: float = 0.8
+@export_range(0.0, 2.0, 0.05) var recovery_hold_seconds: float = 0.35
+@export_group("State Animation")
+@export_node_path("AnimatedSprite2D") var state_sprite: NodePath = ^"AnimatedSprite2D"
+@export var operational_animation: StringName = &"operational"
+@export var broken_animation: StringName = &"broken"
+@export var powered_down_animation: StringName = &"powered_down"
+@export var attacked_animation: StringName = &"being_attacked"
+@export var interrupted_animation: StringName = &"attack_interrupted"
+@export_group("Visuals")
 ## Optional interaction hint. Defaults to a direct child named HintLabel.
 @export_node_path("CanvasItem") var hint_label: NodePath = ^"HintLabel"
 ## Nodes may be Sprite2D, AnimatedSprite2D, or any other CanvasItem.
@@ -43,22 +75,94 @@ var _minigame: Node
 var _player: Node2D
 var _awaiting_external_repair: bool = false
 var _repair_suspension: RepairSuspension
+var _attack_left: float = 0.0
+var _attack_total: float = 0.0
+var _attack_result: int = AttackOutcome.BROKEN
+var _requested_duration: float = -1.0
+var _requested_outcome: int = -1
+var _recovery_elapsed: float = 0.0
+var _recovery_from: float = 0.0
 
 func _ready() -> void:
 	if not powered:
 		state = State.BROKEN
+	if state == State.BEING_ATTACKED and not Engine.is_editor_hint():
+		if _attack_total <= 0.0:
+			_initialize_attack()
+		add_to_group(ATTACKED_ROUTERS_GROUP)
 	_refresh_visuals()
 	set_process_unhandled_input(not Engine.is_editor_hint())
 	set_process(not Engine.is_editor_hint())
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_update_attack(delta)
 	_refresh_hint()
 
 func is_available() -> bool:
-	return state == State.OK
+	return powered and state != State.BROKEN
+
+func start_attack(duration_seconds: float = -1.0, outcome: int = -1) -> bool:
+	if state != State.OK or not powered or is_instance_valid(_minigame) or _awaiting_external_repair:
+		return false
+	_requested_duration = duration_seconds
+	_requested_outcome = outcome
+	state = State.BEING_ATTACKED
+	attack_started.emit()
+	return true
+
+func _initialize_attack() -> void:
+	_attack_total = maxf(0.01, _requested_duration if _requested_duration > 0.0 else default_attack_duration)
+	_attack_left = _attack_total
+	_attack_result = _requested_outcome if _requested_outcome >= 0 else int(default_attack_outcome)
+	if _attack_result == AttackOutcome.RANDOM:
+		_attack_result = AttackOutcome.BROKEN if randf() < 0.5 else AttackOutcome.POWERED_DOWN
+	_requested_duration = -1.0
+	_requested_outcome = -1
+
+func interrupt_attack() -> bool:
+	if state != State.BEING_ATTACKED:
+		return false
+	state = State.ATTACK_INTERRUPTED
+	attack_interrupted.emit()
+	return true
+
+func _update_attack(delta: float) -> void:
+	if state == State.BEING_ATTACKED:
+		for candidate in get_tree().get_nodes_in_group(player_group):
+			if candidate is Node2D and global_position.distance_to(candidate.global_position) <= attack_player_radius:
+				interrupt_attack()
+				return
+		_attack_left = maxf(0.0, _attack_left - delta)
+		if _attack_left <= 0.0:
+			powered = _attack_result != AttackOutcome.POWERED_DOWN
+			state = State.BROKEN
+			attack_completed.emit(not powered)
+	elif state == State.ATTACK_INTERRUPTED:
+		_recovery_elapsed += delta
+		if _recovery_elapsed >= interruption_pause_seconds + recovery_seconds + recovery_hold_seconds:
+			state = State.OK
+
+## Called for the actual swept segment, so fast spit cannot skip a nearby router.
+func check_spit_pass(from: Vector2, to: Vector2, spit_radius: float, source: Node) -> void:
+	if state != State.BEING_ATTACKED or not is_instance_valid(source) or not source.is_in_group(player_group):
+		return
+	var closest := Geometry2D.get_closest_point_to_segment(global_position, from, to)
+	if closest.distance_to(global_position) <= attack_spit_radius + spit_radius:
+		interrupt_attack()
+
+func get_attack_elapsed() -> float:
+	return maxf(0.0, _attack_total - _attack_left)
+
+func get_attack_progress() -> float:
+	if state == State.BEING_ATTACKED:
+		return clampf(_attack_left / maxf(0.01, _attack_total), 0.0, 1.0)
+	if state == State.ATTACK_INTERRUPTED:
+		var progress := clampf((_recovery_elapsed - interruption_pause_seconds) / maxf(0.01, recovery_seconds), 0.0, 1.0)
+		return lerpf(_recovery_from, 1.0, smoothstep(0.0, 1.0, progress))
+	return 1.0
 
 func can_interact(player: Node2D) -> bool:
-	return is_instance_valid(player) and player.is_in_group(player_group) and (state == State.BROKEN or inspect_working_routers) and not is_instance_valid(_minigame) and not _awaiting_external_repair and global_position.distance_to(player.global_position) <= interaction_radius
+	return state not in [State.BEING_ATTACKED, State.ATTACK_INTERRUPTED] and is_instance_valid(player) and player.is_in_group(player_group) and (state == State.BROKEN or inspect_working_routers) and not is_instance_valid(_minigame) and not _awaiting_external_repair and global_position.distance_to(player.global_position) <= interaction_radius
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not InputMap.has_action(interact_action) or not event.is_action_pressed(interact_action) or event.is_echo():
@@ -165,7 +269,20 @@ func _refresh_visuals() -> void:
 		if not path.is_empty():
 			var visual := get_node_or_null(path) as CanvasItem
 			if visual != null:
-				visual.visible = (path == ok_visual and state == State.OK) or (path == broken_visual and state == State.BROKEN)
+				visual.visible = (path == ok_visual and state != State.BROKEN) or (path == broken_visual and state == State.BROKEN)
+	var sprite := get_node_or_null(state_sprite) as AnimatedSprite2D if not state_sprite.is_empty() else null
+	if sprite != null:
+		sprite.visible = ok_visual.is_empty() and broken_visual.is_empty()
+		var animation := operational_animation
+		match state:
+			State.BROKEN:
+				animation = broken_animation if powered else powered_down_animation
+			State.BEING_ATTACKED:
+				animation = attacked_animation
+			State.ATTACK_INTERRUPTED:
+				animation = interrupted_animation
+		if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(animation):
+			sprite.play(animation)
 	_refresh_hint()
 	queue_redraw()
 
@@ -185,4 +302,7 @@ func _refresh_hint() -> void:
 
 func _draw() -> void:
 	if ok_visual.is_empty() and broken_visual.is_empty():
-		draw_circle(Vector2.ZERO, 16.0, Color.LIME_GREEN if state == State.OK else Color.INDIAN_RED)
+		var sprite := get_node_or_null(state_sprite) as AnimatedSprite2D if not state_sprite.is_empty() else null
+		if sprite != null and sprite.sprite_frames != null and sprite.sprite_frames.has_animation(sprite.animation) and sprite.sprite_frames.get_frame_count(sprite.animation) > 0:
+			return
+		draw_circle(Vector2.ZERO, 16.0, Color.LIME_GREEN if state != State.BROKEN else Color.INDIAN_RED)

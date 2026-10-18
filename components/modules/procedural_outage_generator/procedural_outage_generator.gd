@@ -2,6 +2,7 @@ class_name ProceduralOutageGenerator
 extends Node
 ## Optional level component. Override get_interval_minutes() for another pacing variant.
 signal router_broken(router: SignalNetworkRouter)
+signal router_attacked(router: SignalNetworkRouter)
 
 @export var enabled: bool = true
 @export var network_graph: SignalNetworkGraph
@@ -14,9 +15,14 @@ signal router_broken(router: SignalNetworkRouter)
 ## X: work-shift progress (0–1). Y: density (0 = quiet interval, 1 = peak interval).
 ## An empty or unassigned curve uses the quiet interval throughout the shift.
 @export var density_curve: Curve = _make_default_density_curve()
+## Restarted on attack, interruption, or failure so a saved router is not spammed.
 @export_range(0.0, 240.0, 0.5, "or_greater") var router_cooldown_minutes: float = 30.0
-## Includes existing faults and powered-off routers. Zero means no cap.
+## Includes faults, powered-off routers, and active attacks. Zero means no cap.
 @export_range(0, 100, 1, "or_greater") var maximum_broken_routers: int = 6
+@export_group("Attack Warning")
+## Real seconds to approach the router or intercept the attack with spit.
+@export_range(0.1, 60.0, 0.1, "or_greater") var attack_duration_seconds: float = 8.0
+@export var attack_outcome: SignalNetworkRouter.AttackOutcome = SignalNetworkRouter.AttackOutcome.RANDOM
 
 var _active: bool = false
 var _shift_start: float = 0.0
@@ -65,7 +71,7 @@ func _on_phase_changed(phase: GameLevel.Phase) -> void:
 	_last_broken.clear()
 	_watch_routers(_shift_start)
 	for vertex in network_graph.get_vertices():
-		if vertex is SignalNetworkRouter and not vertex.is_available():
+		if vertex is SignalNetworkRouter and (not vertex.is_available() or vertex.state in [SignalNetworkRouter.State.BEING_ATTACKED, SignalNetworkRouter.State.ATTACK_INTERRUPTED]):
 			_last_broken[vertex.get_instance_id()] = _shift_start
 	if enabled:
 		_try_break_router(_shift_start)
@@ -106,12 +112,14 @@ func _watch_routers(now: float) -> void:
 		var callback := _on_router_state_changed.bind(router)
 		_watched[router] = callback
 		router.state_changed.connect(callback)
-		if not router.powered or router.state == SignalNetworkRouter.State.BROKEN:
+		if not router.powered or router.state in [SignalNetworkRouter.State.BROKEN, SignalNetworkRouter.State.BEING_ATTACKED]:
 			_last_broken[router.get_instance_id()] = now
 
-func _on_router_state_changed(_previous: SignalNetworkRouter.State, current: SignalNetworkRouter.State, router: SignalNetworkRouter) -> void:
-	if _active and current == SignalNetworkRouter.State.BROKEN:
+func _on_router_state_changed(previous: SignalNetworkRouter.State, current: SignalNetworkRouter.State, router: SignalNetworkRouter) -> void:
+	if _active and current in [SignalNetworkRouter.State.BROKEN, SignalNetworkRouter.State.BEING_ATTACKED, SignalNetworkRouter.State.ATTACK_INTERRUPTED]:
 		_last_broken[router.get_instance_id()] = day_cycle.get_elapsed_game_seconds()
+	if previous == SignalNetworkRouter.State.BEING_ATTACKED and current == SignalNetworkRouter.State.BROKEN:
+		router_broken.emit(router)
 
 func _try_break_router(now: float) -> void:
 	var broken_count := 0
@@ -120,8 +128,10 @@ func _try_break_router(now: float) -> void:
 		if not vertex is SignalNetworkRouter:
 			continue
 		var router := vertex as SignalNetworkRouter
-		if not router.powered or router.state == SignalNetworkRouter.State.BROKEN:
+		if not router.powered or router.state in [SignalNetworkRouter.State.BROKEN, SignalNetworkRouter.State.BEING_ATTACKED]:
 			broken_count += 1
+			continue
+		if router.state != SignalNetworkRouter.State.OK:
 			continue
 		var last := float(_last_broken.get(router.get_instance_id(), -INF))
 		if now - last >= router_cooldown_minutes * 60.0:
@@ -133,8 +143,8 @@ func _try_break_router(now: float) -> void:
 	if eligible.is_empty():
 		return
 	var selected := eligible[_rng.randi_range(0, eligible.size() - 1)]
-	selected.state = SignalNetworkRouter.State.BROKEN
-	router_broken.emit(selected)
+	if selected.start_attack(attack_duration_seconds, attack_outcome):
+		router_attacked.emit(selected)
 
 func _exit_tree() -> void:
 	for router in _watched:

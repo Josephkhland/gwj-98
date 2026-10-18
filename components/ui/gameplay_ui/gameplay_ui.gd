@@ -7,9 +7,18 @@ var _widgets: Dictionary[StringName, HudWidget] = {}
 func _ready() -> void:
 	_collect(self)
 	$Root.resized.connect(_layout_message_feed)
+	AccessibilitySettings.minimap_size_changed.connect(_layout_message_feed)
 	_layout_message_feed()
 
 func _layout_message_feed() -> void:
+	var minimap := get_widget(&"minimap")
+	var minimap_size := Vector2(240, 180) * AccessibilitySettings.minimap_size_percent / 100.0
+	if minimap != null:
+		minimap.custom_minimum_size = minimap_size
+		minimap.offset_left = -16.0 - minimap_size.x
+		minimap.offset_right = -16.0
+		minimap.offset_top = 16.0
+		minimap.offset_bottom = 16.0 + minimap_size.y
 	var prompt := get_widget(&"prompt")
 	if prompt != null:
 		var width := minf(800, maxf(240, $Root.size.x - 32))
@@ -18,10 +27,10 @@ func _layout_message_feed() -> void:
 	var feed := get_widget(&"message_feed")
 	if feed == null:
 		return
-	var narrow: bool = $Root.size.x < 1000
+	var narrow: bool = $Root.size.x - minimap_size.x - 364.0 < 360.0
 	feed.offset_left = 16 if narrow else 316
-	feed.offset_right = -16 if narrow else -272
-	feed.offset_top = 212 if narrow else 16
+	feed.offset_right = -16 if narrow else -32.0 - minimap_size.x
+	feed.offset_top = maxf(212.0, minimap_size.y + 32.0) if narrow else 16.0
 
 func get_widget(widget_id: StringName) -> HudWidget:
 	return _widgets.get(widget_id)

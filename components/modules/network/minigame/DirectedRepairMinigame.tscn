@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://nwwu6u2uyprk" path="res://components/modules/network/minigame/directed_repair_minigame.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cldu7r4cjreuk" path="res://assets/josephkhland/prototype_button.png" id="2_i0pgv"]
-[ext_resource type="Texture2D" uid="uid://0rb74v7k71kc" path="res://assets/josephkhland/frog_hand.png" id="3_arcev"]
+[ext_resource type="Texture2D" path="res://assets/josephkhland/frog_hand_2_small.png" id="3_arcev"]
 [ext_resource type="Script" path="res://components/modules/frog_router_minigame/led.gd" id="power_light"]
 [ext_resource type="Script" path="res://components/ui/input_icons/input_hint_label.gd" id="input_hints"]
 [ext_resource type="Script" path="res://components/modules/sound_banks/router_audio.gd" id="router_audio"]
@@ -95,7 +95,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_press"]
 resource_name = "press"
-length = 0.5
+length = 0.18
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -103,7 +103,7 @@ tracks/0/path = NodePath("UI/Hand/Aim/Motion:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.18, 0.38, 0.5),
+"times": PackedFloat32Array(0, 0.07, 0.14, 0.18),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(-14, 0), Vector2(0, 0), Vector2(0, 0)]
@@ -115,7 +115,7 @@ tracks/1/path = NodePath("UI/ActionButton:scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.18, 0.38, 0.5),
+"times": PackedFloat32Array(0, 0.07, 0.14, 0.18),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.88, 0.88), Vector2(1, 1), Vector2(1, 1)]
@@ -246,7 +246,7 @@ offset_top = -44.0
 offset_right = 150.0
 offset_bottom = -12.0
 theme_override_font_sizes/normal_font_size = 18
-text = "[action:ui_cancel] Finish inspection"
+text = "[action:interact] Finish inspection"
 script = ExtResource("input_hints")
 
 [node name="ThoughtBubble" type="Control" parent="UI" unique_id=567728504]
@@ -332,13 +332,11 @@ rotation = 0.55
 [node name="Motion" type="Node2D" parent="UI/Hand/Aim" unique_id=2007382836]
 
 [node name="Visual" type="Sprite2D" parent="UI/Hand/Aim/Motion" unique_id=73602176]
-position = Vector2(-566.78546, -174.48001)
-scale = Vector2(0.36672553, 0.31863227)
+position = Vector2(-28, -272)
 texture = ExtResource("3_arcev")
 centered = false
 
 [node name="Fingertip" type="Marker2D" parent="UI/Hand/Aim/Motion" unique_id=1031062560]
-position = Vector2(-477.13727, -72.26355)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=114397228]
 libraries/ = SubResource("Library")

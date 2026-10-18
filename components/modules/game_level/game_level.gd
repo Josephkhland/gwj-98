@@ -18,6 +18,7 @@ signal level_completed(report: DayReport)
 const MARKER_BED := &"bed"
 const MARKER_CLOCK_IN := &"clock_in"
 const CollisionSurfaceOverlay = preload("res://components/modules/level_geometry/collision_surface_overlay.gd")
+const MessageRepairGuidance = preload("res://components/modules/message_repair_guidance/message_repair_guidance.gd")
 
 @export var level_title: String = ""
 @export_group("Blockout")
@@ -27,6 +28,11 @@ const CollisionSurfaceOverlay = preload("res://components/modules/level_geometry
 		show_collision_surfaces = value
 		if is_instance_valid(_collision_surface_overlay):
 			_collision_surface_overlay.visible = value
+@export_group("Minimap")
+## Optional fixed center. Leave empty to follow the player.
+@export var minimap_center: Marker2D
+## World units per minimap pixel at 100% HUD size; larger values zoom out. Zero uses the HUD default.
+@export_range(0.0, 100.0, 0.5, "or_greater") var minimap_world_units_per_pixel: float = 0.0
 @export_group("Prompts")
 @export var waking_prompt: String = "Head outside and clock in."
 @export var on_shift_prompt: String = ""
@@ -87,9 +93,17 @@ func _ready() -> void:
 	register_handler(&"router_break", _on_router_break)
 	_setup_clock()
 	message_board.setup(network_graph, day_cycle)
+	var repair_guidance := MessageRepairGuidance.new()
+	repair_guidance.name = "MessageRepairGuidance"
+	repair_guidance.message_board = message_board
+	repair_guidance.day_cycle = day_cycle
+	add_child(repair_guidance)
 	message_board.message_changed.connect(_on_message_changed)
 	message_board.score_changed.connect(score_changed.emit)
 	for router in _get_routers():
+		var router_audio := router.get_node_or_null(^"RouterAudio")
+		if router_audio != null:
+			router_audio.ripple_radius_source = repair_guidance
 		router.repair_finished.connect(_on_repair_finished)
 	clock_in_point.interacted.connect(_on_clock_in)
 	bed.interacted.connect(_on_bed_used)
@@ -166,9 +180,12 @@ func get_minimap_feed() -> MinimapFeed:
 		_minimap_feed = MinimapFeed.new()
 		_minimap_feed.player = player
 		_minimap_feed.network_graph = network_graph
+		_minimap_feed.message_board = message_board
 		_minimap_feed.markers[MARKER_BED] = bed
 		_minimap_feed.markers[MARKER_CLOCK_IN] = clock_in_point
 		_collect_solids(self, _minimap_feed.solids)
+	_minimap_feed.center_marker = minimap_center
+	_minimap_feed.world_units_per_pixel = minimap_world_units_per_pixel
 	return _minimap_feed
 
 func build_report() -> DayReport:

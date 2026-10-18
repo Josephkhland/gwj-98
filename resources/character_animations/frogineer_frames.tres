@@ -1,0 +1,344 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dycwov1776pm8"]
+
+[ext_resource type="Texture2D" uid="uid://bx278u0ellq2o" path="res://assets/shuzuu/frogineer_idle/idle_1.png" id="frame_01"]
+[ext_resource type="Texture2D" uid="uid://rkxirxi3hyor" path="res://assets/shuzuu/frogineer_idle/idle_2.png" id="frame_02"]
+[ext_resource type="Texture2D" uid="uid://df8e2u3ypk4ts" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0000.png" id="frame_03"]
+[ext_resource type="Texture2D" uid="uid://lmilwnp4ub23" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0004.png" id="frame_04"]
+[ext_resource type="Texture2D" uid="uid://ysurb1xxw7lr" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0008.png" id="frame_05"]
+[ext_resource type="Texture2D" uid="uid://bji1sjtw4xx06" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0012.png" id="frame_06"]
+[ext_resource type="Texture2D" uid="uid://deht0gmmf386" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0016.png" id="frame_07"]
+[ext_resource type="Texture2D" uid="uid://bfhdvjjrmreqy" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0020.png" id="frame_08"]
+[ext_resource type="Texture2D" uid="uid://cvy5bueqprbak" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0024.png" id="frame_09"]
+[ext_resource type="Texture2D" uid="uid://b38ygew1u2wk1" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0028.png" id="frame_10"]
+[ext_resource type="Texture2D" uid="uid://cbphjuqmjwu3k" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0032.png" id="frame_11"]
+[ext_resource type="Texture2D" uid="uid://dvdy03x37pvxb" path="res://assets/shuzuu/frogineer_walking/Frogineer Walk cycle_0036.png" id="frame_12"]
+[ext_resource type="Texture2D" uid="uid://b5rsv1ofoxn6w" path="res://assets/shuzuu/transition_to_charge_jump/Frogineer charge jump_0000.png" id="frame_13"]
+[ext_resource type="Texture2D" uid="uid://cihks0x6v617n" path="res://assets/shuzuu/transition_to_charge_jump/Frogineer charge jump_0008.png" id="frame_14"]
+[ext_resource type="Texture2D" uid="uid://dbq6magkpcooj" path="res://assets/shuzuu/transition_to_charge_jump/Frogineer charge jump_0016.png" id="frame_15"]
+[ext_resource type="Texture2D" uid="uid://b7rvi5qc2usru" path="res://assets/shuzuu/frogineer_charge_jump/Frogineer charge jump_0024.png" id="frame_16"]
+[ext_resource type="Texture2D" uid="uid://xr8k0fxbuvm5" path="res://assets/shuzuu/frogineer_charge_jump/Frogineer charge jump_0031.png" id="frame_17"]
+[ext_resource type="Texture2D" uid="uid://cncha4by3mgey" path="res://assets/shuzuu/frogineer_jumping/Frogineer jump launch_0000.png" id="frame_18"]
+[ext_resource type="Texture2D" uid="uid://d4b06nde8hnwv" path="res://assets/shuzuu/frogineer_jumping/Frogineer jump launch_0006.png" id="frame_19"]
+[ext_resource type="Texture2D" uid="uid://u8nw73qu0aae" path="res://assets/shuzuu/frogineer_jumping/Frogineer jump launch_0012.png" id="frame_20"]
+[ext_resource type="Texture2D" uid="uid://che73mj1nwxsg" path="res://assets/shuzuu/frogineer_jumping/Frogineer jump launch_0018.png" id="frame_21"]
+[ext_resource type="Texture2D" uid="uid://c5g47xwpo2laq" path="res://assets/shuzuu/falling/Frogineer jump launch_0012.png" id="frame_22"]
+[ext_resource type="Texture2D" uid="uid://dc8ojgaeccx25" path="res://assets/shuzuu/falling/Frogineer jump launch_0018.png" id="frame_23"]
+[ext_resource type="Texture2D" uid="uid://csrllt7pk4smh" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0000.png" id="frame_24"]
+[ext_resource type="Texture2D" uid="uid://wasofc5nkyf" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0003.png" id="frame_25"]
+[ext_resource type="Texture2D" uid="uid://bly0nnfl23nis" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0006.png" id="frame_26"]
+[ext_resource type="Texture2D" uid="uid://0dh3tmh5ict6" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0009.png" id="frame_27"]
+[ext_resource type="Texture2D" uid="uid://c22q0omm0s56r" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0012.png" id="frame_28"]
+[ext_resource type="Texture2D" uid="uid://bepmmqf1t73eu" path="res://assets/shuzuu/frogineer_spit_charging/Idle spit charge_0015.png" id="frame_29"]
+[ext_resource type="Texture2D" uid="uid://ba40fp2qibhg2" path="res://assets/shuzuu/frogineer_spit/Idle spit charge_0018.png" id="frame_30"]
+[ext_resource type="Texture2D" uid="uid://dsswcxcen1xck" path="res://assets/shuzuu/frogineer_spit/Idle spit charge_0021.png" id="frame_31"]
+[ext_resource type="Texture2D" uid="uid://c2o1jq4tlccva" path="res://assets/shuzuu/frogineer_spit_charging_airborne/Frogineer midair spit_0000.png" id="frame_32"]
+[ext_resource type="Texture2D" uid="uid://du4d3m2d80utb" path="res://assets/shuzuu/frogineer_spit_charging_airborne/Frogineer midair spit_0003.png" id="frame_33"]
+[ext_resource type="Texture2D" uid="uid://c07s8eu6uiq3i" path="res://assets/shuzuu/frogineer_spit_charging_airborne/Frogineer midair spit_0006.png" id="frame_34"]
+[ext_resource type="Texture2D" uid="uid://dvnwdcqabyboc" path="res://assets/shuzuu/frogineer_spit_charging_airborne/Frogineer midair spit_0009.png" id="frame_35"]
+[ext_resource type="Texture2D" uid="uid://0pp3cdiv0q6r" path="res://assets/shuzuu/frogineer_spit_charging_airborne/Frogineer midair spit_0012.png" id="frame_36"]
+[ext_resource type="Texture2D" uid="uid://67551t4tmabv" path="res://assets/shuzuu/airborne_spit_charge_hold/Frogineer midair spit_0015.png" id="frame_37"]
+[ext_resource type="Texture2D" uid="uid://clo268vqahdbf" path="res://assets/shuzuu/airborne_spit_charge_hold/Frogineer midair spit_0018.png" id="frame_38"]
+[ext_resource type="Texture2D" uid="uid://d4dx3fs8samkk" path="res://assets/shuzuu/airborne_spit_release/Frogineer midair spit_0018.png" id="frame_39"]
+[ext_resource type="Texture2D" uid="uid://b0ekrie32hgap" path="res://assets/shuzuu/airborne_spit_release/Frogineer midair spit_0021.png" id="frame_40"]
+[ext_resource type="Texture2D" uid="uid://bpht0wfaedrus" path="res://assets/shuzuu/overcharge_rolling_back/Frogineer overcharge falling back_0000.png" id="frame_41"]
+[ext_resource type="Texture2D" uid="uid://dd2gjf8gpquws" path="res://assets/shuzuu/overcharge_rolling_back/Frogineer overcharge falling back_0006.png" id="frame_42"]
+[ext_resource type="Texture2D" uid="uid://bj5lnsrptbc4h" path="res://assets/shuzuu/overcharge_rolling_back/Frogineer overcharge falling back_0009.png" id="frame_43"]
+[ext_resource type="Texture2D" uid="uid://djkxe0ubw84kb" path="res://assets/shuzuu/overcharge_rolling_back/Frogineer overcharge falling back_0012.png" id="frame_44"]
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_22"]
+atlas = ExtResource("frame_22")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_23"]
+atlas = ExtResource("frame_23")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_18"]
+atlas = ExtResource("frame_18")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_19"]
+atlas = ExtResource("frame_19")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_20"]
+atlas = ExtResource("frame_20")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_21"]
+atlas = ExtResource("frame_21")
+region = Rect2(18, 18, 1098, 1038)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_41"]
+atlas = ExtResource("frame_41")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_42"]
+atlas = ExtResource("frame_42")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_43"]
+atlas = ExtResource("frame_43")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_44"]
+atlas = ExtResource("frame_44")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_32"]
+atlas = ExtResource("frame_32")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_33"]
+atlas = ExtResource("frame_33")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_34"]
+atlas = ExtResource("frame_34")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_35"]
+atlas = ExtResource("frame_35")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_36"]
+atlas = ExtResource("frame_36")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_37"]
+atlas = ExtResource("frame_37")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_38"]
+atlas = ExtResource("frame_38")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_39"]
+atlas = ExtResource("frame_39")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_frame_40"]
+atlas = ExtResource("frame_40")
+region = Rect2(18, 18, 1107, 1014)
+filter_clip = true
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_17")
+}],
+"loop": 1,
+"name": &"charging",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_22")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_23")
+}],
+"loop": 1,
+"name": &"falling",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_02")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_18")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_19")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_20")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_21")
+}],
+"loop": 0,
+"name": &"jumping",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_41")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_42")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_43")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_44")
+}],
+"loop": 0,
+"name": &"rolling_back",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_32")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_33")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_34")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_35")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_36")
+}],
+"loop": 0,
+"name": &"spit_charge_air",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_29")
+}],
+"loop": 0,
+"name": &"spit_charge_ground",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_37")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_38")
+}],
+"loop": 1,
+"name": &"spit_hold_air",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_29")
+}],
+"loop": 1,
+"name": &"spit_hold_ground",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_39")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_frame_40")
+}],
+"loop": 0,
+"name": &"spit_release_air",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_31")
+}],
+"loop": 0,
+"name": &"spit_release_ground",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_15")
+}],
+"loop": 0,
+"name": &"transition_to_charge_jump",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_12")
+}],
+"loop": 1,
+"name": &"walking",
+"speed": 12.0
+}]

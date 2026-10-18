@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://clioepnuaxcfk" path="res://levels/level_1/level_1.gd" id="1_qbdb0"]
 [ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="2_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_8jbay"]
-[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="2_epb64"]
+[ext_resource type="PackedScene" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="2_epb64"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="2_qbdb0"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="3_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="3_iey7c"]
@@ -31,8 +31,12 @@
 [ext_resource type="Resource" uid="uid://dvrxqp4ktkn2g" path="res://resources/dialogue_chains/deer_chain_1.tres" id="deer_chain_1"]
 [ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
 [ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
-[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 [ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
+
+[sub_resource type="Curve" id="Curve_vhlys"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.26141077, 0.49438208), 2.7875082, 2.7875082, 0, 0, Vector2(0.5352697, 1), 0.0, 0.0, 0, 0, Vector2(0.6970954, 0.8876405), -2.3983948, -2.3983948, 0, 0, Vector2(1, 0.3146068), 0.82893795, 0.0, 0, 0]
+point_count = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
@@ -54,6 +58,9 @@ size = Vector2(56.28125, 288)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xywve"]
 size = Vector2(56.28125, 144)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx43u"]
+size = Vector2(56.28125, 112)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk63l"]
 size = Vector2(266.48242, 39.566406)
@@ -117,21 +124,10 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_e6dmr"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
-}
-point_count = 9
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wa3ku"]
-resource_local_to_scene = true
-size = Vector2(34, 225.5)
-
 [sub_resource type="Curve2D" id="Curve2D_vhlys"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
 point_count = 9
 
@@ -142,9 +138,9 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_xjrjs"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
-point_count = 12
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ya87f"]
 resource_local_to_scene = true
@@ -153,7 +149,7 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_lu7vs"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
 }
 point_count = 12
 
@@ -161,10 +157,23 @@ point_count = 12
 resource_local_to_scene = true
 size = Vector2(34, 225.5)
 
-[node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
+[sub_resource type="Curve2D" id="Curve2D_wx43u"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+}
+point_count = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tr4hg"]
+resource_local_to_scene = true
+size = Vector2(34, 225.5)
+
+[node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("minimap_center", "day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
 script = ExtResource("1_qbdb0")
 level_title = "Day 1"
 show_collision_surfaces = true
+minimap_center = NodePath("MinimapCenter")
+minimap_world_units_per_pixel = 20.0
 day_cycle = NodePath("DayCycleManager")
 lighting = NodePath("DayCycleLighting2D")
 network_graph = NodePath("NetworkGraph")
@@ -174,6 +183,9 @@ player_spawn = NodePath("PlayerSpawn")
 bed = NodePath("Bed")
 clock_in_point = NodePath("ClockInPoint")
 music_manager = NodePath("MusicManager")
+
+[node name="MinimapCenter" type="Marker2D" parent="." unique_id=1578848587]
+position = Vector2(-1804, 813.5)
 
 [node name="TownBackground" parent="." unique_id=1201888540 instance=ExtResource("2_1ow6f")]
 visible = false
@@ -262,10 +274,14 @@ follow_offset = Vector2(0, -64)
 camera_name = &"player"
 metadata/_custom_type_script = "uid://8l3trd1taiau"
 
-[node name="ProceduralOutageGenerator" parent="." node_paths=PackedStringArray("network_graph", "level", "day_cycle") instance=ExtResource("outage_generator")]
+[node name="ProceduralOutageGenerator" parent="." unique_id=714526570 node_paths=PackedStringArray("network_graph", "level", "day_cycle") instance=ExtResource("outage_generator")]
 network_graph = NodePath("../NetworkGraph")
 level = NodePath("..")
 day_cycle = NodePath("../DayCycleManager")
+quiet_interval_minutes = 40.0
+peak_interval_minutes = 5.0
+density_curve = SubResource("Curve_vhlys")
+attack_duration_seconds = 30.0
 
 [node name="NetworkGraph" parent="." unique_id=447306671 instance=ExtResource("1_j48du")]
 
@@ -310,24 +326,32 @@ connections = Array[NodePath]([NodePath("../Router8")])
 [node name="Router" parent="NetworkGraph" unique_id=893130211 instance=ExtResource("3_la5aw")]
 position = Vector2(-2736, 155)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r1"
 connections = Array[NodePath]([NodePath("../House")])
 
 [node name="Router2" parent="NetworkGraph" unique_id=84250392 instance=ExtResource("3_la5aw")]
 position = Vector2(-2103, 563)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r2"
 connections = Array[NodePath]([NodePath("../Router"), NodePath("../Router6")])
 
 [node name="Router3" parent="NetworkGraph" unique_id=1995126100 instance=ExtResource("3_la5aw")]
 position = Vector2(-1850, 909)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r3"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router4" parent="NetworkGraph" unique_id=1932095599 instance=ExtResource("3_la5aw")]
 position = Vector2(-1948, 1354)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r4"
 display_name = "Router 4"
 connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), NodePath("../Router8")])
@@ -335,46 +359,62 @@ connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), N
 [node name="Router5" parent="NetworkGraph" unique_id=2033677965 instance=ExtResource("3_la5aw")]
 position = Vector2(-1693, -232)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r5"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router6" parent="NetworkGraph" unique_id=1424610390 instance=ExtResource("3_la5aw")]
 position = Vector2(-2681, 1084)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r6"
 connections = Array[NodePath]([NodePath("../Router7")])
 
 [node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
-position = Vector2(-2682, 1823)
+position = Vector2(-2584, 1823)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r7"
 
 [node name="Router8" parent="NetworkGraph" unique_id=1678648894 instance=ExtResource("3_la5aw")]
 position = Vector2(-1296, 1476)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r8"
 connections = Array[NodePath]([NodePath("../Router9")])
 
 [node name="Router9" parent="NetworkGraph" unique_id=2002947098 instance=ExtResource("3_la5aw")]
 position = Vector2(-960, 1222)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r9"
 connections = Array[NodePath]([NodePath("../House2")])
 
 [node name="Router10" parent="NetworkGraph" unique_id=654400491 instance=ExtResource("3_la5aw")]
 position = Vector2(-1211, 692)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r10"
 connections = Array[NodePath]([NodePath("../Router9"), NodePath("../Router3"), NodePath("../Router11")])
 
 [node name="Router11" parent="NetworkGraph" unique_id=997192392 instance=ExtResource("3_la5aw")]
 position = Vector2(-563, 448)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r11"
 
 [node name="Router12" parent="NetworkGraph" unique_id=87479911 instance=ExtResource("3_la5aw")]
 position = Vector2(-992, 34)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r12"
 connections = Array[NodePath]([NodePath("../Router11"), NodePath("../Router5")])
 
@@ -460,8 +500,8 @@ position = Vector2(-344, 307)
 shape = SubResource("RectangleShape2D_xywve")
 
 [node name="CollisionShape2D40" type="CollisionShape2D" parent="Wall" unique_id=1061253936]
-position = Vector2(-104, 403)
-shape = SubResource("RectangleShape2D_xywve")
+position = Vector2(-104, 387)
+shape = SubResource("RectangleShape2D_wx43u")
 
 [node name="CollisionShape2D35" type="CollisionShape2D" parent="Wall" unique_id=681412955]
 position = Vector2(-1448, 667)
@@ -482,10 +522,6 @@ shape = SubResource("RectangleShape2D_vk63l")
 [node name="CollisionShape2D38" type="CollisionShape2D" parent="Wall" unique_id=187068443]
 position = Vector2(-384, 547)
 shape = SubResource("RectangleShape2D_vk63l")
-
-[node name="CollisionShape2D41" type="CollisionShape2D" parent="Wall" unique_id=255847987]
-position = Vector2(608, 475)
-shape = SubResource("RectangleShape2D_vhlys")
 
 [node name="CollisionShape2D49" type="CollisionShape2D" parent="Wall" unique_id=453165024]
 position = Vector2(-72, 651)
@@ -631,7 +667,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_e6dmr")
+curve = SubResource("Curve2D_vhlys")
 
 [node name="Body" parent="MovingPlatform" index="1"]
 collision_layer = 9
@@ -641,7 +677,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
-shape = SubResource("RectangleShape2D_wa3ku")
+shape = SubResource("RectangleShape2D_mnfdo")
 
 [node name="MovingPlatform3" parent="." unique_id=845979641 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -654,7 +690,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform3" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_vhlys")
+curve = SubResource("Curve2D_xjrjs")
 
 [node name="Body" parent="MovingPlatform3" index="1"]
 collision_layer = 9
@@ -664,7 +700,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform3/Body" index="1"]
-shape = SubResource("RectangleShape2D_mnfdo")
+shape = SubResource("RectangleShape2D_ya87f")
 
 [node name="MovingPlatform2" parent="." unique_id=813500050 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -677,7 +713,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform2" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_xjrjs")
+curve = SubResource("Curve2D_lu7vs")
 
 [node name="Body" parent="MovingPlatform2" index="1"]
 collision_layer = 9
@@ -687,7 +723,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform2/Body" index="1"]
-shape = SubResource("RectangleShape2D_ya87f")
+shape = SubResource("RectangleShape2D_2jmd8")
 
 [node name="MovingPlatform4" parent="." unique_id=1062858323 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -701,7 +737,7 @@ disappear_duration = 0.0
 [node name="MovementPath" parent="MovingPlatform4" index="0"]
 position = Vector2(8, 0)
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_lu7vs")
+curve = SubResource("Curve2D_wx43u")
 
 [node name="Body" parent="MovingPlatform4" index="1"]
 position = Vector2(8, 0)
@@ -712,7 +748,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform4/Body" index="1"]
-shape = SubResource("RectangleShape2D_2jmd8")
+shape = SubResource("RectangleShape2D_tr4hg")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=816260377]
 position = Vector2(-2846, -35)

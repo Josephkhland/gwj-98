@@ -114,6 +114,39 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "●  Broken"
 
+[node name="MinimapTitle" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+layout_mode = 2
+text = "Minimap size"
+theme_override_font_sizes/font_size = 28
+
+[node name="MinimapSizeRow" type="HBoxContainer" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="MinimapSize" type="HSlider" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column/MinimapSizeRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 100.0
+max_value = 200.0
+step = 5.0
+value = 125.0
+tooltip_text = "Resize the minimap while keeping the same area visible. Default: 125%."
+
+[node name="MinimapSizeValue" type="Label" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column/MinimapSizeRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "125%"
+
+[node name="RouterMessageHints" type="CheckButton" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Show message hints above routers"
+button_pressed = true
+tooltip_text = "Show the sender and receiver above routers needed for blocked messages. Repair ripples stay visible."
+
 [node name="Back" type="Button" parent="Margin/Panel/Padding/Column"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 48)

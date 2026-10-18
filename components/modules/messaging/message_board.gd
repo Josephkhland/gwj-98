@@ -4,6 +4,7 @@ extends Node
 ## late delivery once the route is repaired, expiry, and score. One per level.
 signal message_changed(message: NetworkMessage)
 signal score_changed(total: int, delta: int)
+signal repair_guidance_changed
 
 const WARNING_KEYWORD := &"message_warning"
 @export var scoring_rule: MessageScoringRule
@@ -11,6 +12,16 @@ var total_score: int = 0
 var _graph: SignalNetworkGraph
 var _clock: DayCycleManager
 var _messages: Array[NetworkMessage] = []
+var _guidance_refresh_queued: bool = false
+var _guidance_signature: Array = []
+
+func _process(delta: float) -> void:
+	if not is_instance_valid(_clock):
+		return
+	var now := _clock.get_elapsed_game_seconds()
+	for message in get_repair_messages():
+		if message.state == NetworkMessage.State.PENDING:
+			message.warning_flash_phase = fposmod(message.warning_flash_phase + delta / message.get_warning_period(now), 1.0)
 
 ## Copy of source with a WARNING_KEYWORD entry added before every MessageNotification.
 ## Warnings that would fall before the day starts fire at the start instead.
@@ -49,6 +60,64 @@ func setup(graph: SignalNetworkGraph, clock: DayCycleManager) -> void:
 func get_messages() -> Array[NetworkMessage]:
 	return _messages.duplicate()
 
+func get_repair_messages() -> Array[NetworkMessage]:
+	var messages: Array[NetworkMessage] = []
+	for message in _messages:
+		if message.is_open() and not message.repair_path.is_empty():
+			messages.append(message)
+	return messages
+
+## Merge overlapping guidance so each icon gets one ripple, prioritizing urgent mail.
+func get_repair_marks() -> Dictionary:
+	var marks: Dictionary = {}
+	for message in get_repair_messages():
+		for vertex in message.get_guidance_vertices():
+			var existing: NetworkMessage = marks.get(vertex)
+			if existing == null or (message.state == NetworkMessage.State.PENDING and (existing.state != NetworkMessage.State.PENDING or message.deadline_seconds < existing.deadline_seconds)):
+				marks[vertex] = message
+	return marks
+
+func _queue_guidance_refresh() -> void:
+	if not _guidance_refresh_queued:
+		_guidance_refresh_queued = true
+		_refresh_repair_guidance.call_deferred()
+
+func _refresh_repair_guidance() -> void:
+	_guidance_refresh_queued = false
+	var gateways: Array[SignalNetworkHouse] = []
+	for vertex in _graph.get_vertices():
+		if vertex is SignalNetworkHouse and vertex.is_internet_gateway():
+			gateways.append(vertex)
+	for message in _messages:
+		message.repair_path.clear()
+		if not message.is_open():
+			continue
+		var sources: Array[SignalNetworkHouse] = []
+		var targets: Array[SignalNetworkHouse] = []
+		if message.definition.route == MessageNotification.Route.FROM_INTERNET:
+			sources.assign(gateways)
+		elif is_instance_valid(message.from_house):
+			sources.append(message.from_house)
+		if message.definition.route == MessageNotification.Route.TO_INTERNET:
+			targets.assign(gateways)
+		elif is_instance_valid(message.to_house):
+			targets.append(message.to_house)
+		var path := _graph.get_minimum_repair_path(sources, targets)
+		if not message.is_open():
+			continue
+		for vertex in path:
+			if vertex is SignalNetworkRouter and not vertex.is_available():
+				message.repair_path = path
+				break
+	var signature: Array = []
+	for message in get_repair_messages():
+		signature.append([message, message.state, message.repair_path.duplicate()])
+	# Graphs also rebuild when UI nodes enter/leave the tree. Avoid recreating
+	# world hints unless routing or message state actually changed.
+	if signature != _guidance_signature:
+		_guidance_signature = signature
+		repair_guidance_changed.emit()
+
 func award_bonus(points: int) -> void:
 	if points <= 0:
 		return
@@ -59,6 +128,7 @@ func announce(definition: MessageNotification) -> void:
 	var message := _get_or_create(definition)
 	if message.state == NetworkMessage.State.UPCOMING:
 		message_changed.emit(message)
+		_queue_guidance_refresh()
 
 ## The sender transmits now: delivered at full score if the houses are connected, otherwise
 ## pending until a route appears or the deadline passes.
@@ -70,6 +140,7 @@ func transmit(definition: MessageNotification) -> void:
 	message.state = NetworkMessage.State.PENDING
 	if not _try_deliver(message):
 		message_changed.emit(message)
+	_queue_guidance_refresh()
 
 ## Every message still upcoming or pending expires, e.g. when the day ends.
 func expire_open() -> void:
@@ -127,6 +198,8 @@ func _try_deliver(message: NetworkMessage) -> bool:
 	message.delivered_seconds = now
 	message.score = scoring_rule.score(message.definition.points, (now - message.send_seconds) / 60.0, message.definition.expire_minutes)
 	message.state = NetworkMessage.State.DELIVERED
+	message.repair_path.clear()
+	_queue_guidance_refresh()
 	total_score += message.score
 	message_changed.emit(message)
 	score_changed.emit(total_score, message.score)
@@ -151,12 +224,15 @@ func _has_delivery_route(message: NetworkMessage) -> bool:
 
 func _expire(message: NetworkMessage) -> void:
 	message.state = NetworkMessage.State.EXPIRED
+	message.repair_path.clear()
+	_queue_guidance_refresh()
 	message.score = 0
 	message_changed.emit(message)
 
 func _on_connectivity_changed(_connected_pairs: int, _total_pairs: int) -> void:
 	for message in _messages:
 		_try_deliver(message)
+	_queue_guidance_refresh()
 
 func _on_time_changed(_day: int, _game_seconds: float) -> void:
 	var now := _clock.get_elapsed_game_seconds()

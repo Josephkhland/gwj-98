@@ -4,14 +4,20 @@ const InputIcons = preload("res://components/ui/input_icons/input_icon_text.gd")
 ## Write normal text; syllable boundaries are estimated automatically.
 ## Optional | marks override a word's automatic split without appearing on screen.
 @export_multiline var text: String = ""
-@export_range(0.02, 2.0, 0.01) var syllable_seconds: float = 0.55
-@export_range(0.0, 3.0, 0.05) var punctuation_pause: float = 0.6
+@export_range(0.02, 2.0, 0.01) var syllable_seconds: float = 0.03
+@export_range(0.0, 3.0, 0.05) var punctuation_comma: float = 0.2
+@export_range(0.0, 3.0, 0.05) var punctuation_pause: float = 0.4
 ## Shift bubbles only. Off-shift conversations always wait for player input.
 @export_range(0.0, 30.0, 0.1) var hold_seconds: float = 6.0
 
 const ONSETS := ["str", "spr", "scr", "spl", "shr", "thr", "ch", "sh", "th", "ph", "wh", "qu", "bl", "br", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "sc", "sk", "sl", "sm", "sn", "sp", "st", "sw", "tr", "tw"]
 
 func get_chunks() -> PackedStringArray:
+	var chars := PackedStringArray()
+	for i in text.length():
+		chars.append(text[i])
+	return chars
+
 	var chunks := PackedStringArray()
 	var words := RegEx.new()
 	words.compile("\\[[^\\]\\r\\n]+\\]|\\s+|[^\\s\\[]+|\\[")

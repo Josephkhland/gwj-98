@@ -371,11 +371,11 @@ func _on_chunk(chunk: String, line_index: int, chunk_index: int) -> void:
 				# The tutorial guide is in screen space during repair instructions.
 				var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
 				if played != null:
-					played.pitch_scale = 0.9 + (_sentence_pitch) * 0.01 + randf_range(-0.03, 0.03)
+					played.pitch_scale = 1. + (_sentence_pitch) * 0.003 + randf_range(-0.01, 0.01)
 			else:
 				var played := voice.play_clip(clip)
 				if played != null:
-					played.pitch_scale = 0.9 + (_sentence_pitch) * 0.01 + randf_range(-0.03, 0.03)
+					played.pitch_scale = 1. + (_sentence_pitch) * 0.003 + randf_range(-0.01, 0.01)
 			_sentence_pitch -= PITCH_DECAY
 	syllable_heard.emit(target, playback.chain, line_index, chunk_index, chunk.strip_edges())
 

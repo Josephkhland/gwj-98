@@ -187,11 +187,12 @@ music_manager = NodePath("MusicManager")
 
 [node name="ActualBackground" type="TextureRect" parent="." unique_id=1607093631]
 z_index = -1
-offset_left = -6037.0
-offset_top = -1182.0
-offset_right = 155.0
-offset_bottom = 2301.0
+offset_left = -5400.0
+offset_top = -864.0
+offset_right = 71.99951
+offset_bottom = 2176.0
 texture = ExtResource("2_mnfdo")
+stretch_mode = 4
 
 [node name="MinimapCenter" type="Marker2D" parent="." unique_id=1578848587]
 position = Vector2(-1804, 813.5)

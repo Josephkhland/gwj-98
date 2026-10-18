@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="SoundBank" format=3]
+[gd_resource type="Resource" script_class="SoundBank" format=3 uid="uid://dykq057som5fy"]
 
-[ext_resource type="Script" path="res://components/modules/sound_banks/sound_bank.gd" id="1"]
-[ext_resource type="AudioStream" path="res://assets/cabalcrow/land.mp3" id="2"]
+[ext_resource type="Script" uid="uid://cel8rywah54u5" path="res://components/modules/sound_banks/sound_bank.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://btgtiwyng5lw3" path="res://assets/cabalcrow/land.mp3" id="2"]
 
 [resource]
 script = ExtResource("1")
 stream = ExtResource("2")
-segment_length = 2.0
 segment_count = 8

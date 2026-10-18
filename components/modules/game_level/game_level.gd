@@ -27,6 +27,11 @@ const CollisionSurfaceOverlay = preload("res://components/modules/level_geometry
 		show_collision_surfaces = value
 		if is_instance_valid(_collision_surface_overlay):
 			_collision_surface_overlay.visible = value
+@export_group("Minimap")
+## Optional fixed center. Leave empty to follow the player.
+@export var minimap_center: Marker2D
+## World units per minimap pixel at 100% HUD size; larger values zoom out. Zero uses the HUD default.
+@export_range(0.0, 100.0, 0.5, "or_greater") var minimap_world_units_per_pixel: float = 0.0
 @export_group("Prompts")
 @export var waking_prompt: String = "Head outside and clock in."
 @export var on_shift_prompt: String = ""
@@ -169,6 +174,8 @@ func get_minimap_feed() -> MinimapFeed:
 		_minimap_feed.markers[MARKER_BED] = bed
 		_minimap_feed.markers[MARKER_CLOCK_IN] = clock_in_point
 		_collect_solids(self, _minimap_feed.solids)
+	_minimap_feed.center_marker = minimap_center
+	_minimap_feed.world_units_per_pixel = minimap_world_units_per_pixel
 	return _minimap_feed
 
 func build_report() -> DayReport:

@@ -1,6 +1,6 @@
 class_name MinimapWidget
 extends HudWidget
-## Data-driven minimap centred on the player. Draws level solids (static/moving collision
+## Data-driven minimap centred on a level marker or player. Draws level solids (static/moving collision
 ## shapes and tile collisions), then either the signal network or the chosen markers.
 ## Markers outside the view stick to the edge so the player knows which way to go.
 @export var world_units_per_pixel: float = 12.0
@@ -60,15 +60,26 @@ func set_layers(show_network: bool, markers: Array) -> void:
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), background_color)
-	if _feed != null and is_instance_valid(_feed.player):
-		var zoom := 1.0 / world_units_per_pixel
-		var to_map := Transform2D(0.0, Vector2(zoom, zoom), 0.0, size / 2.0 - _feed.player.global_position * zoom)
+	if _feed != null and (is_instance_valid(_feed.center_marker) or is_instance_valid(_feed.player)):
+		var to_map := _get_map_transform()
 		_draw_solids(to_map)
 		if _show_network and is_instance_valid(_feed.network_graph):
 			_draw_network(to_map)
 		_draw_markers(to_map)
-		draw_circle(size / 2.0, 4.0, player_color)
+		if is_instance_valid(_feed.player):
+			var point := (to_map * _feed.player.global_position).clamp(Vector2(5, 5), size - Vector2(5, 5))
+			draw_circle(point, 4.0, player_color)
 	draw_rect(Rect2(Vector2.ZERO, size), border_color, false, 1.0)
+
+func _get_world_units_per_pixel() -> float:
+	var value := _feed.world_units_per_pixel if _feed != null and _feed.world_units_per_pixel > 0.0 else world_units_per_pixel
+	# Resizing the HUD enlarges the same world view instead of changing its coverage.
+	return maxf(0.001, value) * 240.0 / maxf(1.0, size.x)
+
+func _get_map_transform() -> Transform2D:
+	var center := _feed.center_marker.global_position if is_instance_valid(_feed.center_marker) else _feed.player.global_position
+	var zoom := 1.0 / _get_world_units_per_pixel()
+	return Transform2D(0.0, Vector2(zoom, zoom), 0.0, size / 2.0 - center * zoom)
 
 func _draw_solids(to_map: Transform2D) -> void:
 	var view := Rect2(Vector2.ZERO, size)
@@ -97,7 +108,7 @@ func _draw_solids(to_map: Transform2D) -> void:
 
 ## Draws in the shape's local space; the caller sets the transform.
 func _draw_shape(shape: Shape2D) -> void:
-	var line_width := 2.0 * world_units_per_pixel
+	var line_width := 2.0 * _get_world_units_per_pixel()
 	if shape is RectangleShape2D:
 		var rectangle := shape as RectangleShape2D
 		draw_rect(Rect2(-rectangle.size / 2.0, rectangle.size), solid_color)

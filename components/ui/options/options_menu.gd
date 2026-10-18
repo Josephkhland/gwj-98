@@ -3,12 +3,17 @@ var _return_focus: Control
 @onready var _tabs: TabContainer = %Tabs
 @onready var _bindings: Control = %Bindings
 @onready var _palette: OptionButton = %NetworkPalette
+@onready var _minimap_size: HSlider = %MinimapSize
 
 func _ready() -> void:
 	hide()
 	%Back.pressed.connect(close)
 	_bindings.close_requested.connect(close)
 	_tabs.set_tab_title(1, "Input Bindings")
+	_tabs.set_tab_title(2, "Accessibility")
+	_minimap_size.value_changed.connect(func(value): AccessibilitySettings.set_minimap_size_percent(value))
+	AccessibilitySettings.minimap_size_changed.connect(_refresh_minimap_size)
+	_refresh_minimap_size()
 	_palette.add_item("Green / red", 0)
 	_palette.add_item("Cyan / orange", 1)
 	_palette.item_selected.connect(func(index): AccessibilitySettings.set_alternate_network_colors(index == 1))
@@ -52,3 +57,7 @@ func _refresh_palette() -> void:
 	_palette.select(1 if alternate else 0)
 	%ActivePreview.add_theme_color_override("font_color", Color("4dd9ff") if alternate else Color("66e680"))
 	%BrokenPreview.add_theme_color_override("font_color", Color("ffb347") if alternate else Color("ff5950"))
+
+func _refresh_minimap_size() -> void:
+	_minimap_size.set_value_no_signal(AccessibilitySettings.minimap_size_percent)
+	%MinimapSizeValue.text = "%d%%" % roundi(AccessibilitySettings.minimap_size_percent)

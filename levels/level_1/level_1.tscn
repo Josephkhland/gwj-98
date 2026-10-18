@@ -104,7 +104,7 @@ size = Vector2(48, 210.38281)
 size = Vector2(224, 41.191406)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5oe72"]
-size = Vector2(224, 156.5957)
+size = Vector2(1824, 156.5957)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbtho"]
 resource_local_to_scene = true
@@ -126,7 +126,7 @@ size = Vector2(392, 75)
 size = Vector2(1451.5, 75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3akp"]
-size = Vector2(869.75, 75)
+size = Vector2(968, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_60i3m"]
 size = Vector2(485.4375, 75)
@@ -144,7 +144,7 @@ size = Vector2(74, 556.5)
 size = Vector2(462.5, 54.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lwxes"]
-size = Vector2(70, 1236.5)
+size = Vector2(70, 1232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mxc8w"]
 atlas = ExtResource("1_45440")
@@ -666,7 +666,7 @@ position = Vector2(-1232, 187)
 shape = SubResource("RectangleShape2D_fdo7j")
 
 [node name="CollisionShape2D76" type="CollisionShape2D" parent="Wall" unique_id=1408863218]
-position = Vector2(-1784, -651.29785)
+position = Vector2(-2584, -651.29785)
 shape = SubResource("RectangleShape2D_5oe72")
 
 [node name="CollisionShape2D75" type="CollisionShape2D" parent="Wall" unique_id=632023887]
@@ -723,7 +723,7 @@ position = Vector2(-720, 1219)
 shape = SubResource("RectangleShape2D_7rikf")
 
 [node name="CollisionShape2D33" type="CollisionShape2D" parent="Wall" unique_id=1741520450]
-position = Vector2(-1074.875, 819)
+position = Vector2(-1124, 811)
 shape = SubResource("RectangleShape2D_q3akp")
 
 [node name="CollisionShape2D34" type="CollisionShape2D" parent="Wall" unique_id=1587438131]
@@ -755,7 +755,7 @@ position = Vector2(1352, -645)
 shape = SubResource("RectangleShape2D_xiq7r")
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Wall" unique_id=552121117]
-position = Vector2(-993, -119.25)
+position = Vector2(-993, -117)
 shape = SubResource("RectangleShape2D_lwxes")
 
 [node name="MovingPlatform" parent="." unique_id=1862702076 instance=ExtResource("5_5b03i")]

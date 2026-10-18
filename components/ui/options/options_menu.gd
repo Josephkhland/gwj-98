@@ -36,7 +36,7 @@ func close() -> void:
 		_return_focus.grab_focus()
 
 func _input(event: InputEvent) -> void:
-	if visible and event.is_action_pressed(&"ui_cancel") and not event.is_echo():
+	if visible and (event.is_action_pressed(&"ui_cancel") or event.is_action_pressed(&"pause")) and not event.is_echo():
 		# The embedded bindings panel handles Escape while capturing an input.
 		if _bindings.is_visible_in_tree() and not _bindings._capture_action.is_empty():
 			return

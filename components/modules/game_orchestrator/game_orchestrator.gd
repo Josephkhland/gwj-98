@@ -54,7 +54,7 @@ func start_run(level_index: int = 0) -> void:
 	_load_current_level()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed(&"ui_cancel") or event.is_echo():
+	if not event.is_action_pressed(&"pause") or event.is_echo():
 		return
 	if pause.has(PAUSE_MENU):
 		_close_pause_menu()

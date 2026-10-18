@@ -11,7 +11,7 @@ func _ready() -> void:
 	super._ready()
 	$UI/ThoughtBubble.hide()
 	$UI/ExitButton.hide()
-	$UI/ExitHint.set_hint("[action:ui_cancel] Cancel inspection")
+	$UI/ExitHint.set_hint("[action:interact] Cancel inspection")
 	var column := VBoxContainer.new()
 	column.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	column.position = Vector2(-220, 100)

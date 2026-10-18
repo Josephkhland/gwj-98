@@ -126,7 +126,7 @@ text = "Yes but you'd prefer another color because this one doesn't grab your at
 [sub_resource type="Resource" id="Line_24"]
 resource_name = "24"
 script = ExtResource("line")
-text = "You may ask your mom for an alternate eyesight experience by pressing [action:ui_cancel] to open the Pause menu and then going over to the options menu."
+text = "You may ask your mom for an alternate eyesight experience by pressing [action:pause] to open the Pause menu and then going over to the options menu."
 
 [sub_resource type="Resource" id="Line_25"]
 resource_name = "25"

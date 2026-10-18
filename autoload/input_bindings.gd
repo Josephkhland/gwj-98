@@ -5,7 +5,7 @@ const ACTIONS := {
 	&"move_left": "Move left", &"move_right": "Move right", &"jump": "Charge / jump",
 	&"spit": "Charge / spit", &"heighten": "Heighten aim", &"slam": "Slam",
 	&"attack": "Attack", &"interact": "Interact / talk", &"townfolk_react": "React",
-	&"ui_cancel": "Pause / back", &"tutorial_reveal": "Reveal dialogue (tutorial only)"
+	&"pause": "Pause", &"ui_cancel": "Back", &"tutorial_reveal": "Reveal dialogue (tutorial only)"
 }
 var settings_path: String = "user://input_bindings.cfg"
 var _defaults: Dictionary = {}

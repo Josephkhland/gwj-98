@@ -165,10 +165,12 @@ point_count = 12
 resource_local_to_scene = true
 size = Vector2(34, 225.5)
 
-[node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
+[node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("minimap_center", "day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
 script = ExtResource("1_qbdb0")
 level_title = "Day 1"
 show_collision_surfaces = true
+minimap_center = NodePath("MinimapCenter")
+minimap_world_units_per_pixel = 20.0
 day_cycle = NodePath("DayCycleManager")
 lighting = NodePath("DayCycleLighting2D")
 network_graph = NodePath("NetworkGraph")
@@ -178,6 +180,9 @@ player_spawn = NodePath("PlayerSpawn")
 bed = NodePath("Bed")
 clock_in_point = NodePath("ClockInPoint")
 music_manager = NodePath("MusicManager")
+
+[node name="MinimapCenter" type="Marker2D" parent="." unique_id=1578848587]
+position = Vector2(-1804, 813.5)
 
 [node name="TownBackground" parent="." unique_id=1201888540 instance=ExtResource("2_1ow6f")]
 visible = false
@@ -266,7 +271,7 @@ follow_offset = Vector2(0, -64)
 camera_name = &"player"
 metadata/_custom_type_script = "uid://8l3trd1taiau"
 
-[node name="ProceduralOutageGenerator" parent="." unique_id=1680419989 node_paths=PackedStringArray("network_graph", "level", "day_cycle") instance=ExtResource("outage_generator")]
+[node name="ProceduralOutageGenerator" parent="." unique_id=714526570 node_paths=PackedStringArray("network_graph", "level", "day_cycle") instance=ExtResource("outage_generator")]
 network_graph = NodePath("../NetworkGraph")
 level = NodePath("..")
 day_cycle = NodePath("../DayCycleManager")

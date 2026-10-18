@@ -2,8 +2,12 @@ extends CanvasLayer
 ## All nodes and animations are authored in DirectedRepairMinigame.tscn.
 signal completed(success: bool)
 
-@export_range(0.0, 2.0) var hand_approach_duration: float = 0.25
+@export_range(0.0, 2.0) var hand_approach_duration: float = 0.12
+@export_range(0.01, 2.0) var press_duration: float = 0.18
 @export var hand_offscreen_margin: Vector2 = Vector2(60, 60)
+## Keep the resting fingertip clear of the cursor; presses still reach the button.
+@export var hand_hover_offset: Vector2 = Vector2(90, 100)
+@export_range(1.0, 60.0) var hand_follow_sharpness: float = 12.0
 @export var powered: bool = true
 @export var broken: bool = true
 @export_range(0.0, 10.0, 0.1) var power_blink_seconds: float = 2.0
@@ -24,14 +28,18 @@ var _approach: Tween
 var _pressing: bool = false
 var _finished: bool = false
 var _power_blink_left: float = 0.0
+var _pressed_texture: Texture2D
+var _exit_armed: bool = false
 
 func _ready() -> void:
+	# Only the hand's contact animates the button, rather than also on mouse-down.
+	_pressed_texture = _button.texture_pressed
+	_button.texture_pressed = _button.texture_normal
 	_bubble_fallback.visible = _bubble_texture.texture == null
 	_bubble_tail.visible = _bubble_fallback.visible
 	_image.visible = _image.texture != null
 	_button.pivot_offset = _button.size / 2.0
 	_on_ui_resized()
-	_aim_at(_ui.get_local_mouse_position())
 	_animations.play(&"idle")
 	_button.grab_focus()
 	_refresh_power_indicator()
@@ -52,23 +60,33 @@ func _refresh_power_indicator() -> void:
 	_power_status.text = "POWER OFF" if not powered else ("BROKEN" if broken else "ONLINE")
 
 func _process(delta: float) -> void:
+	if not Input.is_action_pressed(&"interact"):
+		_exit_armed = true
 	if _power_blink_left > 0:
 		_power_blink_left = maxf(0, _power_blink_left - delta)
 		if _power_blink_left == 0:
 			_refresh_power_indicator()
 	if not _pressing and not _finished:
-		_aim_at(_ui.get_local_mouse_position())
+		var goal := (_ui.get_local_mouse_position() + hand_hover_offset).clamp(Vector2.ZERO, _ui.size)
+		var tip_position := _ui.get_global_transform().affine_inverse() * _tip.global_position
+		var weight := 1.0 - exp(-hand_follow_sharpness * delta)
+		_place_hand(tip_position.lerp(goal, weight))
 
 func _aim_at(target: Vector2) -> void:
-	var direction := target - _hand.position
+	var direction := _ui.size + hand_offscreen_margin - target
 	if not direction.is_zero_approx():
-		# The authored hand points left along its local negative X axis.
-		_aim.rotation = direction.angle() + PI
+		# The fingertip is the origin; the arm extends toward its off-screen shoulder.
+		_aim.rotation = direction.angle()
+
+func _place_hand(point: Vector2) -> void:
+	_aim_at(point)
+	var tip_position := _ui.get_global_transform().affine_inverse() * _tip.global_position
+	_hand.position += point - tip_position
 
 func _on_ui_resized() -> void:
 	if not is_node_ready() or _pressing:
 		return
-	_hand.position = _ui.size + hand_offscreen_margin
+	_place_hand((_ui.get_local_mouse_position() + hand_hover_offset).clamp(Vector2.ZERO, _ui.size))
 
 func _on_button_resized() -> void:
 	if is_node_ready():
@@ -94,8 +112,9 @@ func _on_action_pressed() -> void:
 
 func _play_press() -> void:
 	if not _finished:
-		_button.texture_disabled = _button.texture_pressed if _button.texture_pressed != null else _button.texture_normal
-		_animations.play(&"press")
+		_button.texture_disabled = _pressed_texture if _pressed_texture != null else _button.texture_normal
+		var duration := _animations.get_animation(&"press").length
+		_animations.play(&"press", -1.0, duration / maxf(0.01, press_duration))
 
 func _on_animation_finished(animation_name: StringName) -> void:
 	if animation_name == &"press" and _pressing:
@@ -107,11 +126,10 @@ func _on_animation_finished(animation_name: StringName) -> void:
 		_button.disabled = false
 		_button.texture_disabled = _button.texture_normal
 		_animations.play(&"idle")
-		_on_ui_resized()
 		_refresh_power_indicator()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"ui_cancel") and not event.is_echo():
+	if _exit_armed and event.is_action_pressed(&"interact") and not event.is_echo():
 		get_viewport().set_input_as_handled()
 		_exit_inspection()
 

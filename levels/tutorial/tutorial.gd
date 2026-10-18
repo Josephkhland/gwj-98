@@ -673,7 +673,7 @@ func _finish_tutorial_repair(success: bool) -> void:
 	_repair_router = null
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _host != null or is_instance_valid(_repair) or not event.is_action_pressed(&"ui_cancel") or event.is_echo():
+	if _host != null or is_instance_valid(_repair) or not event.is_action_pressed(&"pause") or event.is_echo():
 		return
 	get_viewport().set_input_as_handled()
 	if _pause_menu.visible:

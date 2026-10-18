@@ -173,6 +173,50 @@ func get_house_path(source: SignalNetworkHouse, destination: SignalNetworkHouse)
 	path.reverse()
 	return path
 
+## Minimum repair cost across any source/target pair. Broken routers cost one;
+## healthy vertices cost zero. Equal repair costs prefer fewer links.
+func get_minimum_repair_path(sources: Array[SignalNetworkHouse], targets: Array[SignalNetworkHouse]) -> Array[SignalNetworkVertex]:
+	_ensure_current()
+	var distances: Dictionary = {}
+	var hops: Dictionary = {}
+	var previous: Dictionary = {}
+	var pending: Array[SignalNetworkVertex] = []
+	for source in sources:
+		if is_instance_valid(source) and _adjacency.has(source) and source.is_available() and not distances.has(source):
+			distances[source] = 0
+			hops[source] = 0
+			previous[source] = null
+			pending.append(source)
+	while not pending.is_empty():
+		var best := 0
+		for index in range(1, pending.size()):
+			var candidate := pending[index]
+			var chosen := pending[best]
+			if distances[candidate] < distances[chosen] or (distances[candidate] == distances[chosen] and hops[candidate] < hops[chosen]):
+				best = index
+		var current: SignalNetworkVertex = pending[best]
+		pending.remove_at(best)
+		if current is SignalNetworkHouse and current in targets:
+			var path: Array[SignalNetworkVertex] = []
+			var step: SignalNetworkVertex = current
+			while step != null:
+				path.append(step)
+				step = previous[step]
+			path.reverse()
+			return path
+		for neighbor: SignalNetworkVertex in _adjacency[current]:
+			if not neighbor.is_available() and not neighbor is SignalNetworkRouter:
+				continue
+			var cost := int(distances[current]) + (1 if neighbor is SignalNetworkRouter and not neighbor.is_available() else 0)
+			var length := int(hops[current]) + 1
+			if not distances.has(neighbor) or cost < distances[neighbor] or (cost == distances[neighbor] and length < hops[neighbor]):
+				distances[neighbor] = cost
+				hops[neighbor] = length
+				previous[neighbor] = current
+				if neighbor not in pending:
+					pending.append(neighbor)
+	return []
+
 ## Ordered router subset of get_house_path(). Direct house links yield no routers.
 func get_router_path(source: SignalNetworkHouse, destination: SignalNetworkHouse) -> Array[SignalNetworkRouter]:
 	var routers: Array[SignalNetworkRouter] = []

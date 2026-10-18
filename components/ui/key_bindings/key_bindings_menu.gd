@@ -105,8 +105,8 @@ func _begin_capture(action: StringName, index: int) -> void:
 	_capture_action = action
 	_capture_index = index
 	_status.text = "Binding %s — press a key or mouse button. Escape cancels." % InputBindings.ACTIONS[action]
-	if action == &"ui_cancel":
-		_status.text = "Binding Pause / back — press a key or mouse button, including Escape. Use Cancel to stop."
+	if action in [&"ui_cancel", &"pause"]:
+		_status.text = "Binding %s — press a key or mouse button, including Escape. Use Cancel to stop." % InputBindings.ACTIONS[action]
 	_refresh()
 
 func _cancel_binding() -> void:
@@ -126,12 +126,12 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			if not event.is_pressed() or event.is_echo():
 				return
-			if event is InputEventKey and event.keycode == KEY_ESCAPE and _capture_action != &"ui_cancel":
+			if event is InputEventKey and event.keycode == KEY_ESCAPE and _capture_action not in [&"ui_cancel", &"pause"]:
 				_cancel_binding()
 				return
 			_accept_binding(event)
 		return
-	if event.is_action_pressed(&"ui_cancel") and not event.is_echo():
+	if (event.is_action_pressed(&"ui_cancel") or event.is_action_pressed(&"pause")) and not event.is_echo():
 		get_viewport().set_input_as_handled()
 		close()
 

@@ -12,7 +12,7 @@ const VOLUMES_DB := {
 	&"router_broken": -16.0,
 	&"jump_charge": -6.0,
 	&"jump": 0.0,
-	&"falling": -12.0,
+	&"falling": -100.0 - 6.,
 	&"land": 0.0,
 	&"slam_land": 0.0,
 	&"spit": 0.0,
@@ -35,6 +35,7 @@ const footsteps_db := 12.0
 
 static func volume_db(sound_id: StringName) -> float:
 	return float(VOLUMES_DB.get(sound_id, 0.0))
+
 
 static func looped_stream(source: AudioStream) -> AudioStream:
 	if source == null:

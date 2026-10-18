@@ -17,13 +17,16 @@ var _charge: AudioStreamPlayer2D
 var _spit_charge: AudioStreamPlayer2D
 var _fall: AudioStreamPlayer2D
 
+var was_charging := false
+var was_spit_charging := false
+
 func _ready() -> void:
 	process_physics_priority = 200
 	_character = get_parent() as CharacterBody2D
 	if land_bank != null:
 		land_bank.prepare()
-	_charge = _make_player(jump_charge, &"jump_charge", true)
-	_spit_charge = _make_player(spit_charge, &"spit_charge", true)
+	_charge = _make_player(jump_charge, &"jump_charge", false)
+	_spit_charge = _make_player(spit_charge, &"spit_charge", false)
 	_fall = _make_player(falling, &"falling", true)
 	_fall.play()
 	_character.state_changed.connect(_on_state_changed)
@@ -61,8 +64,14 @@ func _set_loop(player: AudioStreamPlayer2D, active: bool) -> void:
 
 func _refresh_loops() -> void:
 	var active := not get_tree().has_group(&"signal_network_repair_session")
-	_set_loop(_charge, active and _character.state == _character.State.CHARGING)
-	_set_loop(_spit_charge, active and _character.state == _character.State.CHARGING_SPIT)
+	if _character.state == _character.State.CHARGING and not was_charging:
+		_charge.play()
+	if _character.state == _character.State.CHARGING_SPIT and not was_spit_charging:
+		_spit_charge.play()
+	was_charging = _character.state == _character.State.CHARGING
+	was_spit_charging = _character.state == _character.State.CHARGING_SPIT
+	# _set_loop(_charge, active and _character.state == _character.State.CHARGING)
+	# _set_loop(_spit_charge, active and _character.state == _character.State.CHARGING_SPIT)
 	_set_loop(_fall, active)
 
 func _on_state_changed(previous: int, current: int) -> void:

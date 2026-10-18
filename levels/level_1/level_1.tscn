@@ -5,7 +5,8 @@
 [ext_resource type="Script" uid="uid://clioepnuaxcfk" path="res://levels/level_1/level_1.gd" id="1_qbdb0"]
 [ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="2_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_8jbay"]
-[ext_resource type="PackedScene" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="2_epb64"]
+[ext_resource type="PackedScene" uid="uid://cmpdpdjtgknb0" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="2_epb64"]
+[ext_resource type="Texture2D" uid="uid://c2sf2vbqswna2" path="res://assets/shuzuu/frogineer_merged_layers.png" id="2_mnfdo"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="2_qbdb0"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="3_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="3_iey7c"]
@@ -32,8 +33,8 @@
 [ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
 [ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
 [ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
-[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 [ext_resource type="PackedScene" path="res://components/modules/random_message_generator/RandomMessageGenerator.tscn" id="random_messages"]
+[ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 
 [sub_resource type="Curve" id="Curve_vhlys"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.26141077, 0.49438208), 2.7875082, 2.7875082, 0, 0, Vector2(0.5352697, 1), 0.0, 0.0, 0, 0, Vector2(0.6970954, 0.8876405), -2.3983948, -2.3983948, 0, 0, Vector2(1, 0.3146068), 0.82893795, 0.0, 0, 0]
@@ -125,21 +126,10 @@ size = Vector2(70, 1236.5)
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_vhlys"]
+[sub_resource type="Curve2D" id="Curve2D_mnfdo"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
-}
-point_count = 9
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mnfdo"]
-resource_local_to_scene = true
-size = Vector2(34, 225.5)
-
-[sub_resource type="Curve2D" id="Curve2D_xjrjs"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
 point_count = 9
 
@@ -150,9 +140,9 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_lu7vs"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
-point_count = 12
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jmd8"]
 resource_local_to_scene = true
@@ -161,7 +151,7 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_wx43u"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
 }
 point_count = 12
 
@@ -169,10 +159,20 @@ point_count = 12
 resource_local_to_scene = true
 size = Vector2(34, 225.5)
 
+[sub_resource type="Curve2D" id="Curve2D_s81jn"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+}
+point_count = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n5t7a"]
+resource_local_to_scene = true
+size = Vector2(34, 225.5)
+
 [node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("minimap_center", "day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
 script = ExtResource("1_qbdb0")
 level_title = "Day 1"
-show_collision_surfaces = true
 minimap_center = NodePath("MinimapCenter")
 minimap_world_units_per_pixel = 20.0
 day_cycle = NodePath("DayCycleManager")
@@ -184,6 +184,14 @@ player_spawn = NodePath("PlayerSpawn")
 bed = NodePath("Bed")
 clock_in_point = NodePath("ClockInPoint")
 music_manager = NodePath("MusicManager")
+
+[node name="ActualBackground" type="TextureRect" parent="." unique_id=1607093631]
+z_index = -1
+offset_left = -6037.0
+offset_top = -1182.0
+offset_right = 155.0
+offset_bottom = 2301.0
+texture = ExtResource("2_mnfdo")
 
 [node name="MinimapCenter" type="Marker2D" parent="." unique_id=1578848587]
 position = Vector2(-1804, 813.5)
@@ -668,7 +676,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_vhlys")
+curve = SubResource("Curve2D_mnfdo")
 
 [node name="Body" parent="MovingPlatform" index="1"]
 collision_layer = 9
@@ -678,7 +686,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
-shape = SubResource("RectangleShape2D_mnfdo")
+shape = SubResource("RectangleShape2D_ya87f")
 
 [node name="MovingPlatform3" parent="." unique_id=845979641 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -691,7 +699,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform3" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_xjrjs")
+curve = SubResource("Curve2D_lu7vs")
 
 [node name="Body" parent="MovingPlatform3" index="1"]
 collision_layer = 9
@@ -701,7 +709,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform3/Body" index="1"]
-shape = SubResource("RectangleShape2D_ya87f")
+shape = SubResource("RectangleShape2D_2jmd8")
 
 [node name="MovingPlatform2" parent="." unique_id=813500050 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -714,7 +722,7 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform2" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_lu7vs")
+curve = SubResource("Curve2D_wx43u")
 
 [node name="Body" parent="MovingPlatform2" index="1"]
 collision_layer = 9
@@ -724,7 +732,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform2/Body" index="1"]
-shape = SubResource("RectangleShape2D_2jmd8")
+shape = SubResource("RectangleShape2D_tr4hg")
 
 [node name="MovingPlatform4" parent="." unique_id=1062858323 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
@@ -738,7 +746,7 @@ disappear_duration = 0.0
 [node name="MovementPath" parent="MovingPlatform4" index="0"]
 position = Vector2(8, 0)
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_wx43u")
+curve = SubResource("Curve2D_s81jn")
 
 [node name="Body" parent="MovingPlatform4" index="1"]
 position = Vector2(8, 0)
@@ -749,7 +757,7 @@ visible = false
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform4/Body" index="1"]
-shape = SubResource("RectangleShape2D_tr4hg")
+shape = SubResource("RectangleShape2D_n5t7a")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=816260377]
 position = Vector2(-2846, -35)
@@ -788,7 +796,7 @@ character_profile = ExtResource("14_e6dmr")
 position = Vector2(-903, -222)
 character_profile = ExtResource("13_plqb7")
 
-[node name="RandomMessageGenerator" parent="." instance=ExtResource("random_messages")]
+[node name="RandomMessageGenerator" parent="." unique_id=1115664249 instance=ExtResource("random_messages")]
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform3"]

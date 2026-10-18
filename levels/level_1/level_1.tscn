@@ -35,8 +35,8 @@
 [ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 
 [sub_resource type="Curve" id="Curve_vhlys"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.39004153, 0.50537634), 2.7875082, 2.7875082, 0, 0, Vector2(0.560166, 1), 0.0, 0.0, 0, 0, Vector2(0.72614104, 0.48314613), -8.462079, -8.462079, 0, 0, Vector2(0.8423236, 0.21348321), 0.0, 0.0, 0, 0, Vector2(1, 0.011235952), -2.0308912, 0.0, 0, 0]
-point_count = 6
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.26141077, 0.49438208), 2.7875082, 2.7875082, 0, 0, Vector2(0.5352697, 1), 0.0, 0.0, 0, 0, Vector2(0.6970954, 0.8876405), -2.3983948, -2.3983948, 0, 0, Vector2(1, 0.3146068), 0.82893795, 0.0, 0, 0]
+point_count = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
@@ -58,6 +58,9 @@ size = Vector2(56.28125, 288)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xywve"]
 size = Vector2(56.28125, 144)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx43u"]
+size = Vector2(56.28125, 112)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk63l"]
 size = Vector2(266.48242, 39.566406)
@@ -275,9 +278,10 @@ metadata/_custom_type_script = "uid://8l3trd1taiau"
 network_graph = NodePath("../NetworkGraph")
 level = NodePath("..")
 day_cycle = NodePath("../DayCycleManager")
-quiet_interval_minutes = 80.0
-peak_interval_minutes = 30.0
+quiet_interval_minutes = 40.0
+peak_interval_minutes = 5.0
 density_curve = SubResource("Curve_vhlys")
+attack_duration_seconds = 30.0
 
 [node name="NetworkGraph" parent="." unique_id=447306671 instance=ExtResource("1_j48du")]
 
@@ -322,24 +326,32 @@ connections = Array[NodePath]([NodePath("../Router8")])
 [node name="Router" parent="NetworkGraph" unique_id=893130211 instance=ExtResource("3_la5aw")]
 position = Vector2(-2736, 155)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r1"
 connections = Array[NodePath]([NodePath("../House")])
 
 [node name="Router2" parent="NetworkGraph" unique_id=84250392 instance=ExtResource("3_la5aw")]
 position = Vector2(-2103, 563)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r2"
 connections = Array[NodePath]([NodePath("../Router"), NodePath("../Router6")])
 
 [node name="Router3" parent="NetworkGraph" unique_id=1995126100 instance=ExtResource("3_la5aw")]
 position = Vector2(-1850, 909)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r3"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router4" parent="NetworkGraph" unique_id=1932095599 instance=ExtResource("3_la5aw")]
 position = Vector2(-1948, 1354)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r4"
 display_name = "Router 4"
 connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), NodePath("../Router8")])
@@ -347,46 +359,62 @@ connections = Array[NodePath]([NodePath("../Router3"), NodePath("../Router7"), N
 [node name="Router5" parent="NetworkGraph" unique_id=2033677965 instance=ExtResource("3_la5aw")]
 position = Vector2(-1693, -232)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r5"
 connections = Array[NodePath]([NodePath("../Router2")])
 
 [node name="Router6" parent="NetworkGraph" unique_id=1424610390 instance=ExtResource("3_la5aw")]
 position = Vector2(-2681, 1084)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r6"
 connections = Array[NodePath]([NodePath("../Router7")])
 
 [node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
-position = Vector2(-2682, 1823)
+position = Vector2(-2584, 1823)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r7"
 
 [node name="Router8" parent="NetworkGraph" unique_id=1678648894 instance=ExtResource("3_la5aw")]
 position = Vector2(-1296, 1476)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r8"
 connections = Array[NodePath]([NodePath("../Router9")])
 
 [node name="Router9" parent="NetworkGraph" unique_id=2002947098 instance=ExtResource("3_la5aw")]
 position = Vector2(-960, 1222)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r9"
 connections = Array[NodePath]([NodePath("../House2")])
 
 [node name="Router10" parent="NetworkGraph" unique_id=654400491 instance=ExtResource("3_la5aw")]
 position = Vector2(-1211, 692)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r10"
 connections = Array[NodePath]([NodePath("../Router9"), NodePath("../Router3"), NodePath("../Router11")])
 
 [node name="Router11" parent="NetworkGraph" unique_id=997192392 instance=ExtResource("3_la5aw")]
 position = Vector2(-563, 448)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r11"
 
 [node name="Router12" parent="NetworkGraph" unique_id=87479911 instance=ExtResource("3_la5aw")]
 position = Vector2(-992, 34)
 state = 0
+attack_player_radius = 110.0
+attack_spit_radius = 64.0
 key_identifier = &"r12"
 connections = Array[NodePath]([NodePath("../Router11"), NodePath("../Router5")])
 
@@ -472,8 +500,8 @@ position = Vector2(-344, 307)
 shape = SubResource("RectangleShape2D_xywve")
 
 [node name="CollisionShape2D40" type="CollisionShape2D" parent="Wall" unique_id=1061253936]
-position = Vector2(-104, 403)
-shape = SubResource("RectangleShape2D_xywve")
+position = Vector2(-104, 387)
+shape = SubResource("RectangleShape2D_wx43u")
 
 [node name="CollisionShape2D35" type="CollisionShape2D" parent="Wall" unique_id=681412955]
 position = Vector2(-1448, 667)

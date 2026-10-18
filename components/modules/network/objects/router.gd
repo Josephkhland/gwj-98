@@ -45,8 +45,8 @@ signal repair_requested(player: Node2D)
 ## Real seconds. The outage generator can override this per attack.
 @export_range(0.1, 60.0, 0.1, "or_greater") var default_attack_duration: float = 8.0
 @export var default_attack_outcome: AttackOutcome = AttackOutcome.RANDOM
-@export_range(1.0, 500.0, 1.0) var attack_player_radius: float = 110.0
-@export_range(1.0, 500.0, 1.0) var attack_spit_radius: float = 64.0
+@export_range(1.0, 500.0, 1.0) var attack_player_radius: float = 150.0
+@export_range(1.0, 500.0, 1.0) var attack_spit_radius: float = 100.0
 @export_range(0.0, 2.0, 0.05) var interruption_pause_seconds: float = 0.15
 @export_range(0.05, 3.0, 0.05) var recovery_seconds: float = 0.8
 @export_range(0.0, 2.0, 0.05) var recovery_hold_seconds: float = 0.35

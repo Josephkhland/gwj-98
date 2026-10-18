@@ -16,8 +16,6 @@ var _character: CharacterBody2D
 var _charge: AudioStreamPlayer2D
 var _spit_charge: AudioStreamPlayer2D
 var _fall: AudioStreamPlayer2D
-var _had_support: bool = false
-var _falling: bool = false
 
 func _ready() -> void:
 	process_physics_priority = 200
@@ -26,9 +24,10 @@ func _ready() -> void:
 		land_bank.prepare()
 	_charge = _make_player(jump_charge, &"jump_charge", true)
 	_spit_charge = _make_player(spit_charge, &"spit_charge", true)
-	_fall = _make_player(falling, &"falling", false)
+	_fall = _make_player(falling, &"falling", true)
+	_fall.play()
 	_character.state_changed.connect(_on_state_changed)
-	_character.spit_fired.connect(func(_projectile, _ratio): _play_one_shot(spit, &"spit"))
+	_character.spit_fired.connect(func(_projectile, _ratio): _play_one_shot(spit, &"spit", 0.05))
 	_character.landed.connect(_on_landed)
 	_character.get_node("AudioListener2D").make_current()
 
@@ -42,12 +41,15 @@ func _make_player(stream: AudioStream, id: StringName, loop: bool) -> AudioStrea
 	add_child(player)
 	return player
 
-func _play_one_shot(stream: AudioStream, id: StringName, volume_adjustment_db: float = 0.0) -> void:
+func _play_one_shot(stream: AudioStream, id: StringName, pitch_randomness: float = 0.0, volume_adjustment_db: float = 0.0) -> void:
 	if stream == null:
 		return
 	var player := _make_player(stream, id, false)
 	player.volume_db += volume_adjustment_db
 	player.finished.connect(player.queue_free)
+	if pitch_randomness != 0.0:
+		var pitch_floor := clampf(1.0 - pitch_randomness, 0.01, 1.0)
+		player.pitch_scale *= randf_range(pitch_floor, 1.0 / pitch_floor)
 	player.play()
 
 func _set_loop(player: AudioStreamPlayer2D, active: bool) -> void:
@@ -61,27 +63,16 @@ func _refresh_loops() -> void:
 	var active := not get_tree().has_group(&"signal_network_repair_session")
 	_set_loop(_charge, active and _character.state == _character.State.CHARGING)
 	_set_loop(_spit_charge, active and _character.state == _character.State.CHARGING_SPIT)
+	_set_loop(_fall, active)
 
 func _on_state_changed(previous: int, current: int) -> void:
 	_refresh_loops()
 	if previous == _character.State.CHARGING and current == _character.State.JUMPING:
-		_had_support = true
-		_play_one_shot(jump, &"jump")
+		_play_one_shot(jump, &"jump", 0.05)
 
 func _physics_process(_delta: float) -> void:
 	_refresh_loops()
-	var grounded: bool = _character.is_grounded()
-	if grounded:
-		_had_support = true
-		_falling = false
-		_fall.stop()
-	elif _character.state in [_character.State.ON_WALL, _character.State.SLAMMING] or _character.velocity.y < -20:
-		_falling = false
-		_fall.stop()
-	elif _had_support and _character.velocity.y > 40 and not _falling:
-		_falling = true
-		if _fall.stream != null:
-			_fall.play()
+	_fall.volume_db = AudioConfig.volume_db("falling") + minf(abs(_character.velocity.y), 1000.0) * 0.1
 
 func _on_landed(incoming_velocity: Vector2, normal: Vector2, was_slam: bool) -> void:
 	var impact_speed := maxf(0.0, -incoming_velocity.dot(normal))
@@ -89,12 +80,11 @@ func _on_landed(incoming_velocity: Vector2, normal: Vector2, was_slam: bool) -> 
 	var volume_adjustment := lerpf(landing_minimum_volume_db, 0.0, strength)
 	_play_landing(volume_adjustment)
 	if was_slam:
-		_play_one_shot(slam_land, &"slam_land", volume_adjustment)
-	_fall.stop()
+		_play_one_shot(slam_land, &"slam_land", 0.0, volume_adjustment)
 
 func _play_landing(volume_adjustment_db: float) -> void:
 	if land_bank != null:
-		_play_one_shot(land_bank.random_clip(), &"land", volume_adjustment_db)
+		_play_one_shot(land_bank.random_clip(), &"land", 0.0, volume_adjustment_db)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DISABLED and is_node_ready():

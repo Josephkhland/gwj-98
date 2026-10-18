@@ -34,6 +34,10 @@
 [ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
 [ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 
+[sub_resource type="Curve" id="Curve_vhlys"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.39004153, 0.50537634), 2.7875082, 2.7875082, 0, 0, Vector2(0.560166, 1), 0.0, 0.0, 0, 0, Vector2(0.72614104, 0.48314613), -8.462079, -8.462079, 0, 0, Vector2(0.8423236, 0.21348321), 0.0, 0.0, 0, 0, Vector2(1, 0.011235952), -2.0308912, 0.0, 0, 0]
+point_count = 6
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gawg5"]
 size = Vector2(401.125, 95.125)
 
@@ -271,6 +275,9 @@ metadata/_custom_type_script = "uid://8l3trd1taiau"
 network_graph = NodePath("../NetworkGraph")
 level = NodePath("..")
 day_cycle = NodePath("../DayCycleManager")
+quiet_interval_minutes = 80.0
+peak_interval_minutes = 30.0
+density_curve = SubResource("Curve_vhlys")
 
 [node name="NetworkGraph" parent="." unique_id=447306671 instance=ExtResource("1_j48du")]
 
@@ -487,10 +494,6 @@ shape = SubResource("RectangleShape2D_vk63l")
 [node name="CollisionShape2D38" type="CollisionShape2D" parent="Wall" unique_id=187068443]
 position = Vector2(-384, 547)
 shape = SubResource("RectangleShape2D_vk63l")
-
-[node name="CollisionShape2D41" type="CollisionShape2D" parent="Wall" unique_id=255847987]
-position = Vector2(608, 475)
-shape = SubResource("RectangleShape2D_vhlys")
 
 [node name="CollisionShape2D49" type="CollisionShape2D" parent="Wall" unique_id=453165024]
 position = Vector2(-72, 651)

@@ -7,6 +7,8 @@ signal squeezed
 signal spit_fired(projectile: Node2D, charge_ratio: float)
 signal spit_charges_changed(current: int, maximum: int)
 signal slam_impacted(collider: Node, point: Vector2, normal: Vector2)
+## Incoming velocity is captured before collision response changes velocity.
+signal landed(incoming_velocity: Vector2, normal: Vector2, was_slam: bool)
 enum State { IDLE, WALKING, CHARGING, JUMPING, IN_AIR, ON_WALL, ATTACKING, GETTING_HIT, SQUEEZED, SLAMMING, ROLLING_BACK, CHARGING_SPIT }
 const Settings = preload("res://components/modules/platformer_character/character_settings.gd")
 const SpitProjectile = preload("res://components/modules/platformer_character/spit_projectile.gd")
@@ -165,10 +167,13 @@ func _physics_process(delta: float) -> void:
 	if state_machine.should_move() and not physics_safety.movement_locked():
 		var incoming_velocity := velocity
 		var previously_grounded := is_on_floor()
+		var was_slamming: bool = state == State.SLAMMING and not state_machine.current.impacted
 		move_and_slide()
 		_update_surface_slide(incoming_velocity)
 		_update_landing_slide(previously_grounded)
 		state_machine.after_move(incoming_velocity)
+		if not previously_grounded and is_on_floor():
+			landed.emit(incoming_velocity, get_floor_normal(), was_slamming)
 	if _restore_platform_on_leave >= 0:
 		platform_on_leave = _restore_platform_on_leave
 		_restore_platform_on_leave = -1

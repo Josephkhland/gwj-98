@@ -44,7 +44,7 @@ point_count = 5
 size = Vector2(401.125, 95.125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f313t"]
-size = Vector2(401.125, 49.78125)
+size = Vector2(424.5625, 64.890625)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_plqb7"]
 size = Vector2(401.125, 51.5625)
@@ -486,7 +486,7 @@ position = Vector2(72, 355)
 shape = SubResource("RectangleShape2D_f313t")
 
 [node name="CollisionShape2D36" type="CollisionShape2D" parent="Wall" unique_id=1249535661]
-position = Vector2(-1232, 507)
+position = Vector2(-1243.7188, 499.4453)
 shape = SubResource("RectangleShape2D_f313t")
 
 [node name="CollisionShape2D23" type="CollisionShape2D" parent="Wall" unique_id=1749413867]
@@ -873,21 +873,22 @@ morning = ExtResource("21_vk63l")
 main = ExtResource("22_f313t")
 
 [node name="DeerTownfolkCharacter" parent="." unique_id=1238639566 instance=ExtResource("20_vk63l")]
-position = Vector2(-2781, 625)
+visible = false
+position = Vector2(-1392, -472)
 character_profile = ExtResource("11_0rvqm")
 dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_chain_1")])
 off_shift_dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_intro")])
 
 [node name="BurdTownfolkCharacter" parent="." unique_id=1114119585 instance=ExtResource("20_vk63l")]
-position = Vector2(-496, 1503)
+position = Vector2(1550, 3613)
 character_profile = ExtResource("12_mgcax")
 
 [node name="FoxTownfolkCharacter" parent="." unique_id=1964815674 instance=ExtResource("20_vk63l")]
-position = Vector2(-3022, 1945)
+position = Vector2(-976, 4055)
 character_profile = ExtResource("14_e6dmr")
 
 [node name="SquirrelTownfolkCharacter" parent="." unique_id=1910306370 instance=ExtResource("20_vk63l")]
-position = Vector2(-903, -222)
+position = Vector2(1143, 1888)
 character_profile = ExtResource("13_plqb7")
 
 [node name="RandomMessageGenerator" parent="." unique_id=1115664249 instance=ExtResource("random_messages")]

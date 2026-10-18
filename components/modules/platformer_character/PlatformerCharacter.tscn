@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://boeg4u8c7pbif" path="res://components/modules/platformer_character/states/charging_spit.gd" id="migration_22"]
 
 [ext_resource type="Script" path="res://components/modules/sound_banks/movement_audio.gd" id="movement_audio"]
+[ext_resource type="Script" path="res://components/modules/platformer_character/debug_character_switcher.gd" id="debug_switcher"]
 
 [sub_resource type="CircleShape2D" id="Body"]
 radius = 14.0
@@ -201,3 +202,6 @@ script = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlamHitbox" unique_id=483115487]
 shape = SubResource("Slam")
+
+[node name="DebugCharacterSwitcher" type="Node" parent="."]
+script = ExtResource("debug_switcher")

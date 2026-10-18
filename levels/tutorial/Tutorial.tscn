@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://v2um07t4pmmb" path="res://levels/tutorial/tutorial.gd" id="level"]
 [ext_resource type="PackedScene" path="res://components/ui/pause_menu/PauseMenu.tscn" id="pause"]
 [ext_resource type="Script" uid="uid://cpd2q3rbxk16o" path="res://levels/tutorial/tutorial_pause_menu.gd" id="pause_script"]
-[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="player"]
 [ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="router"]
 [ext_resource type="Resource" uid="uid://dphcw6xojj00x" path="res://levels/tutorial/tutorial_shift_schedule.tres" id="schedule"]
 [ext_resource type="Resource" uid="uid://lp3twd1qlbyv" path="res://levels/tutorial/tutorial_script.tres" id="script_lines"]
@@ -40,6 +40,15 @@ script = ExtResource("13_kva73")
 script = ExtResource("13_kva73")
 
 [sub_resource type="RichTextEffect" id="RichTextEffect_lsob2"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kgium"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_geeci"]
+script = ExtResource("13_kva73")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x2782"]
 script = ExtResource("13_kva73")
 
 [sub_resource type="RectangleShape2D" id="ButtonShape"]
@@ -158,7 +167,7 @@ position_smoothing_enabled = true
 visible = false
 position = Vector2(380, 630)
 script = ExtResource("guide")
-tutorial_syllable_seconds = 0.22
+tutorial_syllable_seconds = 0.1
 tutorial_punctuation_pause = 0.25
 tutorial_reading_hold = 1.5
 reveal_action = &"tutorial_reveal"
@@ -183,7 +192,7 @@ offset_right = 236.0
 offset_bottom = -20.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-custom_effects = [SubResource("RichTextEffect_o7vpn"), SubResource("RichTextEffect_4gw6b"), SubResource("RichTextEffect_e3xsi"), SubResource("RichTextEffect_kva73"), SubResource("RichTextEffect_lsob2")]
+custom_effects = [SubResource("RichTextEffect_o7vpn"), SubResource("RichTextEffect_4gw6b"), SubResource("RichTextEffect_e3xsi"), SubResource("RichTextEffect_kva73"), SubResource("RichTextEffect_lsob2"), SubResource("RichTextEffect_kgium"), SubResource("RichTextEffect_geeci"), SubResource("RichTextEffect_x2782")]
 
 [node name="Popup" parent="Squirrel/DialogueBubble" index="1"]
 visible = false

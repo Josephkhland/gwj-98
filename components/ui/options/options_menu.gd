@@ -14,6 +14,9 @@ func _ready() -> void:
 	_minimap_size.value_changed.connect(func(value): AccessibilitySettings.set_minimap_size_percent(value))
 	AccessibilitySettings.minimap_size_changed.connect(_refresh_minimap_size)
 	_refresh_minimap_size()
+	%RouterMessageHints.toggled.connect(func(value): AccessibilitySettings.set_show_router_message_hints(value))
+	AccessibilitySettings.router_message_hints_changed.connect(_refresh_router_message_hints)
+	_refresh_router_message_hints()
 	_palette.add_item("Green / red", 0)
 	_palette.add_item("Cyan / orange", 1)
 	_palette.item_selected.connect(func(index): AccessibilitySettings.set_alternate_network_colors(index == 1))
@@ -61,3 +64,6 @@ func _refresh_palette() -> void:
 func _refresh_minimap_size() -> void:
 	_minimap_size.set_value_no_signal(AccessibilitySettings.minimap_size_percent)
 	%MinimapSizeValue.text = "%d%%" % roundi(AccessibilitySettings.minimap_size_percent)
+
+func _refresh_router_message_hints() -> void:
+	%RouterMessageHints.set_pressed_no_signal(AccessibilitySettings.show_router_message_hints)

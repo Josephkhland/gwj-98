@@ -1,5 +1,6 @@
 class_name MinimapWidget
 extends HudWidget
+const WARNING_ICON: Texture2D = preload("res://assets/nicoichu/Software_Warning_Sign_Triangle_Exclaimation_Mark_Error.png")
 ## Data-driven minimap centred on a level marker or player. Draws level solids (static/moving collision
 ## shapes and tile collisions), then either the signal network or the chosen markers.
 ## Markers outside the view stick to the edge so the player knows which way to go.
@@ -24,6 +25,7 @@ var _feed: MinimapFeed
 var _show_network: bool = false
 var _markers: Array = []
 var _tile_cache: Dictionary = {}
+var _guidance_time: float = 0.0
 
 func _ready() -> void:
 	clip_contents = true
@@ -39,8 +41,9 @@ func _apply_network_colors() -> void:
 	link_down_color = Color(router_broken_color, 0.45)
 	queue_redraw()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if is_visible_in_tree() and _feed != null:
+		_guidance_time += delta
 		queue_redraw()
 
 func apply_snapshot(snapshot: Dictionary) -> void:
@@ -136,6 +139,7 @@ func _draw_network(to_map: Transform2D) -> void:
 				continue
 			var up := vertex.is_available() and target.is_available()
 			draw_line(to_map * vertex.global_position, to_map * target.global_position, link_up_color if up else link_down_color, 2.0, true)
+	_draw_repair_ripples(to_map)
 	for vertex in vertices:
 		var point := to_map * vertex.global_position
 		if vertex.is_house():
@@ -152,6 +156,40 @@ func _draw_network(to_map: Transform2D) -> void:
 				_draw_icon(router_icon, point, network_icon_size, tint)
 			else:
 				draw_circle(point, 5.0, tint)
+	_draw_repair_warnings(to_map)
+
+func _draw_repair_ripples(to_map: Transform2D) -> void:
+	if not is_instance_valid(_feed.message_board):
+		return
+	var marks := _feed.message_board.get_repair_marks()
+	for vertex: SignalNetworkVertex in marks:
+		if not is_instance_valid(vertex):
+			continue
+		var message: NetworkMessage = marks[vertex]
+		var point := to_map * vertex.global_position
+		for ring in 2:
+			var progress := fposmod(_guidance_time * 0.7 + ring * 0.5, 1.0)
+			var color := message.get_guidance_color()
+			color.a = (1.0 - progress) * 0.85
+			draw_arc(point, 12.0 + progress * 18.0, 0, TAU, 40, color, 2.0, true)
+
+func _draw_repair_warnings(to_map: Transform2D) -> void:
+	if not is_instance_valid(_feed.message_board):
+		return
+	var senders: Dictionary = {}
+	for message in _feed.message_board.get_repair_messages():
+		if message.state != NetworkMessage.State.PENDING:
+			continue
+		var sender: SignalNetworkVertex = message.repair_path.front()
+		var previous: NetworkMessage = senders.get(sender)
+		if previous == null or message.deadline_seconds < previous.deadline_seconds:
+			senders[sender] = message
+	for sender: SignalNetworkVertex in senders:
+		if not is_instance_valid(sender):
+			continue
+		var message: NetworkMessage = senders[sender]
+		var alpha := message.get_warning_alpha()
+		_draw_icon(WARNING_ICON, to_map * sender.global_position + Vector2(13, -13), 16.0, Color(message.get_guidance_color(), alpha))
 
 func _draw_icon(texture: Texture2D, point: Vector2, extent: float, tint: Color = Color.WHITE) -> void:
 	var texture_size := texture.get_size()

@@ -140,6 +140,13 @@ custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "125%"
 
+[node name="RouterMessageHints" type="CheckButton" parent="Margin/Panel/Padding/Column/Tabs/Network Colors/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Show message hints above routers"
+button_pressed = true
+tooltip_text = "Show the sender and receiver above routers needed for blocked messages. Repair ripples stay visible."
+
 [node name="Back" type="Button" parent="Margin/Panel/Padding/Column"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 48)

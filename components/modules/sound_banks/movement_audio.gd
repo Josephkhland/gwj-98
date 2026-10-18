@@ -72,7 +72,6 @@ func _physics_process(_delta: float) -> void:
 	_refresh_loops()
 	var grounded: bool = _character.is_grounded()
 	_fall.volume_db = AudioConfig.volume_db("falling") + minf(abs(_character.velocity.y), 1000.0) * 0.1
-	print(_fall.volume_db)
 
 	if grounded:
 		if not _was_grounded and not _slam_landed:

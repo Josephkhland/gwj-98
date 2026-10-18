@@ -57,7 +57,7 @@ func begin_line(line: TownfolkDialogueLine, last_line: bool) -> void:
 	_last_line = last_line
 	_update_prompt()
 
-func reveal_chunk(chunk: String, bank: VoiceSoundBank) -> void:
+func reveal_chunk(chunk: String, bank: VoiceSoundBank, sentence_pitch: float) -> void:
 	_revealed_source += chunk
 	_text.visible_characters = InputIcons.rendered_length(_revealed_source)
 	if bank == null or not TownfolkDialogueLine.is_spoken(chunk):
@@ -66,8 +66,9 @@ func reveal_chunk(chunk: String, bank: VoiceSoundBank) -> void:
 	if clip == null:
 		return
 	_voice.stream = clip
-	_voice.pitch_scale = bank.random_pitch()
+	_voice.pitch_scale = 1. + (sentence_pitch) * 0.003 + randf_range(-0.01, 0.01)
 	_voice.volume_db = AudioConfig.volume_db(&"townfolk_voice")
+	print(_voice.pitch_scale)
 	_voice.play()
 
 func complete_line() -> void:

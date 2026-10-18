@@ -5,11 +5,13 @@
 [ext_resource type="Script" uid="uid://clioepnuaxcfk" path="res://levels/level_1/level_1.gd" id="1_qbdb0"]
 [ext_resource type="PackedScene" uid="uid://bmblyhx6bgdgu" path="res://components/modules/background/TownBackground.tscn" id="2_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/network/objects/House.tscn" id="2_8jbay"]
-[ext_resource type="PackedScene" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="2_epb64"]
+[ext_resource type="PackedScene" uid="uid://cmpdpdjtgknb0" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="2_epb64"]
+[ext_resource type="Texture2D" uid="uid://c2sf2vbqswna2" path="res://assets/shuzuu/frogineer_merged_layers.png" id="2_mnfdo"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleLighting2D.tscn" id="2_qbdb0"]
 [ext_resource type="PackedScene" path="res://components/modules/day_cycle/DayCycleManager.tscn" id="3_1ow6f"]
 [ext_resource type="PackedScene" path="res://components/modules/camera_manager/CameraManager2D.tscn" id="3_iey7c"]
 [ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="3_la5aw"]
+[ext_resource type="Texture2D" uid="uid://bospdqjprrew3" path="res://assets/shuzuu/Frogineer level outline layout.png" id="3_xjrjs"]
 [ext_resource type="Script" uid="uid://8l3trd1taiau" path="res://components/modules/camera_manager/follow_camera_2d.gd" id="4_5b03i"]
 [ext_resource type="Resource" uid="uid://cctpv8asj73ii" path="res://resources/day_cycle_schedules/level_1_schedule.tres" id="4_hyp3v"]
 [ext_resource type="PackedScene" path="res://addons/moving_platforms_designer/MovingPlatform.tscn" id="5_5b03i"]
@@ -32,6 +34,7 @@
 [ext_resource type="Script" uid="uid://boyb05os8bwho" path="res://components/modules/townfolk/dialogue_chain.gd" id="deer_chain_script"]
 [ext_resource type="Resource" uid="uid://sdd14i3l622p" path="res://resources/dialogue_chains/deer_introductory.tres" id="deer_intro"]
 [ext_resource type="PackedScene" path="res://components/modules/procedural_outage_generator/ProceduralOutageGenerator.tscn" id="outage_generator"]
+[ext_resource type="PackedScene" path="res://components/modules/random_message_generator/RandomMessageGenerator.tscn" id="random_messages"]
 [ext_resource type="PackedScene" path="res://components/modules/game_level/RouterWorkbench.tscn" id="router_workbench"]
 
 [sub_resource type="Curve" id="Curve_vhlys"]
@@ -42,7 +45,7 @@ point_count = 5
 size = Vector2(401.125, 95.125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f313t"]
-size = Vector2(401.125, 49.78125)
+size = Vector2(424.5625, 64.890625)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_plqb7"]
 size = Vector2(401.125, 51.5625)
@@ -80,6 +83,30 @@ size = Vector2(24, 144)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_drths"]
 size = Vector2(446.25, 72.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mnfdo"]
+size = Vector2(1759.5625, 572.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s81jn"]
+size = Vector2(648, 611.0625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rflqb"]
+size = Vector2(210, 611.0625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jq5vq"]
+size = Vector2(393, 265.53125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_daoe1"]
+size = Vector2(393, 100.765625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4idv8"]
+size = Vector2(48, 210.38281)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdo7j"]
+size = Vector2(224, 41.191406)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5oe72"]
+size = Vector2(1824, 156.5957)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbtho"]
 resource_local_to_scene = true
 size = Vector2(229.0625, 53.125)
@@ -100,7 +127,7 @@ size = Vector2(392, 75)
 size = Vector2(1451.5, 75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3akp"]
-size = Vector2(869.75, 75)
+size = Vector2(968, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_60i3m"]
 size = Vector2(485.4375, 75)
@@ -118,27 +145,16 @@ size = Vector2(74, 556.5)
 size = Vector2(462.5, 54.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lwxes"]
-size = Vector2(70, 1236.5)
+size = Vector2(70, 1232)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mxc8w"]
 atlas = ExtResource("1_45440")
 region = Rect2(0, 0, 128, 32)
 
-[sub_resource type="Curve2D" id="Curve2D_vhlys"]
+[sub_resource type="Curve2D" id="Curve2D_mnfdo"]
 resource_local_to_scene = true
 _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 160, -344, 0, 0, 0, 0, 160, 976, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
-}
-point_count = 9
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mnfdo"]
-resource_local_to_scene = true
-size = Vector2(34, 225.5)
-
-[sub_resource type="Curve2D" id="Curve2D_xjrjs"]
-resource_local_to_scene = true
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
 point_count = 9
 
@@ -149,9 +165,9 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_lu7vs"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 160, -800, 0, 0, 0, 0, 160, 520, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, 0, 176, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0)
 }
-point_count = 12
+point_count = 9
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jmd8"]
 resource_local_to_scene = true
@@ -160,7 +176,7 @@ size = Vector2(34, 225.5)
 [sub_resource type="Curve2D" id="Curve2D_wx43u"]
 resource_local_to_scene = true
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 976, 0, 0, 0, 0, -160, 976, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -344, 0, 0, 0, 0, 0, -344, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
 }
 point_count = 12
 
@@ -168,10 +184,20 @@ point_count = 12
 resource_local_to_scene = true
 size = Vector2(34, 225.5)
 
+[sub_resource type="Curve2D" id="Curve2D_s81jn"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 520, 0, 0, 0, 0, -160, 520, 0, 0, 0, 0, -160, 16, 0, 0, 0, 0, -160, -800, 0, 0, 0, 0, 0, -800, 0, 0, 0, 0, 0, -216, 0, 0, 0, 0, 0, -128, 0, 0, 0, 0, 0, -80, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, -16, 0, 0, 0, 0, 0, 0)
+}
+point_count = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n5t7a"]
+resource_local_to_scene = true
+size = Vector2(34, 225.5)
+
 [node name="Level1" type="Node2D" unique_id=910846331 node_paths=PackedStringArray("minimap_center", "day_cycle", "lighting", "network_graph", "message_board", "player", "player_spawn", "bed", "clock_in_point", "music_manager")]
 script = ExtResource("1_qbdb0")
 level_title = "Day 1"
-show_collision_surfaces = true
 minimap_center = NodePath("MinimapCenter")
 minimap_world_units_per_pixel = 20.0
 day_cycle = NodePath("DayCycleManager")
@@ -183,6 +209,24 @@ player_spawn = NodePath("PlayerSpawn")
 bed = NodePath("Bed")
 clock_in_point = NodePath("ClockInPoint")
 music_manager = NodePath("MusicManager")
+
+[node name="ActualBackground" type="TextureRect" parent="." unique_id=1607093631]
+z_index = -1
+offset_left = -5400.0
+offset_top = -864.0
+offset_right = 71.99951
+offset_bottom = 2176.0
+texture = ExtResource("2_mnfdo")
+stretch_mode = 4
+
+[node name="ActualForeground" type="TextureRect" parent="." unique_id=991795868]
+z_index = 2
+offset_left = -5400.0
+offset_top = -864.0
+offset_right = 71.99951
+offset_bottom = 2176.0
+texture = ExtResource("3_xjrjs")
+stretch_mode = 4
 
 [node name="MinimapCenter" type="Marker2D" parent="." unique_id=1578848587]
 position = Vector2(-1804, 813.5)
@@ -263,9 +307,10 @@ schedule = ExtResource("4_hyp3v")
 z_index = 1
 position = Vector2(-598, 810)
 
-[node name="CameraManager2D" parent="." unique_id=2089399337 instance=ExtResource("3_iey7c")]
+[node name="CameraManager2D" parent="." unique_id=2089399337 node_paths=PackedStringArray("bounds_texture") instance=ExtResource("3_iey7c")]
 position = Vector2(-513, 38)
 initial_camera = &"player"
+bounds_texture = NodePath("../ActualBackground")
 
 [node name="FollowCamera2D" type="Camera2D" parent="CameraManager2D" unique_id=2113931683 node_paths=PackedStringArray("follow_target")]
 script = ExtResource("4_5b03i")
@@ -452,7 +497,7 @@ position = Vector2(72, 355)
 shape = SubResource("RectangleShape2D_f313t")
 
 [node name="CollisionShape2D36" type="CollisionShape2D" parent="Wall" unique_id=1249535661]
-position = Vector2(-1232, 507)
+position = Vector2(-1243.7188, 499.4453)
 shape = SubResource("RectangleShape2D_f313t")
 
 [node name="CollisionShape2D23" type="CollisionShape2D" parent="Wall" unique_id=1749413867]
@@ -502,10 +547,6 @@ shape = SubResource("RectangleShape2D_xywve")
 [node name="CollisionShape2D40" type="CollisionShape2D" parent="Wall" unique_id=1061253936]
 position = Vector2(-104, 387)
 shape = SubResource("RectangleShape2D_wx43u")
-
-[node name="CollisionShape2D35" type="CollisionShape2D" parent="Wall" unique_id=681412955]
-position = Vector2(-1448, 667)
-shape = SubResource("RectangleShape2D_mgcax")
 
 [node name="CollisionShape2D51" type="CollisionShape2D" parent="Wall" unique_id=1127581132]
 position = Vector2(-120, -301)
@@ -571,6 +612,78 @@ shape = SubResource("RectangleShape2D_g8qib")
 position = Vector2(-771, -696)
 shape = SubResource("RectangleShape2D_drths")
 
+[node name="CollisionShape2D35" type="CollisionShape2D" parent="Wall" unique_id=1482864598]
+position = Vector2(-2615.7813, -429)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D41" type="CollisionShape2D" parent="Wall" unique_id=1430932580]
+position = Vector2(-2608, 771)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D61" type="CollisionShape2D" parent="Wall" unique_id=1535136981]
+position = Vector2(-2608, 1123)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D62" type="CollisionShape2D" parent="Wall" unique_id=1506801573]
+position = Vector2(-3408, 163)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D63" type="CollisionShape2D" parent="Wall" unique_id=17159740]
+position = Vector2(-2792, 531)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D64" type="CollisionShape2D" parent="Wall" unique_id=787620487]
+position = Vector2(-2488, 771)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D65" type="CollisionShape2D" parent="Wall" unique_id=1766724157]
+position = Vector2(-2080, 1067)
+shape = SubResource("RectangleShape2D_mnfdo")
+
+[node name="CollisionShape2D66" type="CollisionShape2D" parent="Wall" unique_id=1368633618]
+position = Vector2(-2316, -1174.5313)
+shape = SubResource("RectangleShape2D_s81jn")
+
+[node name="CollisionShape2D67" type="CollisionShape2D" parent="Wall" unique_id=415483187]
+position = Vector2(-3216, -1573)
+shape = SubResource("RectangleShape2D_s81jn")
+
+[node name="CollisionShape2D68" type="CollisionShape2D" parent="Wall" unique_id=2047668957]
+position = Vector2(-2591, -1205)
+shape = SubResource("RectangleShape2D_rflqb")
+
+[node name="CollisionShape2D69" type="CollisionShape2D" parent="Wall" unique_id=1232827813]
+position = Vector2(-2788.5, -1360.2344)
+shape = SubResource("RectangleShape2D_jq5vq")
+
+[node name="CollisionShape2D70" type="CollisionShape2D" parent="Wall" unique_id=829583690]
+position = Vector2(-1904, -914.6172)
+shape = SubResource("RectangleShape2D_daoe1")
+
+[node name="CollisionShape2D71" type="CollisionShape2D" parent="Wall" unique_id=309062402]
+position = Vector2(-2088, -1013)
+shape = SubResource("RectangleShape2D_daoe1")
+
+[node name="CollisionShape2D72" type="CollisionShape2D" parent="Wall" unique_id=414009182]
+position = Vector2(-1712, 91)
+shape = SubResource("RectangleShape2D_4idv8")
+
+[node name="CollisionShape2D73" type="CollisionShape2D" parent="Wall" unique_id=510922705]
+position = Vector2(-1480, -69)
+shape = SubResource("RectangleShape2D_4idv8")
+
+[node name="CollisionShape2D74" type="CollisionShape2D" parent="Wall" unique_id=550091291]
+position = Vector2(-1232, 187)
+shape = SubResource("RectangleShape2D_fdo7j")
+
+[node name="CollisionShape2D76" type="CollisionShape2D" parent="Wall" unique_id=1408863218]
+position = Vector2(-2584, -651.29785)
+shape = SubResource("RectangleShape2D_5oe72")
+
+[node name="CollisionShape2D75" type="CollisionShape2D" parent="Wall" unique_id=632023887]
+position = Vector2(-1648, -309)
+shape = SubResource("RectangleShape2D_fdo7j")
+
 [node name="CollisionShape2D11" type="CollisionShape2D" parent="Wall" unique_id=771227035]
 position = Vector2(-310, -407)
 shape = SubResource("RectangleShape2D_drths")
@@ -621,7 +734,7 @@ position = Vector2(-720, 1219)
 shape = SubResource("RectangleShape2D_7rikf")
 
 [node name="CollisionShape2D33" type="CollisionShape2D" parent="Wall" unique_id=1741520450]
-position = Vector2(-1074.875, 819)
+position = Vector2(-1124, 811)
 shape = SubResource("RectangleShape2D_q3akp")
 
 [node name="CollisionShape2D34" type="CollisionShape2D" parent="Wall" unique_id=1587438131]
@@ -653,11 +766,13 @@ position = Vector2(1352, -645)
 shape = SubResource("RectangleShape2D_xiq7r")
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Wall" unique_id=552121117]
-position = Vector2(-993, -119.25)
+position = Vector2(-993, -117)
 shape = SubResource("RectangleShape2D_lwxes")
 
 [node name="MovingPlatform" parent="." unique_id=1862702076 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
+z_index = 100
+z_as_relative = false
 position = Vector2(-1568, 664)
 texture = SubResource("AtlasTexture_mxc8w")
 travel_mode = 1
@@ -667,20 +782,22 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_vhlys")
+curve = SubResource("Curve2D_mnfdo")
 
 [node name="Body" parent="MovingPlatform" index="1"]
 collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform/Body" index="0"]
-visible = false
+scale = Vector2(0.27999997, 6.9999976)
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform/Body" index="1"]
-shape = SubResource("RectangleShape2D_mnfdo")
+shape = SubResource("RectangleShape2D_ya87f")
 
 [node name="MovingPlatform3" parent="." unique_id=845979641 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
+z_index = 100
+z_as_relative = false
 position = Vector2(-1568, 1120)
 texture = SubResource("AtlasTexture_mxc8w")
 travel_mode = 1
@@ -690,20 +807,22 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform3" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_xjrjs")
+curve = SubResource("Curve2D_lu7vs")
 
 [node name="Body" parent="MovingPlatform3" index="1"]
 collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform3/Body" index="0"]
-visible = false
+scale = Vector2(0.27999997, 6.9999976)
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform3/Body" index="1"]
-shape = SubResource("RectangleShape2D_ya87f")
+shape = SubResource("RectangleShape2D_2jmd8")
 
 [node name="MovingPlatform2" parent="." unique_id=813500050 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
+z_index = 100
+z_as_relative = false
 position = Vector2(-1440, 664)
 texture = SubResource("AtlasTexture_mxc8w")
 travel_mode = 1
@@ -713,20 +832,22 @@ disappear_duration = 0.0
 
 [node name="MovementPath" parent="MovingPlatform2" index="0"]
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_lu7vs")
+curve = SubResource("Curve2D_wx43u")
 
 [node name="Body" parent="MovingPlatform2" index="1"]
 collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform2/Body" index="0"]
-visible = false
+scale = Vector2(0.27999997, 6.9999976)
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform2/Body" index="1"]
-shape = SubResource("RectangleShape2D_2jmd8")
+shape = SubResource("RectangleShape2D_tr4hg")
 
 [node name="MovingPlatform4" parent="." unique_id=1062858323 instance=ExtResource("5_5b03i")]
 modulate = Color(0.2784314, 1, 0.5058824, 1)
+z_index = 100
+z_as_relative = false
 position = Vector2(-1440, 1120)
 texture = SubResource("AtlasTexture_mxc8w")
 travel_mode = 1
@@ -737,30 +858,30 @@ disappear_duration = 0.0
 [node name="MovementPath" parent="MovingPlatform4" index="0"]
 position = Vector2(8, 0)
 scale = Vector2(0.8, 1)
-curve = SubResource("Curve2D_wx43u")
+curve = SubResource("Curve2D_s81jn")
 
 [node name="Body" parent="MovingPlatform4" index="1"]
 position = Vector2(8, 0)
 collision_layer = 9
 
 [node name="Sprite2D" parent="MovingPlatform4/Body" index="0"]
-visible = false
+scale = Vector2(0.27999997, 6.9999976)
 texture = SubResource("AtlasTexture_mxc8w")
 
 [node name="CollisionShape2D" parent="MovingPlatform4/Body" index="1"]
-shape = SubResource("RectangleShape2D_tr4hg")
+shape = SubResource("RectangleShape2D_n5t7a")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=816260377]
-position = Vector2(-2846, -35)
+position = Vector2(-5312, 8)
 
 [node name="Bed" parent="." unique_id=12741662 instance=ExtResource("17_drths")]
-position = Vector2(-2783, 4)
+position = Vector2(-5312, 16)
 
 [node name="ClockInPoint" parent="." unique_id=750564692 instance=ExtResource("18_owtu7")]
 position = Vector2(-990, 1910)
 
 [node name="RouterWorkbench" parent="." unique_id=631205236 instance=ExtResource("router_workbench")]
-position = Vector2(-2571, 1)
+position = Vector2(-4852, 9)
 
 [node name="MessageBoard" type="Node" parent="." unique_id=649108590]
 script = ExtResource("19_owtu7")
@@ -770,22 +891,25 @@ morning = ExtResource("21_vk63l")
 main = ExtResource("22_f313t")
 
 [node name="DeerTownfolkCharacter" parent="." unique_id=1238639566 instance=ExtResource("20_vk63l")]
-position = Vector2(-2781, 625)
+visible = false
+position = Vector2(-1392, -472)
 character_profile = ExtResource("11_0rvqm")
 dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_chain_1")])
 off_shift_dialogue_chains = Array[ExtResource("deer_chain_script")]([ExtResource("deer_intro")])
 
 [node name="BurdTownfolkCharacter" parent="." unique_id=1114119585 instance=ExtResource("20_vk63l")]
-position = Vector2(-496, 1503)
+position = Vector2(1550, 3613)
 character_profile = ExtResource("12_mgcax")
 
 [node name="FoxTownfolkCharacter" parent="." unique_id=1964815674 instance=ExtResource("20_vk63l")]
-position = Vector2(-3022, 1945)
+position = Vector2(-976, 4055)
 character_profile = ExtResource("14_e6dmr")
 
 [node name="SquirrelTownfolkCharacter" parent="." unique_id=1910306370 instance=ExtResource("20_vk63l")]
-position = Vector2(-903, -222)
+position = Vector2(1143, 1888)
 character_profile = ExtResource("13_plqb7")
+
+[node name="RandomMessageGenerator" parent="." unique_id=1115664249 instance=ExtResource("random_messages")]
 
 [editable path="MovingPlatform"]
 [editable path="MovingPlatform3"]

@@ -22,6 +22,13 @@ signal request_rejected(camera_name: StringName, reason: String)
 @export var initial_camera: StringName = &""
 @export var default_transition: CameraTransition
 @export var wait_for_transition: bool = false
+## Optional world-space rectangle enclosing every camera's entire view. Uses the
+## TextureRect's control rectangle. Zoom increases automatically if needed to fit.
+@export var bounds_texture: TextureRect:
+	set(value):
+		bounds_texture = value
+		if is_inside_tree():
+			update_configuration_warnings()
 
 var active_camera: Camera2D:
 	get:
@@ -46,6 +53,7 @@ var _start_rotation: float
 var _return_camera: Camera2D
 var _return_settings: CameraTransition
 var _hold_remaining: float = -1.0
+var _bounds_states: Dictionary[Camera2D, Dictionary] = {}
 
 
 func _ready() -> void:
@@ -173,6 +181,7 @@ func _take_next_request() -> ChangeRequest:
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	_update_view_bounds()
 	if is_instance_valid(_bridge) and (not is_instance_valid(_destination) or _destination.get_parent() != self):
 		_cancel_transition()
 		if active_camera != null:
@@ -216,6 +225,9 @@ func _start_request(request: ChangeRequest) -> void:
 	if target == null:
 		request_rejected.emit(request.camera_name, "Camera removed before execution")
 		return
+	# Use the destination's requested framing, rather than a previous boundary correction.
+	if target != active_camera:
+		_restore_camera_bounds(target)
 	var source := _bridge if is_instance_valid(_bridge) else active_camera
 	_return_camera = active_camera
 	_return_settings = request.return_transition
@@ -272,6 +284,7 @@ func _blend(weight: float) -> void:
 	var _rotation := 0.0 if _destination.ignore_rotation else _destination.global_rotation
 	_bridge.global_rotation = lerp_angle(_start_rotation, _rotation, weight)
 	_bridge.force_update_scroll()
+	_constrain_camera(_bridge)
 
 
 func _activate(camera: Camera2D) -> void:
@@ -283,6 +296,7 @@ func _activate(camera: Camera2D) -> void:
 	camera.make_current()
 	camera.reset_smoothing()
 	camera.force_update_scroll()
+	_constrain_camera(camera)
 	if previous != camera:
 		camera_changed.emit(previous, camera)
 
@@ -305,9 +319,78 @@ func _cancel_transition() -> void:
 
 func _free_bridge() -> void:
 	if is_instance_valid(_bridge):
+		_bounds_states.erase(_bridge)
 		_bridge.enabled = false
 		_bridge.queue_free()
 	_bridge = null
+
+
+func _has_view_bounds() -> bool:
+	return is_instance_valid(bounds_texture) and bounds_texture.is_inside_tree() \
+		and bounds_texture.get_canvas() == get_canvas() \
+		and bounds_texture.size.x > 0.0 and bounds_texture.size.y > 0.0 \
+		and not is_zero_approx(bounds_texture.get_global_transform().determinant())
+
+
+func _update_view_bounds() -> void:
+	if not _has_view_bounds():
+		for camera: Variant in _bounds_states.keys():
+			if is_instance_valid(camera):
+				_restore_camera_bounds(camera)
+		_bounds_states.clear()
+		return
+	var camera := _bridge if is_instance_valid(_bridge) else active_camera
+	if camera != null:
+		_constrain_camera(camera)
+
+
+func _restore_camera_bounds(camera: Camera2D) -> void:
+	if not _bounds_states.has(camera):
+		return
+	var saved := _bounds_states[camera]
+	if camera.zoom.is_equal_approx(saved.applied_zoom):
+		camera.zoom = saved.zoom
+	if camera.offset.is_equal_approx(saved.applied_offset):
+		camera.offset = saved.offset
+	_bounds_states.erase(camera)
+	camera.force_update_scroll()
+
+
+func _constrain_camera(camera: Camera2D) -> void:
+	if not _has_view_bounds():
+		return
+	var requested_zoom := camera.zoom
+	var requested_offset := camera.offset
+	if _bounds_states.has(camera):
+		var saved := _bounds_states[camera]
+		if requested_zoom.is_equal_approx(saved.applied_zoom):
+			requested_zoom = saved.zoom
+		if requested_offset.is_equal_approx(saved.applied_offset):
+			requested_offset = saved.offset
+	# Offset corrections leave the follow target, camera position and smoothing intact.
+	camera.zoom = requested_zoom
+	camera.offset = requested_offset
+	camera.force_update_scroll()
+	var world_to_bounds := bounds_texture.get_global_transform().affine_inverse()
+	var angle := camera.get_screen_rotation()
+	var half_view := camera.get_viewport_rect().size / (2.0 * camera.zoom.abs())
+	var right := world_to_bounds.basis_xform(Vector2.RIGHT.rotated(angle) * half_view.x)
+	var down := world_to_bounds.basis_xform(Vector2.DOWN.rotated(angle) * half_view.y)
+	var extent := right.abs() + down.abs()
+	var size := bounds_texture.size
+	var fit := maxf(1.0, maxf(2.0 * extent.x / size.x, 2.0 * extent.y / size.y))
+	if fit > 1.0:
+		fit *= 1.00001
+		camera.zoom *= fit
+		extent /= fit
+		camera.force_update_scroll()
+	var center := world_to_bounds * camera.get_screen_center_position()
+	var clamped := Vector2(clampf(center.x, extent.x, size.x - extent.x),
+		clampf(center.y, extent.y, size.y - extent.y))
+	camera.offset += bounds_texture.get_global_transform().basis_xform(clamped - center)
+	camera.force_update_scroll()
+	_bounds_states[camera] = {"zoom": requested_zoom, "offset": requested_offset,
+		"applied_zoom": camera.zoom, "applied_offset": camera.offset}
 
 
 func _copy_settings(settings: CameraTransition) -> CameraTransition:
@@ -329,4 +412,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("Add Camera2D, ManagedCamera2D or FollowCamera2D children.")
 	if initial_camera != &"" and initial_camera not in names:
 		warnings.append("Initial Camera does not match a child camera name.")
+	if is_instance_valid(bounds_texture) and bounds_texture.is_inside_tree() \
+			and bounds_texture.get_canvas() != get_canvas():
+		warnings.append("Bounds Texture must share the cameras' world canvas; use a level TextureRect, not HUD artwork.")
 	return warnings

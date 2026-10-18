@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/modules/random_message_generator/random_message_generator.gd" id="script"]
+[ext_resource type="Script" path="res://definitions/character_profile.gd" id="profile"]
+[ext_resource type="Resource" path="res://resources/character_profiles/fox_character_resource.tres" id="fox"]
+[ext_resource type="Resource" path="res://resources/character_profiles/squirrel_character_profile.tres" id="squirrel"]
+[ext_resource type="Resource" path="res://resources/character_profiles/deer_character_profile.tres" id="deer"]
+[ext_resource type="Resource" path="res://resources/character_profiles/burd_character_profile.tres" id="bird"]
+
+[node name="RandomMessageGenerator" type="Node"]
+script = ExtResource("script")
+participants = Array[ExtResource("profile")]([ExtResource("fox"), ExtResource("squirrel"), ExtResource("deer"), ExtResource("bird")])

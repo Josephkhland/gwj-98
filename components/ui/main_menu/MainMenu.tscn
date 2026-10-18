@@ -1,15 +1,22 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://woswj1rui43"]
 
-[ext_resource type="Script" path="res://components/ui/main_menu/main_menu.gd" id="1"]
+[ext_resource type="Script" uid="uid://ynlp0t8fd2s2" path="res://components/ui/main_menu/main_menu.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://g2e6gwk6bvws" path="res://components/ui/main_menu/DifficultyMenu.tscn" id="3_saccg"]
 [ext_resource type="PackedScene" path="res://components/ui/options/OptionsMenu.tscn" id="options"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting.png" id="menu_art"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting burd.png" id="burd_art"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting fox.png" id="fox_art"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting squirrel.png" id="squirrel_art"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting deer.png" id="deer_art"]
 
 [sub_resource type="Theme" id="MenuTheme"]
 default_font_size = 26
 
-[node name="MainMenu" type="CanvasLayer"]
+[node name="MainMenu" type="CanvasLayer" unique_id=1177692850]
 script = ExtResource("1")
+artwork_slides = Array[Texture2D]([ExtResource("menu_art"), ExtResource("burd_art"), ExtResource("fox_art"), ExtResource("squirrel_art"), ExtResource("deer_art")])
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1272185510]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -17,53 +24,81 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.07, 0.09, 0.14, 1)
 
-[node name="Center" type="CenterContainer" parent="."]
-theme = SubResource("MenuTheme")
+[node name="FrogineerArtwork" type="TextureRect" parent="."]
+anchor_left = 0.48
+anchor_top = 0.04
+anchor_right = 0.9
+anchor_bottom = 0.96
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("menu_art")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BurdArtwork" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchor_left = 0.48
+anchor_top = 0.04
+anchor_right = 0.9
+anchor_bottom = 0.96
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("burd_art")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Center" type="CenterContainer" parent="." unique_id=396528892]
 anchors_preset = 15
-anchor_right = 1.0
+anchor_left = 0.14
+anchor_right = 0.54
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("MenuTheme")
 
-[node name="Column" type="VBoxContainer" parent="Center"]
+[node name="Column" type="VBoxContainer" parent="Center" unique_id=830534511]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="Center/Column"]
+[node name="TitleLabel" type="Label" parent="Center/Column" unique_id=2144242622]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="Center/Column"]
+[node name="TutorialButton" type="Button" parent="Center/Column" unique_id=1320996591]
 unique_name_in_owner = true
-layout_mode = 2
 custom_minimum_size = Vector2(0, 52)
-text = "New Game"
-
-[node name="TutorialButton" type="Button" parent="Center/Column" index="1"]
-unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 52)
 text = "Tutorial"
 
-[node name="OptionsButton" type="Button" parent="Center/Column"]
+[node name="StartButton" type="Button" parent="Center/Column" unique_id=1154410288]
 unique_name_in_owner = true
-layout_mode = 2
 custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "New Game"
+
+[node name="OptionsButton" type="Button" parent="Center/Column" unique_id=852011112]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
 text = "Options"
 
-[node name="CreditsButton" type="Button" parent="Center/Column"]
+[node name="CreditsButton" type="Button" parent="Center/Column" unique_id=106356936]
 unique_name_in_owner = true
-layout_mode = 2
 custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
 text = "Credits"
 
-[node name="QuitButton" type="Button" parent="Center/Column"]
+[node name="QuitButton" type="Button" parent="Center/Column" unique_id=88054647]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 text = "Quit"
-custom_minimum_size = Vector2(0, 52)
 
-[node name="OptionsMenu" parent="." instance=ExtResource("options")]
+[node name="OptionsMenu" parent="." unique_id=909816444 instance=ExtResource("options")]
+
+[node name="DifficultyMenu" parent="." unique_id=733553965 instance=ExtResource("3_saccg")]

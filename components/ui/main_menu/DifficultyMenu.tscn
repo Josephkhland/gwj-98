@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://g2e6gwk6bvws"]
+
+[ext_resource type="Script" uid="uid://b1kh7x2oy6hs3" path="res://components/ui/options/difficulty_menu.gd" id="1_yns8l"]
+
+[sub_resource type="Theme" id="MenuTheme"]
+default_font_size = 26
+
+[node name="DifficultyMenu" type="CanvasLayer" unique_id=733553965]
+script = ExtResource("1_yns8l")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=207705503]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.01, 0.02, 0.04, 0.9)
+
+[node name="Background" type="ColorRect" parent="." unique_id=201972796]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.09, 0.14, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=515684000]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("MenuTheme")
+
+[node name="Column" type="VBoxContainer" parent="Center" unique_id=920503004]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Center/Column" unique_id=552597055]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Select Difficulty"
+horizontal_alignment = 1
+
+[node name="EasyButton" type="Button" parent="Center/Column" unique_id=1674339610]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Easy
+"
+
+[node name="NormalButton" type="Button" parent="Center/Column" unique_id=1815442960]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Normal"
+
+[node name="HardButton" type="Button" parent="Center/Column" unique_id=278395778]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Hard"
+
+[node name="ImpossibleButton" type="Button" parent="Center/Column" unique_id=1545710311]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Impossible"
+
+[node name="Back" type="Button" parent="Center/Column" unique_id=1476861750]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Back"

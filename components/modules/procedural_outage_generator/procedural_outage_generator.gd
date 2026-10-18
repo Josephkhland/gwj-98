@@ -41,6 +41,28 @@ func _ready() -> void:
 				level = ancestor
 				break
 			ancestor = ancestor.get_parent()
+	match AccessibilitySettings.difficulty:
+		0:
+			quiet_interval_minutes = 50.
+			peak_interval_minutes = 15.
+
+		1:
+			quiet_interval_minutes = 40.
+			peak_interval_minutes = 10.
+
+		2:
+			quiet_interval_minutes = 35.
+			peak_interval_minutes = 5.
+
+		3:
+			quiet_interval_minutes = 20.
+			peak_interval_minutes = 5.
+
+		_:
+			quiet_interval_minutes = 40.
+			peak_interval_minutes = 5.
+	print(quiet_interval_minutes)
+	print(peak_interval_minutes)
 	# Parent GameLevel resolves its conventional node references in its own _ready.
 	_bind_level.call_deferred()
 

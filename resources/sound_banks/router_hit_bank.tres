@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SoundBank" format=3 uid="uid://c7n62xxa8copy"]
+
+[ext_resource type="Script" uid="uid://cel8rywah54u5" path="res://components/modules/sound_banks/sound_bank.gd" id="1_hd82j"]
+[ext_resource type="AudioStream" uid="uid://cdemip73rh47a" path="res://assets/cabalcrow/router-hits.mp3" id="2_hd82j"]
+
+[resource]
+script = ExtResource("1_hd82j")
+stream = ExtResource("2_hd82j")
+segment_count = 4

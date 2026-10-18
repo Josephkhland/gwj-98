@@ -94,7 +94,7 @@ var _active_mode: ProgressManager.DialogueMode
 @onready var interaction_hint: InputHintLabel = $InteractionHint
 
 const SENTENCE_START_PITCH := 20.
-const PITCH_DECAY := 0.5
+const PITCH_DECAY := 0.03
 var _sentence_pitch := 20.
 
 func _ready() -> void:

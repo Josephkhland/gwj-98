@@ -59,6 +59,9 @@ size = Vector2(56.28125, 288)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xywve"]
 size = Vector2(56.28125, 144)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx43u"]
+size = Vector2(56.28125, 112)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vk63l"]
 size = Vector2(266.48242, 39.566406)
 
@@ -370,7 +373,7 @@ key_identifier = &"r6"
 connections = Array[NodePath]([NodePath("../Router7")])
 
 [node name="Router7" parent="NetworkGraph" unique_id=312054577 instance=ExtResource("3_la5aw")]
-position = Vector2(-2682, 1823)
+position = Vector2(-2584, 1823)
 state = 0
 attack_player_radius = 110.0
 attack_spit_radius = 64.0
@@ -497,8 +500,8 @@ position = Vector2(-344, 307)
 shape = SubResource("RectangleShape2D_xywve")
 
 [node name="CollisionShape2D40" type="CollisionShape2D" parent="Wall" unique_id=1061253936]
-position = Vector2(-104, 403)
-shape = SubResource("RectangleShape2D_xywve")
+position = Vector2(-104, 387)
+shape = SubResource("RectangleShape2D_wx43u")
 
 [node name="CollisionShape2D35" type="CollisionShape2D" parent="Wall" unique_id=681412955]
 position = Vector2(-1448, 667)

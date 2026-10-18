@@ -3,11 +3,13 @@
 [ext_resource type="Script" uid="uid://bcscmlkvgg4rm" path="res://definitions/character_profile.gd" id="1_ihonn"]
 [ext_resource type="Resource" path="res://resources/sound_banks/fox_voice_bank.tres" id="voice"]
 [ext_resource type="Texture2D" path="res://assets/josephkhland/fox_portrait_prototype.png" id="portrait"]
+[ext_resource type="Texture2D" path="res://assets/shuzuu/conversation_characters/frogineer painting fox.png" id="full_body"]
 
 [resource]
 script = ExtResource("1_ihonn")
 character_id = &"fox"
 display_name = "Slick Wily"
 portrait = ExtResource("portrait")
+full_body_portrait = ExtResource("full_body")
 voice_bank = ExtResource("voice")
 metadata/_custom_type_script = "uid://bcscmlkvgg4rm"

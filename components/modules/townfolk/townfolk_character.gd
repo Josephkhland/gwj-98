@@ -93,6 +93,10 @@ var _active_mode: ProgressManager.DialogueMode
 @onready var _fallback_avatar: SpriteFrames = world_sprite.sprite_frames
 @onready var interaction_hint: InputHintLabel = $InteractionHint
 
+const SENTENCE_START_PITCH := 20.
+const PITCH_DECAY := 0.03
+var _sentence_pitch := 20.
+
 func _ready() -> void:
 	_refresh_avatar()
 	if Engine.is_editor_hint():
@@ -114,6 +118,7 @@ func _ready() -> void:
 	bubble.hide()
 	playback.line_started.connect(_on_line_started)
 	playback.chunk_revealed.connect(_on_chunk)
+	playback.sentence_start.connect(_on_sentence)
 	playback.chunk_highlighted.connect(_on_highlight)
 	playback.finished.connect(_on_finished)
 	playback.line_revealed.connect(_on_line_revealed)
@@ -343,10 +348,14 @@ func _on_line_started(index: int) -> void:
 	bubble.randomize_shape()
 	bubble.set_text(_text)
 
+func _on_sentence(end: String) -> void:
+	_sentence_pitch = SENTENCE_START_PITCH
+
 func _on_chunk(chunk: String, line_index: int, chunk_index: int) -> void:
 	_text += chunk
 	if _using_conversation:
-		conversation.reveal_chunk(chunk, _bank)
+		conversation.reveal_chunk(chunk, _bank, _sentence_pitch)
+		_sentence_pitch -= PITCH_DECAY
 		return
 	var target := _find_listener()
 	var enabled := reactions_enabled and playback.chain.reactions_enabled
@@ -357,15 +366,17 @@ func _on_chunk(chunk: String, line_index: int, chunk_index: int) -> void:
 	if _bank != null:
 		voice.stop()
 		var clip := _bank.clip_for_syllable(chunk)
-		if get_parent() is CanvasLayer:
-			# The tutorial guide is in screen space during repair instructions.
-			var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
-			if played != null:
-				played.pitch_scale = _bank.random_pitch()
-		else:
-			var played := voice.play_clip(clip)
-			if played != null:
-				played.pitch_scale = _bank.random_pitch()
+		if clip:
+			if get_parent() is CanvasLayer:
+				# The tutorial guide is in screen space during repair instructions.
+				var played := AudioManager.play_sound(clip, &"townfolk_voice", &"SFX", self)
+				if played != null:
+					played.pitch_scale = 1. + (_sentence_pitch) * 0.003
+			else:
+				var played := voice.play_clip(clip)
+				if played != null:
+					played.pitch_scale = 1. + (_sentence_pitch) * 0.003
+			_sentence_pitch -= PITCH_DECAY
 	syllable_heard.emit(target, playback.chain, line_index, chunk_index, chunk.strip_edges())
 
 func _on_highlight(index: int) -> void:

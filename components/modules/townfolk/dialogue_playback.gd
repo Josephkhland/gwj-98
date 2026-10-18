@@ -3,6 +3,7 @@ extends Node
 ## Presentation-independent playback. Keeps advancing when nobody is listening.
 signal line_started(line_index: int)
 signal chunk_revealed(chunk: String, line_index: int, chunk_index: int)
+signal sentence_start(end: String)
 signal chunk_highlighted(chunk_index: int)
 signal finished(chain: TownfolkDialogueChain)
 signal line_revealed(line_index: int)
@@ -40,6 +41,7 @@ func start(value: TownfolkDialogueChain, manual_advance: bool = false) -> bool:
 	line_index = -1
 	elapsed_seconds = 0.0
 	_next_line()
+	sentence_start.emit(".")
 	return true
 
 func stop() -> void:
@@ -112,8 +114,11 @@ func advance(delta: float) -> void:
 		_chunk_index += 1
 		var line := chain.lines[line_index]
 		var delay := maxf(0.02, line.syllable_seconds)
-		if chunk.strip_edges().ends_with(".") or chunk.strip_edges().ends_with("!") or chunk.strip_edges().ends_with("?") or chunk.strip_edges().ends_with(","):
+		if chunk.strip_edges().ends_with(","):
+			delay += maxf(0.0, line.punctuation_comma)
+		elif chunk.strip_edges().ends_with(".") or chunk.strip_edges().ends_with("!") or chunk.strip_edges().ends_with("?"):
 			delay += maxf(0.0, line.punctuation_pause)
+			sentence_start.emit(".")
 		_remaining += delay
 		_pending_highlight = -1 if waits_for_input else index
 		chunk_revealed.emit(chunk, line_index, index)

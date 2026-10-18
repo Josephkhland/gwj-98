@@ -196,7 +196,7 @@ func _try_deliver(message: NetworkMessage) -> bool:
 		return message.state == NetworkMessage.State.DELIVERED
 	var now := _clock.get_elapsed_game_seconds()
 	message.delivered_seconds = now
-	message.score = scoring_rule.score(message.definition.points, (now - message.send_seconds) / 60.0, message.definition.expire_minutes)
+	message.score = message.definition.points if message.definition.fixed_score else scoring_rule.score(message.definition.points, (now - message.send_seconds) / 60.0, message.definition.expire_minutes)
 	message.state = NetworkMessage.State.DELIVERED
 	message.repair_path.clear()
 	_queue_guidance_refresh()

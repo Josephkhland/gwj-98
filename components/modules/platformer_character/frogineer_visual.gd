@@ -1,12 +1,23 @@
 @tool
 extends Node2D
 signal foot_contact(left: bool)
+const OUTLINE_SHADER := preload("res://components/modules/platformer_character/frogineer_outline.gdshader")
 ## Visual-only animation sequencing; physics states remain in control of movement.
 @export_range(0.01, 0.2, 0.005) var artwork_scale: float = 0.05
 ## Offset in character-space pixels, applied after the animation's source origin.
 @export var artwork_offset: Vector2 = Vector2.ZERO
 ## Point the upright-corrected head along movement during airborne animations.
 @export var orient_airborne_to_velocity: bool = true
+@export_group("Glowing Outline")
+@export var outline_enabled: bool = true
+@export_color_no_alpha var glow_color: Color = Color(0.45, 1.0, 0.8)
+@export_range(0.0, 4.0, 0.05) var glow_intensity: float = 1.0
+## Solid edge thickness in character-space pixels, independent of source artwork resolution.
+@export_range(0.0, 12.0, 0.25) var outline_width: float = 1.0
+## Additional halo width in character-space pixels.
+@export_range(0.0, 24.0, 0.25) var glow_radius: float = 6.0
+## Zero gives a soft falloff; one makes the halo almost as dense as a solid outline.
+@export_range(0.0, 1.0, 0.01) var glow_density: float = 0.25
 @export_group("Editor Preview")
 @export_enum("idle", "walking", "transition_to_charge_jump", "charging", "jumping", "falling", "spit_charge_ground", "spit_hold_ground", "spit_release_ground", "spit_charge_air", "spit_hold_air", "spit_release_air", "rolling_back") var preview_animation: String = "idle"
 @export_range(0, 20, 1) var preview_frame: int = 0
@@ -27,9 +38,12 @@ var _actor: CharacterBody2D
 var _release_active: bool = false
 var _spit_airborne: bool = false
 var _airborne_rotation: float = 0.0
+var _outline: Sprite2D
+var _outline_material: ShaderMaterial
 @onready var _facing_node: Node2D = $Facing
 @onready var _sprite: AnimatedSprite2D = $Facing/AnimatedSprite2D
 func _ready() -> void:
+	_setup_outline()
 	if Engine.is_editor_hint():
 		_update_editor_preview()
 		return
@@ -141,6 +155,48 @@ func _update_art_layout() -> void:
 	# Mirror after the art rotation; flipping the sideways texture would invert its feet.
 	_facing_node.scale.x = -1.0 if facing < 0.0 else 1.0
 	_update_airborne_orientation()
+	_update_outline()
+
+func _setup_outline() -> void:
+	_outline = _sprite.get_node_or_null(^"GlowingOutline") as Sprite2D
+	if _outline == null:
+		_outline = Sprite2D.new()
+		_outline.name = "GlowingOutline"
+		_outline.show_behind_parent = true
+		_sprite.add_child(_outline)
+	# Each character owns its parameters; editing one does not alter another.
+	_outline_material = ShaderMaterial.new()
+	_outline_material.shader = OUTLINE_SHADER
+	_outline.material = _outline_material
+
+func _update_outline() -> void:
+	if not is_instance_valid(_outline):
+		return
+	_outline.visible = outline_enabled and glow_intensity > 0.0
+	if not _outline.visible or _sprite.sprite_frames == null:
+		return
+	var texture := _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame)
+	if texture == null:
+		return
+	_outline.texture = texture
+	_outline.centered = _sprite.centered
+	_outline.offset = _sprite.offset
+	_outline.flip_h = _sprite.flip_h
+	_outline.flip_v = _sprite.flip_v
+	var uv_rect := Vector4(0.0, 0.0, 1.0, 1.0)
+	if texture is AtlasTexture and texture.atlas != null:
+		var atlas_size: Vector2 = texture.atlas.get_size()
+		var region: Rect2 = texture.region
+		if region.size == Vector2.ZERO:
+			region.size = atlas_size
+		uv_rect = Vector4(region.position.x / atlas_size.x, region.position.y / atlas_size.y,
+			region.end.x / atlas_size.x, region.end.y / atlas_size.y)
+	_outline_material.set_shader_parameter(&"frame_uv_rect", uv_rect)
+	_outline_material.set_shader_parameter(&"glow_color", glow_color)
+	_outline_material.set_shader_parameter(&"glow_intensity", glow_intensity)
+	_outline_material.set_shader_parameter(&"outline_width", outline_width / maxf(artwork_scale, 0.001))
+	_outline_material.set_shader_parameter(&"glow_radius", glow_radius / maxf(artwork_scale, 0.001))
+	_outline_material.set_shader_parameter(&"glow_density", glow_density)
 
 func _update_airborne_orientation() -> void:
 	var follows_velocity: bool = orient_airborne_to_velocity and _sprite.animation in [

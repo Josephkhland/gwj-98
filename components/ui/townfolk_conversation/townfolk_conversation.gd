@@ -66,7 +66,7 @@ func reveal_chunk(chunk: String, bank: VoiceSoundBank, sentence_pitch: float) ->
 	if clip == null:
 		return
 	_voice.stream = clip
-	_voice.pitch_scale = 1. + (sentence_pitch) * 0.003 + randf_range(-0.01, 0.01)
+	_voice.pitch_scale = 1. + (sentence_pitch) * 0.003
 	_voice.volume_db = AudioConfig.volume_db(&"townfolk_voice")
 	print(_voice.pitch_scale)
 	_voice.play()

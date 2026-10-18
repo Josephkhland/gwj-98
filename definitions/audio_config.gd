@@ -8,8 +8,8 @@ extends RefCounted
 # IDs identify sounds in code, not asset filenames or node names. Missing IDs default to 0 dB.
 const VOLUMES_DB := {
 	&"townfolk_voice": 0.0,
-	&"router_working": -18.0,
-	&"router_broken": -16.0,
+	&"router_working": 0.0,
+	&"router_broken": 0.0,
 	&"jump_charge": -6.0,
 	&"jump": 0.0,
 	&"falling": -100.0 - 6.,

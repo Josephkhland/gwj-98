@@ -26,7 +26,7 @@ func _ready() -> void:
 	_fall = _make_player(falling, &"falling", false)
 	_fall.play()
 	_character.state_changed.connect(_on_state_changed)
-	_character.spit_fired.connect(func(_projectile, _ratio): _play_one_shot(spit, &"spit"))
+	_character.spit_fired.connect(func(_projectile, _ratio): _play_one_shot(spit, &"spit", 0.05))
 	_character.slam_impacted.connect(_on_slam_landed)
 	_character.get_node("AudioListener2D").make_current()
 
@@ -40,13 +40,14 @@ func _make_player(stream: AudioStream, id: StringName, loop: bool) -> AudioStrea
 	add_child(player)
 	return player
 
-func _play_one_shot(stream: AudioStream, id: StringName, pitch_randomness := 0.0) -> void:
+func _play_one_shot(stream: AudioStream, id: StringName, pitch_randomness := 0.0, db_change := 0.0) -> void:
 	if stream == null:
 		return
 	var player := _make_player(stream, id, false)
 	player.finished.connect(player.queue_free)
 	if pitch_randomness != 0.0:
 		player.pitch_scale *= 1 + randf_range(-pitch_randomness, 1 / (1 - pitch_randomness))
+	player.volume_db += db_change
 	player.play()
 
 func _set_loop(player: AudioStreamPlayer2D, active: bool) -> void:
@@ -65,7 +66,7 @@ func _on_state_changed(previous: int, current: int) -> void:
 	_refresh_loops()
 	if previous == _character.State.CHARGING and current == _character.State.JUMPING:
 		_had_support = true
-		_play_one_shot(jump, &"jump", 0.1)
+		_play_one_shot(jump, &"jump", 0.05)
 
 func _physics_process(_delta: float) -> void:
 	_refresh_loops()

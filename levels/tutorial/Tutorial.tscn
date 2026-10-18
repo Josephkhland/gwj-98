@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://v2um07t4pmmb" path="res://levels/tutorial/tutorial.gd" id="level"]
 [ext_resource type="PackedScene" path="res://components/ui/pause_menu/PauseMenu.tscn" id="pause"]
 [ext_resource type="Script" uid="uid://cpd2q3rbxk16o" path="res://levels/tutorial/tutorial_pause_menu.gd" id="pause_script"]
-[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://components/modules/platformer_character/FrogineerCharacter.tscn" id="player"]
 [ext_resource type="PackedScene" uid="uid://co2dnkr7hv7et" path="res://components/modules/network/objects/Router.tscn" id="router"]
 [ext_resource type="Resource" uid="uid://dphcw6xojj00x" path="res://levels/tutorial/tutorial_shift_schedule.tres" id="schedule"]
 [ext_resource type="Resource" uid="uid://lp3twd1qlbyv" path="res://levels/tutorial/tutorial_script.tres" id="script_lines"]

@@ -78,6 +78,11 @@ var _spit_recharge_ready: bool = false
 var _landing_sliding: bool = false
 var friction_model := FrictionModel.new()
 var _coyote_remaining: float = 0.0
+var _ceiling_grace_remaining: float = 0.0
+var _ceiling_grace_surface: WeakRef
+var _ceiling_grace_local_transform := Transform2D.IDENTITY
+var _ceiling_grace_local_normal := Vector2.ZERO
+var _ceiling_grace_rid := RID()
 var _slide_normal := Vector2.ZERO
 var _slide_surface_velocity := Vector2.ZERO
 var _mouse_direction := Vector2.RIGHT
@@ -137,6 +142,7 @@ func _physics_process(delta: float) -> void:
 	_reattach_time = maxf(0.0, _reattach_time - delta)
 	friction_model.decay(delta, settings.friction_boost_decay)
 	_coyote_remaining = maxf(0.0, _coyote_remaining - delta)
+	_ceiling_grace_remaining = maxf(0.0, _ceiling_grace_remaining - delta)
 	if is_grounded():
 		_coyote_remaining = settings.coyote_time
 		_surface_normal = get_floor_normal()
@@ -156,6 +162,7 @@ func _physics_process(delta: float) -> void:
 	_was_spit = _spit_held
 	_was_slam = _slam_held
 	physics_safety.begin_tick()
+	_try_ceiling_grace()
 	if not state_machine.should_move() and not physics_safety.movement_locked():
 		surface_anchor.follow()
 		if not state_machine.should_move():
@@ -217,6 +224,7 @@ func _get_surface_contacts(probe_normal: Vector2 = Vector2.ZERO) -> Array[Kinema
 ## Shared surface collision service used by airborne state nodes.
 func _resolve_air_contacts(incoming: Vector2, settle_floor: bool = true) -> void:
 	if is_on_floor():
+		_ceiling_grace_remaining = 0.0
 		if settle_floor:
 			visual.rotation = 0.0
 			_change_state(State.IDLE)
@@ -229,16 +237,61 @@ func _resolve_air_contacts(incoming: Vector2, settle_floor: bool = true) -> void
 		if normal.dot(Vector2.UP) >= cos(floor_max_angle):
 			continue
 		if _reattach_time <= 0.0 and _charge_held and surface_has_sticky_layer(contact.get_collider() as Node2D, contact.get_collider_rid()):
-			surface_anchor.capture(contact.get_collider() as Node2D, normal)
-			_surface_normal = normal
-			_attached = true
-			visual.rotation = Vector2.UP.angle_to(normal)
-			_change_state(State.CHARGING)
+			_attach_to_contact(contact)
 			return
+		if normal.dot(Vector2.DOWN) >= cos(floor_max_angle) and incoming.dot(normal) < 0.0 \
+				and _reattach_time <= 0.0 and settings.ceiling_attach_grace_time > 0.0:
+			var surface := contact.get_collider() as Node2D
+			if surface != null and surface_has_sticky_layer(surface, contact.get_collider_rid()):
+				_ceiling_grace_remaining = settings.ceiling_attach_grace_time
+				_ceiling_grace_surface = weakref(surface)
+				_ceiling_grace_rid = contact.get_collider_rid()
+				_ceiling_grace_local_transform = surface.global_transform.affine_inverse() * global_transform
+				_ceiling_grace_local_normal = surface.global_transform.basis_xform_inv(normal).normalized()
 		bounced = bounce_velocity(bounced, normal, surface_velocity)
 		did_bounce = true
 	if did_bounce:
 		velocity = bounced
+
+func _attach_to_contact(contact: KinematicCollision2D) -> void:
+	_ceiling_grace_remaining = 0.0
+	var normal := contact.get_normal()
+	surface_anchor.capture(contact.get_collider() as Node2D, normal)
+	_surface_normal = normal
+	_slide_surface_velocity = contact.get_collider_velocity()
+	_attached = true
+	visual.rotation = Vector2.UP.angle_to(normal)
+	_change_state(State.CHARGING)
+
+func _try_ceiling_grace() -> void:
+	if _ceiling_grace_remaining <= 0.0 or not _charge_held or _reattach_time > 0.0 \
+			or state not in [State.JUMPING, State.IN_AIR] or physics_safety.movement_locked():
+		return
+	var surface: Node2D = _ceiling_grace_surface.get_ref() if _ceiling_grace_surface != null else null
+	if not is_instance_valid(surface) or not surface.is_inside_tree() \
+			or not PhysicsServer2D.body_get_space(_ceiling_grace_rid).is_valid() \
+			or not surface_has_sticky_layer(surface, _ceiling_grace_rid):
+		_ceiling_grace_remaining = 0.0
+		return
+	var normal := surface.global_transform.basis_xform(_ceiling_grace_local_normal).normalized()
+	var target := surface.global_transform * _ceiling_grace_local_transform
+	var support := KinematicCollision2D.new()
+	var distance := maxf(safe_margin + 1.0, settings.wall_attachment_snap_distance)
+	if normal.dot(Vector2.DOWN) < cos(floor_max_angle) \
+			or not test_move(target, -normal * distance, support) \
+			or support.get_collider_rid() != _ceiling_grace_rid:
+		_ceiling_grace_remaining = 0.0
+		return
+	var motion := target.origin - global_position
+	var obstruction := KinematicCollision2D.new()
+	if test_move(global_transform, motion, obstruction) \
+			and obstruction.get_collider_rid() != _ceiling_grace_rid:
+		_ceiling_grace_remaining = 0.0
+		return
+	move_and_collide(motion)
+	if test_move(global_transform, -normal * distance, support) \
+			and support.get_collider_rid() == _ceiling_grace_rid:
+		_attach_to_contact(support)
 
 func surface_has_sticky_layer(surface: Node2D, body_rid: RID = RID()) -> bool:
 	var layers: int = 0
@@ -467,6 +520,7 @@ func _suspend_platform_carry() -> void:
 	platform_floor_layers = 0
 
 func _detach() -> void:
+	_ceiling_grace_remaining = 0.0
 	_landing_sliding = false
 	surface_anchor.clear()
 	_attached = false

@@ -5,6 +5,9 @@ extends Resource
 @export_range(0.0, 20.0) var friction_boost_decay: float = 4.0
 @export_group("Jump assistance")
 @export_range(0.0, 0.5) var coyote_time: float = 0.15
+## Seconds after hitting a sticky ceiling during which pressing Jump can catch it.
+## The catch follows the contacted surface and requires a clear path back to it. Zero disables it.
+@export_range(0.0, 0.5, 0.01) var ceiling_attach_grace_time: float = 0.2
 @export_range(0.0, 15.0, 0.1) var minimum_wall_jump_angle_degrees: float = 2.0
 @export_group("Wall attachment")
 @export_range(0.0, 16.0, 0.5) var wall_attachment_snap_distance: float = 6.0

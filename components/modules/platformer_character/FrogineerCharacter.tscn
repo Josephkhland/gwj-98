@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cmpdpdjtgknb0"]
+
+[ext_resource type="PackedScene" uid="uid://dx8f2alnuodqa" path="res://components/modules/platformer_character/PlatformerCharacter.tscn" id="base"]
+[ext_resource type="SpriteFrames" uid="uid://dycwov1776pm8" path="res://resources/character_animations/frogineer_frames.tres" id="frames"]
+[ext_resource type="Script" uid="uid://ctdejkuf1myxx" path="res://components/modules/platformer_character/frogineer_visual.gd" id="visual"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yo4va"]
+height = 54.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yo4va"]
+resource_local_to_scene = true
+radius = 27.073973
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a0ijp"]
+radius = 59.07622
+
+[node name="FrogineerCharacter" unique_id=805360674 instance=ExtResource("base")]
+
+[node name="CollisionShape2D" parent="." index="0" unique_id=1778574518]
+shape = SubResource("CapsuleShape2D_yo4va")
+
+[node name="Visual" parent="." index="3" unique_id=1533543262]
+script = ExtResource("visual")
+artwork_scale = 0.1
+artwork_offset = Vector2(0, 0)
+preview_animation = "idle"
+preview_frame = 0
+animate_preview = false
+idle_origin = Vector2(393, 464)
+walking_origin = Vector2(375, 460)
+charge_origin = Vector2(374, 500)
+falling_origin = Vector2(650, 560)
+airborne_spit_origin = Vector2(650, 525)
+rollback_origin = Vector2(330, 525)
+jump_frame_origins = Array[Vector2]([Vector2(330, 560), Vector2(480, 560), Vector2(650, 560), Vector2(650, 560)])
+
+[node name="Facing" type="Node2D" parent="Visual" index="0" unique_id=674791396]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual/Facing" index="0" unique_id=1969596796]
+texture_filter = 4
+scale = Vector2(0.1, 0.1)
+sprite_frames = ExtResource("frames")
+animation = &"idle"
+centered = false
+offset = Vector2(-393, -464)
+
+[node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(935485385) index="0" unique_id=648058302]
+shape = SubResource("CircleShape2D_yo4va")
+
+[node name="CollisionShape2D" parent="SlamHitbox" parent_id_path=PackedInt32Array(730897105) index="0" unique_id=483115487]
+shape = SubResource("CircleShape2D_a0ijp")
